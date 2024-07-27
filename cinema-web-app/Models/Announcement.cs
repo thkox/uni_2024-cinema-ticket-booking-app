@@ -1,6 +1,6 @@
-namespace cinema_web_app.Models;
-using System;
 using System.ComponentModel.DataAnnotations.Schema;
+
+namespace cinema_web_app.Models;
 
 public class Announcement
 {
@@ -10,6 +10,5 @@ public class Announcement
     public string Message { get; set; }
 
     // Navigation property
-    [ForeignKey("CinemaId")]
-    public Cinema Cinema { get; set; }
+    [ForeignKey("CinemaId")] public Cinema Cinema { get; set; }
 }

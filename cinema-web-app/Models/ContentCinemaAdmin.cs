@@ -8,9 +8,7 @@ public class ContentCinemaAdmin
     public Guid UserId { get; set; }
     public Guid CinemaId { get; set; }
 
-    [ForeignKey("UserId")]
-    public ApplicationUser User { get; set; }
+    [ForeignKey("UserId")] public ApplicationUser User { get; set; }
 
-    [ForeignKey("CinemaId")]
-    public Cinema Cinema { get; set; }
+    [ForeignKey("CinemaId")] public Cinema Cinema { get; set; }
 }

@@ -1,8 +1,5 @@
 namespace cinema_web_app.Models;
 
-using System;
-using System.Collections.Generic;
-
 public class Cinema
 {
     public Guid Id { get; set; }

@@ -1,6 +1,6 @@
-namespace cinema_web_app.Models;
-using System;
 using System.ComponentModel.DataAnnotations.Schema;
+
+namespace cinema_web_app.Models;
 
 public class Movie
 {
@@ -15,7 +15,7 @@ public class Movie
     public string ImageUrl { get; set; }
 
     // Navigation property
-    [ForeignKey("GenreId")]
-    public Genre Genre { get; set; }
+    [ForeignKey("GenreId")] public Genre Genre { get; set; }
+
     public ICollection<Screening> Screenings { get; set; }
 }
