@@ -12,5 +12,5 @@ public class Reservation
     // Navigation properties
     [ForeignKey("ScreeningId")] public Screening Screening { get; set; }
 
-    [ForeignKey("CustomerId")] public Customer Customer { get; set; }
+    [ForeignKey("CustomerId")] public ApplicationUser Customer { get; set; }
 }
