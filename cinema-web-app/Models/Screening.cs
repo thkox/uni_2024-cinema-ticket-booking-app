@@ -1,6 +1,6 @@
-namespace cinema_web_app.Models;
-using System;
 using System.ComponentModel.DataAnnotations.Schema;
+
+namespace cinema_web_app.Models;
 
 public class Screening
 {
@@ -11,10 +11,9 @@ public class Screening
     public int RemainingNoOfSeats { get; set; }
 
     // Navigation properties
-    [ForeignKey("ScreeningRoomId")]
-    public ScreeningRoom ScreeningRoom { get; set; }
-    
-    [ForeignKey("MovieId")]
-    public Movie Movie { get; set; }
+    [ForeignKey("ScreeningRoomId")] public ScreeningRoom ScreeningRoom { get; set; }
+
+    [ForeignKey("MovieId")] public Movie Movie { get; set; }
+
     public ICollection<Reservation> Reservations { get; set; }
 }

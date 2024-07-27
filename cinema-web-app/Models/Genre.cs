@@ -1,6 +1,4 @@
 namespace cinema_web_app.Models;
-using System;
-using System.Collections.Generic;
 
 public class Genre
 {

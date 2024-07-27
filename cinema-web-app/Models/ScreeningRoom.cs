@@ -1,8 +1,6 @@
-namespace cinema_web_app.Models;
-
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+
+namespace cinema_web_app.Models;
 
 public class ScreeningRoom
 {
@@ -13,7 +11,7 @@ public class ScreeningRoom
     public bool Is3D { get; set; }
 
     // Navigation properties
-    [ForeignKey("CinemaId")]
-    public Cinema Cinema { get; set; }
+    [ForeignKey("CinemaId")] public Cinema Cinema { get; set; }
+
     public ICollection<Screening> Screenings { get; set; }
 }

@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace cinema_web_app.Models;
 
 public class Customer
