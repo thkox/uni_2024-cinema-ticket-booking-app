@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("cinema-web-app")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9c5b56e6cd434012e479b905b468f8753c4520a2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+54bd500064d6f3b2a97a45d5a6865937b99e9592")]
 [assembly: System.Reflection.AssemblyProductAttribute("cinema-web-app")]
 [assembly: System.Reflection.AssemblyTitleAttribute("cinema-web-app")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
