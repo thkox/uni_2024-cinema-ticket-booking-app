@@ -73,6 +73,8 @@ public class RegisterModel : PageModel
         if (ModelState.IsValid)
         {
             var user = CreateUser();
+            user.FirstName = Input.FirstName;
+            user.LastName = Input.LastName;
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -165,5 +167,15 @@ public class RegisterModel : PageModel
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        
+        [Required]
+        [Display(Name = "First Name")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "The First Name field can only contain letters.")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "The Last Name field can only contain letters.")]
+        public string LastName { get; set; }
     }
 }
