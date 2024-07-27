@@ -15,5 +15,4 @@ public class ApplicationUser : IdentityUser<Guid>
     public virtual ICollection<ContentCinemaAdmin> ContentCinemaAdmins { get; set; }
     public virtual ICollection<ContentAppAdmin> ContentAppAdmins { get; set; }
     public virtual ICollection<Customer> Customers { get; set; }
-    public virtual ICollection<Admin> Admins { get; set; }
 }
