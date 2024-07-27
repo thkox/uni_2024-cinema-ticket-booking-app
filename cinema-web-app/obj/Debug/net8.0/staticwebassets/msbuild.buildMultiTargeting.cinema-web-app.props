@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/cinema-web-app.props" />
+</Project>
