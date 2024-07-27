@@ -20,38 +20,17 @@ namespace cinema_web_app.Data
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<Genre> Genres { get; set; }
-        public DbSet<ApplicationAdmin> ApplicationAdmins { get; set; }
         public DbSet<ContentCinemaAdmin> ContentCinemaAdmins { get; set; }
-        public DbSet<ContentAppAdmin> ContentAppAdmins { get; set; }
-        public DbSet<Customer> Customers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configure ApplicationUser and IdentityRole
-            modelBuilder.Entity<ApplicationUser>()
-                .HasMany(u => u.ApplicationAdmins)
-                .WithOne(a => a.User)
-                .HasForeignKey(a => a.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
+            // Configure ApplicationUser
             modelBuilder.Entity<ApplicationUser>()
                 .HasMany(u => u.ContentCinemaAdmins)
                 .WithOne(ca => ca.User)
                 .HasForeignKey(ca => ca.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<ApplicationUser>()
-                .HasMany(u => u.ContentAppAdmins)
-                .WithOne(ca => ca.User)
-                .HasForeignKey(ca => ca.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<ApplicationUser>()
-                .HasMany(u => u.Customers)
-                .WithOne(c => c.User)
-                .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Configure Cinema
@@ -91,15 +70,8 @@ namespace cinema_web_app.Data
             // Configure Reservation
             modelBuilder.Entity<Reservation>()
                 .HasOne(r => r.Customer)
-                .WithMany(c => c.Reservations)
+                .WithMany()
                 .HasForeignKey(r => r.CustomerId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // Configure ApplicationAdmin
-            modelBuilder.Entity<ApplicationAdmin>()
-                .HasOne(a => a.User)
-                .WithMany(u => u.ApplicationAdmins)
-                .HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Configure ContentCinemaAdmin
@@ -107,20 +79,6 @@ namespace cinema_web_app.Data
                 .HasOne(ca => ca.User)
                 .WithMany(u => u.ContentCinemaAdmins)
                 .HasForeignKey(ca => ca.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // Configure ContentAppAdmin
-            modelBuilder.Entity<ContentAppAdmin>()
-                .HasOne(ca => ca.User)
-                .WithMany(u => u.ContentAppAdmins)
-                .HasForeignKey(ca => ca.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // Configure Customer
-            modelBuilder.Entity<Customer>()
-                .HasOne(c => c.User)
-                .WithMany(u => u.Customers)
-                .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Configure Genre

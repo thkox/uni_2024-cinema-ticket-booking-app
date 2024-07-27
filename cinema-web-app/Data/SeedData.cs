@@ -149,40 +149,15 @@ namespace cinema_web_app.Data
                 var adminUser = await userManager.FindByEmailAsync("appadmin1@example.com");
                 var cinemaAdminUser = await userManager.FindByEmailAsync("cinemaadmin1@example.com");
                 var contentAppAdminUser = await userManager.FindByEmailAsync("contentappadmin1@example.com");
-
-                // Add ApplicationAdmin
-                context.ApplicationAdmins.Add(new ApplicationAdmin { UserId = adminUser.Id });
-                await context.SaveChangesAsync();
-
+                
                 // Add ContentCinemaAdmin with a link to Cinema One
                 context.ContentCinemaAdmins.Add(new ContentCinemaAdmin { UserId = cinemaAdminUser.Id, CinemaId = cinemaOne.Id });
                 await context.SaveChangesAsync();
-
-                // Add ContentAppAdmin
-                context.ContentAppAdmins.Add(new ContentAppAdmin { UserId = contentAppAdminUser.Id });
-                await context.SaveChangesAsync();
-
+                
                 // Add Customers
                 var customerUser1 = await userManager.FindByEmailAsync("customer1@example.com");
                 var customerUser2 = await userManager.FindByEmailAsync("customer2@example.com");
-                if (customerUser1 == null || customerUser2 == null)
-                {
-                    throw new Exception("One or both customer users were not created.");
-                }
-
-                context.Customers.AddRange(
-                    new Customer { UserId = customerUser1.Id },
-                    new Customer { UserId = customerUser2.Id }
-                );
                 await context.SaveChangesAsync();
-
-                // Verify Customers
-                var customers = context.Customers.ToList();
-                Console.WriteLine($"Number of customers: {customers.Count}");
-                foreach (var customer in customers)
-                {
-                    Console.WriteLine($"Customer ID: {customer.UserId}");
-                }
 
                 // Add Reservations
                 var reservation1 = new Reservation
