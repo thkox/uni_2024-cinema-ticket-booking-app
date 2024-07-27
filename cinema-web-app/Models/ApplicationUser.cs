@@ -11,8 +11,5 @@ public class ApplicationUser : IdentityUser<Guid>
     [Required] public string LastName { get; set; }
 
     // Navigation properties
-    public virtual ICollection<ApplicationAdmin> ApplicationAdmins { get; set; }
     public virtual ICollection<ContentCinemaAdmin> ContentCinemaAdmins { get; set; }
-    public virtual ICollection<ContentAppAdmin> ContentAppAdmins { get; set; }
-    public virtual ICollection<Customer> Customers { get; set; }
 }
