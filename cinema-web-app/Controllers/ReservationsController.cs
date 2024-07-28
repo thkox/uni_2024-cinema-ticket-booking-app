@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +22,8 @@ namespace cinema_web_app.Controllers
         // GET: Reservations
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cinemas.ToListAsync());
+            var applicationDbContext = _context.Reservations.Include(r => r.Customer).Include(r => r.Screening);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Reservations/Details/5
@@ -33,19 +34,23 @@ namespace cinema_web_app.Controllers
                 return NotFound();
             }
 
-            var cinema = await _context.Cinemas
+            var reservation = await _context.Reservations
+                .Include(r => r.Customer)
+                .Include(r => r.Screening)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cinema == null)
+            if (reservation == null)
             {
                 return NotFound();
             }
 
-            return View(cinema);
+            return View(reservation);
         }
 
         // GET: Reservations/Create
         public IActionResult Create()
         {
+            ViewData["CustomerId"] = new SelectList(_context.Users, "Id", "FirstName");
+            ViewData["ScreeningId"] = new SelectList(_context.Screenings, "Id", "Id");
             return View();
         }
 
@@ -54,16 +59,18 @@ namespace cinema_web_app.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Address,City,ZipCode,Email,NoOfScreeningRooms")] Cinema cinema)
+        public async Task<IActionResult> Create([Bind("Id,ScreeningId,CustomerId,NoOfBookedSeats")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
-                cinema.Id = Guid.NewGuid();
-                _context.Add(cinema);
+                reservation.Id = Guid.NewGuid();
+                _context.Add(reservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(cinema);
+            ViewData["CustomerId"] = new SelectList(_context.Users, "Id", "FirstName", reservation.CustomerId);
+            ViewData["ScreeningId"] = new SelectList(_context.Screenings, "Id", "Id", reservation.ScreeningId);
+            return View(reservation);
         }
 
         // GET: Reservations/Edit/5
@@ -74,12 +81,14 @@ namespace cinema_web_app.Controllers
                 return NotFound();
             }
 
-            var cinema = await _context.Cinemas.FindAsync(id);
-            if (cinema == null)
+            var reservation = await _context.Reservations.FindAsync(id);
+            if (reservation == null)
             {
                 return NotFound();
             }
-            return View(cinema);
+            ViewData["CustomerId"] = new SelectList(_context.Users, "Id", "FirstName", reservation.CustomerId);
+            ViewData["ScreeningId"] = new SelectList(_context.Screenings, "Id", "Id", reservation.ScreeningId);
+            return View(reservation);
         }
 
         // POST: Reservations/Edit/5
@@ -87,9 +96,9 @@ namespace cinema_web_app.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Address,City,ZipCode,Email,NoOfScreeningRooms")] Cinema cinema)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,ScreeningId,CustomerId,NoOfBookedSeats")] Reservation reservation)
         {
-            if (id != cinema.Id)
+            if (id != reservation.Id)
             {
                 return NotFound();
             }
@@ -98,12 +107,12 @@ namespace cinema_web_app.Controllers
             {
                 try
                 {
-                    _context.Update(cinema);
+                    _context.Update(reservation);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CinemaExists(cinema.Id))
+                    if (!ReservationExists(reservation.Id))
                     {
                         return NotFound();
                     }
@@ -114,7 +123,9 @@ namespace cinema_web_app.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(cinema);
+            ViewData["CustomerId"] = new SelectList(_context.Users, "Id", "FirstName", reservation.CustomerId);
+            ViewData["ScreeningId"] = new SelectList(_context.Screenings, "Id", "Id", reservation.ScreeningId);
+            return View(reservation);
         }
 
         // GET: Reservations/Delete/5
@@ -125,14 +136,16 @@ namespace cinema_web_app.Controllers
                 return NotFound();
             }
 
-            var cinema = await _context.Cinemas
+            var reservation = await _context.Reservations
+                .Include(r => r.Customer)
+                .Include(r => r.Screening)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cinema == null)
+            if (reservation == null)
             {
                 return NotFound();
             }
 
-            return View(cinema);
+            return View(reservation);
         }
 
         // POST: Reservations/Delete/5
@@ -140,19 +153,19 @@ namespace cinema_web_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var cinema = await _context.Cinemas.FindAsync(id);
-            if (cinema != null)
+            var reservation = await _context.Reservations.FindAsync(id);
+            if (reservation != null)
             {
-                _context.Cinemas.Remove(cinema);
+                _context.Reservations.Remove(reservation);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CinemaExists(Guid id)
+        private bool ReservationExists(Guid id)
         {
-            return _context.Cinemas.Any(e => e.Id == id);
+            return _context.Reservations.Any(e => e.Id == id);
         }
     }
 }

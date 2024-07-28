@@ -1,4 +1,4 @@
-@model cinema_web_app.Models.Cinema
+@model cinema_web_app.Models.Reservation
 
 @{
     ViewData["Title"] = "Create";
@@ -6,41 +6,24 @@
 
 <h1>Create</h1>
 
-<h4>Cinema</h4>
+<h4>Reservation</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="ScreeningId" class="control-label"></label>
+                <select asp-for="ScreeningId" class ="form-control" asp-items="ViewBag.ScreeningId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
+                <label asp-for="CustomerId" class="control-label"></label>
+                <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ZipCode" class="control-label"></label>
-                <input asp-for="ZipCode" class="form-control" />
-                <span asp-validation-for="ZipCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NoOfScreeningRooms" class="control-label"></label>
-                <input asp-for="NoOfScreeningRooms" class="form-control" />
-                <span asp-validation-for="NoOfScreeningRooms" class="text-danger"></span>
+                <label asp-for="NoOfBookedSeats" class="control-label"></label>
+                <input asp-for="NoOfBookedSeats" class="form-control" />
+                <span asp-validation-for="NoOfBookedSeats" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
