@@ -1,0 +1,60 @@
+@model IEnumerable<cinema_web_app.Models.Screening>
+
+@{
+    ViewData["Title"] = "Screenings";
+}
+
+<h1>Screenings</h1>
+
+<h6>
+    <a asp-action="Create">Create New</a>
+</h6>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie.Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScreeningRoom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RemainingNoOfSeats)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Movie.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Movie.Duration) minutes
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ScreeningRoom.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RemainingNoOfSeats)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
