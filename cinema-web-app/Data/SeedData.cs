@@ -2,6 +2,7 @@ using cinema_web_app.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,164 +35,92 @@ namespace cinema_web_app.Data
             }
 
             // Create and assign roles to users
-            await CreateUserAndAssignRole(userManager, "appadmin1@example.com", "ApplicationAdmin", "Alice", "Admin", "Admin@123");
-            await CreateUserAndAssignRole(userManager, "cinemaadmin1@example.com", "ContentCinemaAdmin", "Bob", "Admin", "Admin@123");
-            await CreateUserAndAssignRole(userManager, "contentappadmin1@example.com", "ContentAppAdmin", "Carol", "Admin", "Admin@123");
-            await CreateUserAndAssignRole(userManager, "customer1@example.com", "Customer", "David", "Customer", "Customer@123");
-            await CreateUserAndAssignRole(userManager, "customer2@example.com", "Customer", "Eve", "Customer", "Customer@123");
+            var users = new List<(string Email, string Role, string FirstName, string LastName, string Password)>
+            {
+                ("appadmin1@example.com", "ApplicationAdmin", "Alice", "Admin", "Admin@123"),
+                ("cinemaadmin1@example.com", "ContentCinemaAdmin", "Bob", "Admin", "Admin@123"),
+                ("contentappadmin1@example.com", "ContentAppAdmin", "Carol", "Admin", "Admin@123"),
+                ("customer1@example.com", "Customer", "David", "Customer", "Customer@123"),
+                ("customer2@example.com", "Customer", "Eve", "Customer", "Customer@123")
+            };
+
+            foreach (var (Email, Role, FirstName, LastName, Password) in users)
+            {
+                await CreateUserAndAssignRole(userManager, Email, Role, FirstName, LastName, Password);
+            }
 
             // Insert dummy data if not already present
             if (!context.Cinemas.Any())
             {
-                var cinemaOne = new Cinema
+                var cinemas = new List<Cinema>
                 {
-                    Name = "Cinema One",
-                    Address = "123 Movie St",
-                    City = "Movietown",
-                    ZipCode = "12345",
-                    Email = "info@cinemaone.com",
-                    NoOfScreeningRooms = 5
+                    new Cinema { Name = "Cinema One", Address = "123 Movie St", City = "Movietown", ZipCode = "12345", Email = "info@cinemaone.com", NoOfScreeningRooms = 5 },
+                    new Cinema { Name = "Cinema Two", Address = "456 Film Rd", City = "Filmtown", ZipCode = "67890", Email = "info@cinematwo.com", NoOfScreeningRooms = 3 }
                 };
-                var cinemaTwo = new Cinema
-                {
-                    Name = "Cinema Two",
-                    Address = "456 Film Rd",
-                    City = "Filmtown",
-                    ZipCode = "67890",
-                    Email = "info@cinematwo.com",
-                    NoOfScreeningRooms = 3
-                };
-
-                context.Cinemas.AddRange(cinemaOne, cinemaTwo);
+                context.Cinemas.AddRange(cinemas);
                 await context.SaveChangesAsync();
 
-                var screeningRoom1 = new ScreeningRoom
+                var screeningRooms = new List<ScreeningRoom>
                 {
-                    CinemaId = cinemaOne.Id,
-                    Name = "Screening Room 1",
-                    TotalNoOfSeats = 100,
-                    Is3D = true
+                    new ScreeningRoom { CinemaId = cinemas[0].Id, Name = "Screening Room 1", TotalNoOfSeats = 100, Is3D = true },
+                    new ScreeningRoom { CinemaId = cinemas[0].Id, Name = "Screening Room 2", TotalNoOfSeats = 80, Is3D = false },
+                    new ScreeningRoom { CinemaId = cinemas[1].Id, Name = "Screening Room 3", TotalNoOfSeats = 120, Is3D = true },
+                    new ScreeningRoom { CinemaId = cinemas[1].Id, Name = "Screening Room 4", TotalNoOfSeats = 60, Is3D = false }
                 };
-                var screeningRoom2 = new ScreeningRoom
-                {
-                    CinemaId = cinemaOne.Id,
-                    Name = "Screening Room 2",
-                    TotalNoOfSeats = 80,
-                    Is3D = false
-                };
-                var screeningRoom3 = new ScreeningRoom
-                {
-                    CinemaId = cinemaTwo.Id,
-                    Name = "Screening Room 3",
-                    TotalNoOfSeats = 120,
-                    Is3D = true
-                };
-                var screeningRoom4 = new ScreeningRoom
-                {
-                    CinemaId = cinemaTwo.Id,
-                    Name = "Screening Room 4",
-                    TotalNoOfSeats = 60,
-                    Is3D = false
-                };
-
-                context.ScreeningRooms.AddRange(screeningRoom1, screeningRoom2, screeningRoom3, screeningRoom4);
+                context.ScreeningRooms.AddRange(screeningRooms);
                 await context.SaveChangesAsync();
 
-                var actionGenre = new Genre { Name = "Action" };
-                var dramaGenre = new Genre { Name = "Drama" };
-                context.Genres.AddRange(actionGenre, dramaGenre);
+                var genres = new List<Genre>
+                {
+                    new Genre { Name = "Action" },
+                    new Genre { Name = "Drama" }
+                };
+                context.Genres.AddRange(genres);
                 await context.SaveChangesAsync();
 
-                var movieOne = new Movie
+                var movies = new List<Movie>
                 {
-                    Title = "Movie One",
-                    GenreId = actionGenre.Id,
-                    Duration = 120,
-                    Content = "Action content",
-                    Description = "An action-packed adventure.",
-                    ReleaseDate = DateTime.UtcNow.Date.AddMonths(6),
-                    Director = "John Doe",
-                    ImageUrl = "http://example.com/movie1.jpg"
+                    new Movie { Title = "Movie One", GenreId = genres[0].Id, Duration = 120, Content = "Action content", Description = "An action-packed adventure.", ReleaseDate = DateTime.UtcNow.Date.AddMonths(6), Director = "John Doe", ImageUrl = "http://example.com/movie1.jpg" },
+                    new Movie { Title = "Movie Two", GenreId = genres[1].Id, Duration = 90, Content = "Drama content", Description = "A touching drama.", ReleaseDate = DateTime.UtcNow.Date.AddMonths(7), Director = "Jane Smith", ImageUrl = "http://example.com/movie2.jpg" }
                 };
-                var movieTwo = new Movie
-                {
-                    Title = "Movie Two",
-                    GenreId = dramaGenre.Id,
-                    Duration = 90,
-                    Content = "Drama content",
-                    Description = "A touching drama.",
-                    ReleaseDate = DateTime.UtcNow.Date.AddMonths(7),
-                    Director = "Jane Smith",
-                    ImageUrl = "http://example.com/movie2.jpg"
-                };
-
-                context.Movies.AddRange(movieOne, movieTwo);
+                context.Movies.AddRange(movies);
                 await context.SaveChangesAsync();
 
-                var screeningOne = new Screening
+                var screenings = new List<Screening>
                 {
-                    ScreeningRoomId = screeningRoom1.Id,
-                    MovieId = movieOne.Id,
-                    StartTime = DateTime.UtcNow.AddDays(10).AddHours(18),
-                    RemainingNoOfSeats = screeningRoom1.TotalNoOfSeats
+                    new Screening { ScreeningRoomId = screeningRooms[0].Id, MovieId = movies[0].Id, StartTime = DateTime.UtcNow.AddDays(10).AddHours(18), RemainingNoOfSeats = screeningRooms[0].TotalNoOfSeats },
+                    new Screening { ScreeningRoomId = screeningRooms[2].Id, MovieId = movies[1].Id, StartTime = DateTime.UtcNow.AddDays(11).AddHours(20), RemainingNoOfSeats = screeningRooms[2].TotalNoOfSeats }
                 };
-                var screeningTwo = new Screening
-                {
-                    ScreeningRoomId = screeningRoom3.Id,
-                    MovieId = movieTwo.Id,
-                    StartTime = DateTime.UtcNow.AddDays(11).AddHours(20),
-                    RemainingNoOfSeats = screeningRoom3.TotalNoOfSeats
-                };
-
-                context.Screenings.AddRange(screeningOne, screeningTwo);
+                context.Screenings.AddRange(screenings);
                 await context.SaveChangesAsync();
 
-                var adminUser = await userManager.FindByEmailAsync("appadmin1@example.com");
                 var cinemaAdminUser = await userManager.FindByEmailAsync("cinemaadmin1@example.com");
-                var contentAppAdminUser = await userManager.FindByEmailAsync("contentappadmin1@example.com");
-                
+
                 // Add ContentCinemaAdmin with a link to Cinema One
-                context.ContentCinemaAdmins.Add(new ContentCinemaAdmin { UserId = cinemaAdminUser.Id, CinemaId = cinemaOne.Id });
+                context.ContentCinemaAdmins.Add(new ContentCinemaAdmin { UserId = cinemaAdminUser.Id, CinemaId = cinemas[0].Id });
                 await context.SaveChangesAsync();
-                
+
                 // Add Customers
                 var customerUser1 = await userManager.FindByEmailAsync("customer1@example.com");
                 var customerUser2 = await userManager.FindByEmailAsync("customer2@example.com");
                 await context.SaveChangesAsync();
 
                 // Add Reservations
-                var reservation1 = new Reservation
+                var reservations = new List<Reservation>
                 {
-                    ScreeningId = screeningOne.Id,
-                    CustomerId = customerUser1.Id,
-                    NoOfBookedSeats = 2
+                    new Reservation { ScreeningId = screenings[0].Id, CustomerId = customerUser1.Id, NoOfBookedSeats = 2 },
+                    new Reservation { ScreeningId = screenings[1].Id, CustomerId = customerUser2.Id, NoOfBookedSeats = 1 }
                 };
-                var reservation2 = new Reservation
-                {
-                    ScreeningId = screeningTwo.Id,
-                    CustomerId = customerUser2.Id,
-                    NoOfBookedSeats = 1
-                };
-
-                context.Reservations.AddRange(reservation1, reservation2);
+                context.Reservations.AddRange(reservations);
                 await context.SaveChangesAsync();
 
-
                 // Add Announcements
-                var announcement1 = new Announcement
+                var announcements = new List<Announcement>
                 {
-                    CinemaId = cinemaOne.Id,
-                    Title = "New Movie Release",
-                    Message = "We are excited to announce the release of Movie One!"
+                    new Announcement { CinemaId = cinemas[0].Id, Title = "New Movie Release", Message = "We are excited to announce the release of Movie One!" },
+                    new Announcement { CinemaId = cinemas[1].Id, Title = "Special Screening", Message = "Join us for a special screening of Movie Two." }
                 };
-                var announcement2 = new Announcement
-                {
-                    CinemaId = cinemaTwo.Id,
-                    Title = "Special Screening",
-                    Message = "Join us for a special screening of Movie Two."
-                };
-
-                context.Announcements.AddRange(announcement1, announcement2);
+                context.Announcements.AddRange(announcements);
                 await context.SaveChangesAsync();
             }
         }
