@@ -1,47 +1,54 @@
 @model IEnumerable<cinema_web_app.Models.Reservation>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Reservations";
 }
 
-<h1>Index</h1>
+<h1>Your Reservations</h1>
+<br/>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.NoOfBookedSeats)
+                @Html.DisplayNameFor(model => model.Screening.Movie)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Screening)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Customer)
+                @Html.DisplayNameFor(model => model.Screening.StartTime)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.NoOfBookedSeats)
+            </th>
+            <th>
+                Actions
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NoOfBookedSeats)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Screening.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.FirstName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Screening.Movie.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Screening.ScreeningRoom.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Screening.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NoOfBookedSeats)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+<div>
+    <a asp-controller="Customers">Back to Home</a>
+</div>
