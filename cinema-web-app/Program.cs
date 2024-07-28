@@ -21,6 +21,12 @@ builder.Services.AddTransient<IEmailSender, NoOpEmailSender>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages(); // Ensure Razor Pages services are registered
 
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Apply database migrations and seed data
@@ -48,6 +54,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 app.MapControllerRoute(
     "default",
     "{controller=Home}/{action=Index}/{id?}");
