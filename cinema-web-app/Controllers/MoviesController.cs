@@ -48,7 +48,7 @@ namespace cinema_web_app.Controllers
         // GET: Movies/Create
         public IActionResult Create()
         {
-            ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Id");
+            ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name");
             return View();
         }
 
@@ -59,15 +59,27 @@ namespace cinema_web_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,GenreId,Duration,Content,Description,ReleaseDate,Director,ImageUrl")] Movie movie)
         {
-            if (ModelState.IsValid)
+            ModelState.Remove(nameof(movie.Genre));
+            
+            if (!ModelState.IsValid)
             {
-                movie.Id = Guid.NewGuid();
-                _context.Add(movie);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
+                return View(movie);
             }
-            ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Id", movie.GenreId);
-            return View(movie);
+            
+            bool  movieExists = _context.Movies.Any(m => m.Title == movie.Title && m.ReleaseDate == movie.ReleaseDate);
+
+            if (movieExists)
+            {
+                ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
+                ViewData["Error"] = "Movie already exists.";
+                return View(movie);
+            }
+            
+            movie.Id = Guid.NewGuid();
+            _context.Add(movie);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Movies/Edit/5
@@ -83,7 +95,7 @@ namespace cinema_web_app.Controllers
             {
                 return NotFound();
             }
-            ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Id", movie.GenreId);
+            ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
             return View(movie);
         }
 
@@ -94,33 +106,45 @@ namespace cinema_web_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title,GenreId,Duration,Content,Description,ReleaseDate,Director,ImageUrl")] Movie movie)
         {
+            ModelState.Remove(nameof(movie.Genre));
+            
             if (id != movie.Id)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(movie);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MovieExists(movie.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
+                return View(movie);
             }
-            ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Id", movie.GenreId);
-            return View(movie);
+            
+            bool movieExists = _context.Movies.Any(m => m.Title == movie.Title && m.ReleaseDate == movie.ReleaseDate && m.Id != movie.Id);
+    
+            if (movieExists)
+            {
+                ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
+                ViewData["Error"] = "Movie already exists.";
+                return View(movie);
+            }
+            
+            try
+            {
+                _context.Update(movie);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MovieExists(movie.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Movies/Delete/5
@@ -147,9 +171,11 @@ namespace cinema_web_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await _context.Movies.Where(m => m.Id == id).Include(m => m.Screenings).ThenInclude(s => s.Reservations).FirstAsync();
             if (movie != null)
             {
+                _context.Reservations.RemoveRange(movie.Screenings.SelectMany(s => s.Reservations));
+                _context.Screenings.RemoveRange(movie.Screenings);
                 _context.Movies.Remove(movie);
             }
 
