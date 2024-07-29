@@ -4,6 +4,7 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
+using cinema_web_app.Controllers;
 using cinema_web_app.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -88,7 +89,23 @@ public class LoginModel : PageModel
                 }
                 
                 _logger.LogInformation("User logged in.");
-                return LocalRedirect(returnUrl);
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Contains("ApplicationAdmin"))
+                {
+                    return RedirectToAction("Index", "ApplicationAdmins");
+                }
+                else if (roles.Contains("ContentCinemaAdmin"))
+                {
+                    return RedirectToAction("Index", "ContentCinemaAdmins");
+                }
+                else if (roles.Contains("ContentAppAdmin"))
+                {
+                    return RedirectToAction("Index", "ContentAppAdmins");
+                }
+                else // Customer
+                {
+                    return RedirectToAction("Index", "Customers");
+                }
             }
 
             if (result.RequiresTwoFactor)
