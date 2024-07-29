@@ -22,16 +22,22 @@ namespace cinema_web_app.Controllers
         // GET: Movies/PlayingNow
         public IActionResult PlayingNow()
         {
-            var today = DateTime.UtcNow;
-            var movies = _context.Movies.Where(m => m.ReleaseDate <= today).ToList();
+            var today = DateTime.UtcNow.Date;
+            var movies = _context.Movies
+                .Include(m => m.Genre)
+                .Where(m => m.ReleaseDate <= today)
+                .ToList();
             return View(movies);
         }
 
         // GET: Movies/ComingSoon
         public IActionResult ComingSoon()
         {
-            var today = DateTime.UtcNow;
-            var movies = _context.Movies.Where(m => m.ReleaseDate > today).ToList();
+            var today = DateTime.UtcNow.Date;
+            var movies = _context.Movies
+                .Include(m => m.Genre)
+                .Where(m => m.ReleaseDate > today)
+                .ToList();
             return View(movies);
         }
 
