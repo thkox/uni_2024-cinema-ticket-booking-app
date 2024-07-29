@@ -134,6 +134,8 @@ ViewData["Title"] = "Playing Now Movies";
 <style>
     .filters {
         margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
     }
 
     .filters label {
@@ -166,6 +168,8 @@ ViewData["Title"] = "Playing Now Movies";
     }
 
     .movie-card {
+        display: flex;
+        flex-direction: column;
         background: #fff;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -180,11 +184,10 @@ ViewData["Title"] = "Playing Now Movies";
         height: auto;
     }
 
-    .movie-card:hover {
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-
     .card-body {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
         padding: 15px;
     }
 
@@ -196,6 +199,13 @@ ViewData["Title"] = "Playing Now Movies";
     .card-text {
         font-size: 1rem;
         margin-bottom: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .card-body {
+        flex: 1;
     }
 
     .btn-info {
@@ -207,9 +217,14 @@ ViewData["Title"] = "Playing Now Movies";
         text-align: center;
         display: block;
         text-decoration: none;
+        margin-top: auto; /* Aligns button to bottom */
     }
 
     .btn-info:hover {
         background-color: #138496;
+    }
+
+    .movie-card:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
 </style>
