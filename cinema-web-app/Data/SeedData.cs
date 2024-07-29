@@ -170,7 +170,7 @@ namespace cinema_web_app.Data
                     Description = "Peter Parker navigates a world where everyone knows he is Spider-Man.",
                     ReleaseDate = DateTime.UtcNow.AddDays(-100),
                     Director = "Jon Watts",
-                    ImageUrl = "http://example.com/spiderman_no_way_home.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg"
                 },
                 new Movie
                 {
@@ -181,7 +181,7 @@ namespace cinema_web_app.Data
                     Description = "Paul Atreides must travel to the most dangerous planet in the universe.",
                     ReleaseDate = DateTime.UtcNow.AddDays(-200),
                     Director = "Denis Villeneuve",
-                    ImageUrl = "http://example.com/dune.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/d5NXSklXo0qyIYkgV94XAgMIckC.jpg"
                 },
                 new Movie
                 {
@@ -192,7 +192,7 @@ namespace cinema_web_app.Data
                     Description = "Batman investigates the corruption in Gotham City.",
                     ReleaseDate = DateTime.UtcNow.AddDays(-150),
                     Director = "Matt Reeves",
-                    ImageUrl = "http://example.com/the_batman.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/74xTEgt7R36Fpooo50r9T25onhq.jpg"
                 },
                 new Movie
                 {
@@ -203,7 +203,7 @@ namespace cinema_web_app.Data
                     Description = "James Bond is pulled back into action to face a new threat.",
                     ReleaseDate = DateTime.UtcNow.AddDays(-250),
                     Director = "Cary Joji Fukunaga",
-                    ImageUrl = "http://example.com/no_time_to_die.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iUgygt3fscRoKWCV1d0C7FbM9TP.jpg"
                 },
                 new Movie
                 {
@@ -214,7 +214,7 @@ namespace cinema_web_app.Data
                     Description = "Neo must decide to follow the white rabbit once more.",
                     ReleaseDate = DateTime.UtcNow.AddDays(-50),
                     Director = "Lana Wachowski",
-                    ImageUrl = "http://example.com/matrix_resurrections.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/8c4a8kE7PizaGQQnditMmI1xbRp.jpg"
                 },
                 new Movie
                 {
@@ -225,7 +225,7 @@ namespace cinema_web_app.Data
                     Description = "Maverick must confront the ghosts of his past.",
                     ReleaseDate = DateTime.UtcNow.AddDays(-20),
                     Director = "Joseph Kosinski",
-                    ImageUrl = "http://example.com/top_gun_maverick.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/62HCnUTziyWcpDaBO2i1DX17ljH.jpg"
                 },
                 new Movie
                 {
@@ -236,7 +236,7 @@ namespace cinema_web_app.Data
                     Description = "Ethan Hunt must track down a terrifying new weapon.",
                     ReleaseDate = DateTime.UtcNow.AddDays(-80),
                     Director = "Christopher McQuarrie",
-                    ImageUrl = "http://example.com/mission_impossible_dead_reckoning.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/NNxYkU70HPurnNCSiCjYAmacwm.jpg"
                 },
                 new Movie
                 {
@@ -247,7 +247,7 @@ namespace cinema_web_app.Data
                     Description = "Wakanda must protect its people after King T'Challa's death.",
                     ReleaseDate = DateTime.UtcNow.AddDays(-120),
                     Director = "Ryan Coogler",
-                    ImageUrl = "http://example.com/black_panther_wakanda_forever.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/sv1xJUazXeYqALzczSZ3O6nkH75.jpg"
                 },
                 new Movie
                 {
@@ -258,7 +258,7 @@ namespace cinema_web_app.Data
                     Description = "Jake must protect Pandora from a new threat.",
                     ReleaseDate = DateTime.UtcNow.AddDays(-300),
                     Director = "James Cameron",
-                    ImageUrl = "http://example.com/avatar_way_of_water.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg"
                 },
                 new Movie
                 {
@@ -269,7 +269,7 @@ namespace cinema_web_app.Data
                     Description = "Barry Allen enters the multiverse.",
                     ReleaseDate = DateTime.UtcNow.AddDays(-60),
                     Director = "Andy Muschietti",
-                    ImageUrl = "http://example.com/the_flash.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/rktDFPbfHfUbArZ6OOOKsXcv0Bm.jpg"
                 }
             };
         }
@@ -292,7 +292,7 @@ namespace cinema_web_app.Data
                     Description = "Indiana Jones must uncover the Dial of Destiny.",
                     ReleaseDate = DateTime.UtcNow.AddDays(90),
                     Director = "James Mangold",
-                    ImageUrl = "http://example.com/indiana_jones_dial_of_destiny.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/Af4bXE63pVsb2FtbW8uYIyPBadD.jpg"
                 },
                 new Movie
                 {
@@ -303,7 +303,7 @@ namespace cinema_web_app.Data
                     Description = "Thor's journey of self-discovery is interrupted by a galactic killer.",
                     ReleaseDate = DateTime.UtcNow.AddDays(60),
                     Director = "Taika Waititi",
-                    ImageUrl = "http://example.com/thor_love_and_thunder.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/pIkRyD18kl4FhoCNQuWxWu5cBLM.jpg"
                 },
                 new Movie
                 {
@@ -314,7 +314,7 @@ namespace cinema_web_app.Data
                     Description = "Doctor Strange navigates the Multiverse to face a new threat.",
                     ReleaseDate = DateTime.UtcNow.AddDays(45),
                     Director = "Sam Raimi",
-                    ImageUrl = "http://example.com/doctor_strange_multiverse.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/9Gtg2DzBhmYamXBS1hKAhiwbBKS.jpg"
                 },
                 new Movie
                 {
@@ -325,7 +325,7 @@ namespace cinema_web_app.Data
                     Description = "The Guardians of the Galaxy face their most difficult mission yet.",
                     ReleaseDate = DateTime.UtcNow.AddDays(75),
                     Director = "James Gunn",
-                    ImageUrl = "http://example.com/guardians_galaxy_vol3.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg"
                 },
                 new Movie
                 {
@@ -336,7 +336,7 @@ namespace cinema_web_app.Data
                     Description = "A new threat emerges in a world with dinosaurs.",
                     ReleaseDate = DateTime.UtcNow.AddDays(120),
                     Director = "Colin Trevorrow",
-                    ImageUrl = "http://example.com/jurassic_world_dominion.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/kAVRgw7GgK1CfYEJq8ME6EvRIgU.jpg"
                 },
                 new Movie
                 {
@@ -347,7 +347,7 @@ namespace cinema_web_app.Data
                     Description = "Follow the adventures of the young test pilot that inspired the toy.",
                     ReleaseDate = DateTime.UtcNow.AddDays(30),
                     Director = "Angus MacLane",
-                    ImageUrl = "http://example.com/lightyear.jpg"
+                    ImageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/b9t3w1loraDh7hjdWmpc9ZsaYns.jpg"
                 }
             };
         }
