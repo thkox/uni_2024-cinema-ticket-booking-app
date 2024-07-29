@@ -19,6 +19,22 @@ namespace cinema_web_app.Controllers
             _context = context;
         }
 
+        // GET: Movies/PlayingNow
+        public IActionResult PlayingNow()
+        {
+            var today = DateTime.UtcNow;
+            var movies = _context.Movies.Where(m => m.ReleaseDate <= today).ToList();
+            return View(movies);
+        }
+
+        // GET: Movies/ComingSoon
+        public IActionResult ComingSoon()
+        {
+            var today = DateTime.UtcNow;
+            var movies = _context.Movies.Where(m => m.ReleaseDate > today).ToList();
+            return View(movies);
+        }
+
         // GET: Movies
         public async Task<IActionResult> Index()
         {
