@@ -6,36 +6,55 @@ ViewData["Title"] = "Playing Now Movies";
 
 <h1>Playing Now Movies</h1>
 
-<table class="table">
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div>
+    <label for="titleFilter">Title:</label>
+    <select id="titleFilter" onchange="filterMovies()">
+        <option value="">None</option>
+        <option value="A-Z">A-Z</option>
+        <option value="Z-A">Z-A</option>
+    </select>
+
+    <label for="genreFilter">Genre:</label>
+    <select id="genreFilter" onchange="filterMovies()">
+        <option value="">None</option>
+        @foreach (var genre in Model.Select(m => m.Genre.Name).Distinct())
+        {
+        <option value="@genre">@genre</option>
+        }
+    </select>
+
+    <label for="releaseDateFilter">Release Date:</label>
+    <select id="releaseDateFilter" onchange="filterMovies()">
+        <option value="">None</option>
+        <option value="ThisWeek">This Week</option>
+        <option value="LastWeek">Last Week</option>
+        <option value="LastMonth">Last Month</option>
+    </select>
+
+    <button id="clearFilters" onclick="clearFilters()">Clear</button>
+</div>
+
+<table class="table" id="moviesTable">
     <thead>
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Content)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReleaseDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </th>
+        <th>Title</th>
+        <th>Content</th>
+        <th>Release Date</th>
+        <th>Image</th>
         <th></th>
     </tr>
     </thead>
     <tbody>
     @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Content)
-        </td>
-        <td>
-            @item.ReleaseDate.ToString("yyyy-MM-dd")
-        </td>
+        <td class="movie-title">@Html.DisplayFor(modelItem => item.Title)</td>
+        <td class="movie-content">@Html.DisplayFor(modelItem => item.Content)</td>
+        <td class="movie-release-date">@item.ReleaseDate.ToString("yyyy-MM-dd")</td>
+        <td class="movie-genre">@item.Genre.Name</td>
         <td>
             <img src="@item.ImageUrl" alt="@item.Title" style="max-width: 100px; height: auto;" />
         </td>
@@ -46,3 +65,81 @@ ViewData["Title"] = "Playing Now Movies";
     }
     </tbody>
 </table>
+
+@section Scripts {
+<script>
+    function filterMovies() {
+        var titleFilter = document.getElementById('titleFilter').value;
+        var genreFilter = document.getElementById('genreFilter').value.toLowerCase();
+        var releaseDateFilter = document.getElementById('releaseDateFilter').value;
+
+        var rows = document.querySelectorAll('#moviesTable tbody tr');
+        var today = new Date();
+        var oneWeekAgo = new Date();
+        oneWeekAgo.setDate(today.getDate() - 7);
+        var oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(today.getMonth() - 1);
+        var nextWeek = new Date();
+        nextWeek.setDate(today.getDate() + 7);
+        var nextMonth = new Date();
+        nextMonth.setMonth(today.getMonth() + 1);
+
+        rows.forEach(row => {
+            var title = row.querySelector('.movie-title').innerText;
+            var genre = row.querySelector('.movie-genre').innerText.toLowerCase();
+            var releaseDateText = row.querySelector('.movie-release-date').innerText;
+            var releaseDate = new Date(releaseDateText);
+            var display = true;
+
+            if (genreFilter && genre !== genreFilter) {
+                display = false;
+            }
+
+            if (releaseDateFilter === "ThisWeek" && !(releaseDate >= today && releaseDate <= nextWeek)) {
+                display = false;
+            } else if (releaseDateFilter === "LastWeek" && !(releaseDate >= oneWeekAgo && releaseDate < today)) {
+                display = false;
+            } else if (releaseDateFilter === "LastMonth" && !(releaseDate >= oneMonthAgo && releaseDate < today)) {
+                display = false;
+            }
+
+            if (display) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+
+        if (titleFilter === "A-Z") {
+            sortTable(true);
+        } else if (titleFilter === "Z-A") {
+            sortTable(false);
+        }
+    }
+
+    function sortTable(ascending) {
+        var table = document.querySelector('#moviesTable tbody');
+        var rows = Array.from(table.querySelectorAll('tr'));
+
+        rows.sort((a, b) => {
+            var titleA = a.querySelector('.movie-title').innerText.toLowerCase();
+            var titleB = b.querySelector('.movie-title').innerText.toLowerCase();
+
+            if (ascending) {
+                return titleA.localeCompare(titleB);
+            } else {
+                return titleB.localeCompare(titleA);
+            }
+        });
+
+        rows.forEach(row => table.appendChild(row));
+    }
+
+    function clearFilters() {
+        document.getElementById('titleFilter').value = '';
+        document.getElementById('genreFilter').value = '';
+        document.getElementById('releaseDateFilter').value = '';
+        filterMovies();
+    }
+</script>
+}
