@@ -106,8 +106,7 @@ namespace cinema_web_app.Data
                 // Add Customers
                 var customerUser1 = await userManager.FindByEmailAsync("customer1@example.com");
                 var customerUser2 = await userManager.FindByEmailAsync("customer2@example.com");
-                await context.SaveChangesAsync();
-
+                
                 // Add Reservations
                 var reservations = new List<Reservation>
                 {
@@ -120,8 +119,8 @@ namespace cinema_web_app.Data
                 // Add Announcements
                 var announcements = new List<Announcement>
                 {
-                    new Announcement { CinemaId = cinemas[0].Id, Title = "New Movie Release", Message = "We are excited to announce the release of Movie One!" },
-                    new Announcement { CinemaId = cinemas[1].Id, Title = "Special Screening", Message = "Join us for a special screening of Movie Two." }
+                    new Announcement { CinemaId = cinemas[0].Id, UserId = cinemaAdminUser.Id, Title = "New Movie Release", Message = "We are excited to announce the release of Movie One!" },
+                    new Announcement { CinemaId = cinemas[1].Id, UserId = cinemaAdminUser.Id, Title = "Special Screening", Message = "Join us for a special screening of Movie Two." }
                 };
                 context.Announcements.AddRange(announcements);
                 await context.SaveChangesAsync();

@@ -22,7 +22,7 @@ namespace cinema_web_app.Controllers
         // GET: Announcements
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Announcements.Include(a => a.Cinema);
+            var applicationDbContext = _context.Announcements.Include(a => a.Cinema).Include(a => a.User);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -36,6 +36,7 @@ namespace cinema_web_app.Controllers
 
             var announcement = await _context.Announcements
                 .Include(a => a.Cinema)
+                .Include(a => a.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (announcement == null)
             {
@@ -49,6 +50,7 @@ namespace cinema_web_app.Controllers
         public IActionResult Create()
         {
             ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "FirstName");
             return View();
         }
 
@@ -57,7 +59,7 @@ namespace cinema_web_app.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CinemaId,Title,Message")] Announcement announcement)
+        public async Task<IActionResult> Create([Bind("Id,CinemaId,UserId,Title,Message,PublicationDate")] Announcement announcement)
         {
             if (ModelState.IsValid)
             {
@@ -67,6 +69,7 @@ namespace cinema_web_app.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id", announcement.CinemaId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "FirstName", announcement.UserId);
             return View(announcement);
         }
 
@@ -84,6 +87,7 @@ namespace cinema_web_app.Controllers
                 return NotFound();
             }
             ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id", announcement.CinemaId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "FirstName", announcement.UserId);
             return View(announcement);
         }
 
@@ -92,7 +96,7 @@ namespace cinema_web_app.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,CinemaId,Title,Message")] Announcement announcement)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,CinemaId,UserId,Title,Message,PublicationDate")] Announcement announcement)
         {
             if (id != announcement.Id)
             {
@@ -120,6 +124,7 @@ namespace cinema_web_app.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id", announcement.CinemaId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "FirstName", announcement.UserId);
             return View(announcement);
         }
 
@@ -133,6 +138,7 @@ namespace cinema_web_app.Controllers
 
             var announcement = await _context.Announcements
                 .Include(a => a.Cinema)
+                .Include(a => a.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (announcement == null)
             {
