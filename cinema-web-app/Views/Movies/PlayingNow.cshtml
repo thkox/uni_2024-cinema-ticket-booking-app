@@ -44,9 +44,9 @@ ViewData["Title"] = "Playing Now Movies";
         <img src="@item.ImageUrl" class="card-img-top" alt="@item.Title">
         <div class="card-body">
             <h5 class="card-title">@item.Title</h5>
-            <p class="card-text">@item.Content</p>
-            <p class="card-text"><strong>Release Date:</strong> @item.ReleaseDate.ToString("yyyy-MM-dd")</p>
-            <p class="card-text"><strong>Genre:</strong> @item.Genre.Name</p>
+            <p class="card-text content">@item.Content</p>
+            <p class="card-text"><strong>Release Date:</strong> <span class="release-date">@item.ReleaseDate.ToString("yyyy-MM-dd")</span></p>
+            <p class="card-text"><strong>Genre:</strong> <span class="genre">@item.Genre.Name</span></p>
             <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">More Info</a>
         </div>
     </div>
@@ -73,9 +73,9 @@ ViewData["Title"] = "Playing Now Movies";
 
         cards.forEach(card => {
             var title = card.querySelector('.card-title').innerText;
-            var genre = card.querySelector('.card-text').innerText.toLowerCase();
-            var releaseDateText = card.querySelector('.card-text').innerText;
-            var releaseDate = new Date(releaseDateText.replace("Release Date:", "").trim());
+            var genre = card.querySelector('.genre').innerText.toLowerCase();
+            var releaseDateText = card.querySelector('.release-date').innerText;
+            var releaseDate = new Date(releaseDateText);
             var display = true;
 
             if (genreFilter && genre.indexOf(genreFilter) === -1) {
@@ -175,6 +175,7 @@ ViewData["Title"] = "Playing Now Movies";
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         overflow: hidden;
         transition: box-shadow 0.3s;
+        height: 100%;
     }
 
     .movie-card img {
