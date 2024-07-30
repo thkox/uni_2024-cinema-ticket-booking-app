@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.NoOfBookedSeats)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.ShortReferenceId)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Screening)
             </th>
             <th>
@@ -29,6 +32,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.NoOfBookedSeats)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShortReferenceId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Screening.Id)

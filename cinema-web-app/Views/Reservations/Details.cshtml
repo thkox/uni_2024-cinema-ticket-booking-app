@@ -60,7 +60,7 @@ ViewData["Title"] = "Reservation Details";
                             Reservation ID
                         </dt>
                         <dd class="col-sm-8">
-                            @Model.Id
+                            @Model.ShortReferenceId
                         </dd>
                     </dl>
                 </div>
@@ -75,28 +75,28 @@ ViewData["Title"] = "Reservation Details";
 </div>
 
 @section Scripts {
-    <!-- Use the latest version of jsPDF from a reliable CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/jspdf@latest/dist/jspdf.umd.min.js"></script>
-    <script>
-        document.getElementById('printButton').addEventListener('click', function () {
-            window.print();
-        });
+<!-- Use the latest version of jsPDF from a reliable CDN -->
+<script src="https://cdn.jsdelivr.net/npm/jspdf@latest/dist/jspdf.umd.min.js"></script>
+<script>
+    document.getElementById('printButton').addEventListener('click', function () {
+        window.print();
+    });
 
-        document.getElementById('pdfButton').addEventListener('click', function () {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+    document.getElementById('pdfButton').addEventListener('click', function () {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
 
-            doc.text('Reservation Details', 10, 10);
-            doc.text('Movie Title: ' + '@Model.Screening.Movie.Title', 10, 20);
-            doc.text('Description: ' + '@Model.Screening.Movie.Description', 10, 30);
-            doc.text('Date and Time: ' + '@Model.Screening.StartTime.ToString("yyyy-MM-dd HH:mm")', 10, 40);
-            doc.text('Cinema Name: ' + '@Model.Screening.ScreeningRoom.Cinema.Name', 10, 50);
-            doc.text('Cinema Address: ' + '@Model.Screening.ScreeningRoom.Cinema.Address', 10, 60);
-            doc.text('Screening Room: ' + '@Model.Screening.ScreeningRoom.Name', 10, 70);
-            doc.text('Number of Booked Seats: ' + '@Model.NoOfBookedSeats', 10, 80);
-            doc.text('Reservation ID: ' + '@Model.Id', 10, 90);
+        doc.text('Reservation Details', 10, 10);
+        doc.text('Movie Title: ' + '@Model.Screening.Movie.Title', 10, 20);
+        doc.text('Description: ' + '@Model.Screening.Movie.Description', 10, 30);
+        doc.text('Date and Time: ' + '@Model.Screening.StartTime.ToString("yyyy-MM-dd HH:mm")', 10, 40);
+        doc.text('Cinema Name: ' + '@Model.Screening.ScreeningRoom.Cinema.Name', 10, 50);
+        doc.text('Cinema Address: ' + '@Model.Screening.ScreeningRoom.Cinema.Address', 10, 60);
+        doc.text('Screening Room: ' + '@Model.Screening.ScreeningRoom.Name', 10, 70);
+        doc.text('Number of Booked Seats: ' + '@Model.NoOfBookedSeats', 10, 80);
+        doc.text('Reservation ID: ' + '@Model.ShortReferenceId', 10, 90);
 
-            doc.save('reservation-details.pdf');
-        });
-    </script>
+        doc.save('reservation-details.pdf');
+    });
+</script>
 }
