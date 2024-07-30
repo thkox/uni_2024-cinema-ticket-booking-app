@@ -183,6 +183,102 @@ namespace cinema_web_app.Controllers
 
             return View(reservation);
         }
+        
+        // GET: Reservations/BookTickets
+        [HttpGet]
+        public IActionResult BookTickets()
+        {
+            var movies = _context.Movies
+                .Include(m => m.Screenings)
+                .ThenInclude(s => s.ScreeningRoom)
+                .ThenInclude(sr => sr.Cinema)
+                .ToList();
+        
+            ViewData["Movies"] = new SelectList(movies, "Id", "Title");
+        
+            return View(new ReservationViewModel());
+        }
+
+        // POST: Reservations/BookTickets
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BookTickets(ReservationViewModel model)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var userId = user.Id;
+        
+                var screening = await _context.Screenings
+                    .Include(s => s.ScreeningRoom)
+                    .FirstOrDefaultAsync(s => s.Id == model.ScreeningId);
+        
+                if (screening != null && screening.RemainingNoOfSeats >= model.NoOfSeats)
+                {
+                    var reservation = new Reservation
+                    {
+                        Id = Guid.NewGuid(),
+                        ScreeningId = model.ScreeningId,
+                        CustomerId = userId,
+                        NoOfBookedSeats = model.NoOfSeats,
+                        ShortReferenceId = ReferenceIdGenerator.GenerateReferenceId()
+                    };
+        
+                    screening.RemainingNoOfSeats -= model.NoOfSeats;
+        
+                    _context.Add(reservation);
+                    _context.Update(screening);
+                    await _context.SaveChangesAsync();
+        
+                    return RedirectToAction(nameof(MyReservations));
+                }
+            }
+        
+            return RedirectToAction("Index", "Home");
+        }
+        
+        // Get cinemas for a specific movie
+        public JsonResult GetCinemasForMovie(Guid movieId)
+        {
+            var cinemas = _context.Screenings
+                .Include(s => s.ScreeningRoom)
+                .ThenInclude(sr => sr.Cinema)
+                .Where(s => s.MovieId == movieId)
+                .Select(s => s.ScreeningRoom.Cinema)
+                .Distinct()
+                .Select(c => new { c.Id, c.Name })
+                .ToList();
+
+            return Json(cinemas);
+        }
+
+        // Get screenings for a specific cinema and movie
+        public JsonResult GetScreeningsForCinemaAndMovie(Guid cinemaId, Guid movieId)
+        {
+            var screenings = _context.Screenings
+                .Include(s => s.ScreeningRoom)
+                .Where(s => s.MovieId == movieId && s.ScreeningRoom.CinemaId == cinemaId)
+                .Select(s => new
+                {
+                    s.Id,
+                    DateTime = s.StartTime.ToString("MMMM d, yyyy - h:mm tt"),
+                    ScreeningRoom = s.ScreeningRoom.Name
+                })
+                .ToList();
+
+            return Json(screenings);
+        }
+
+        // Get remaining seats for a specific screening
+        public JsonResult GetRemainingSeats(Guid screeningId)
+        {
+            var remainingSeats = _context.Screenings
+                .Where(s => s.Id == screeningId)
+                .Select(s => s.RemainingNoOfSeats)
+                .FirstOrDefault();
+
+            return Json(remainingSeats);
+        }
 
         // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
