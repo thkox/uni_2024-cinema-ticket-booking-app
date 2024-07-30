@@ -16,17 +16,17 @@ ViewData["Title"] = "Home Page";
         <div class="carousel-inner">
             @foreach (var movie in Model.Item1.Select((m, i) => new { Movie = m, Index = i }))
             {
-            <div class="carousel-item @(movie.Index == 0 ? "active" : "")">
-                <div class="row bg-dark text-white" style="height: 500px;">
-                    <div class="col-md-6 d-flex align-items-center">
+            <div class="carousel-item @(movie.Index == 0 ? "active" : "")" style="border-radius: 15px; overflow: hidden;">
+                <div class="row slide-bg" style="height: 500px;" data-image-url="@movie.Movie.ImageUrl">
+                    <div class="col-md-6 d-flex align-items-center justify-content-center">
                         <div class="carousel-caption d-md-block">
                             <h5>@movie.Movie.Title</h5>
                             <p>@movie.Movie.Content</p>
                             <a class="btn btn-info" asp-action="Details" asp-controller="Movies" asp-route-id="@movie.Movie.Id">More Info</a>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <img src="@movie.Movie.ImageUrl" class="d-block w-100" alt="@movie.Movie.Title" style="max-height: 500px; background-color: #333;">
+                    <div class="col-md-6 d-flex justify-content-center align-items-center">
+                        <img src="@movie.Movie.ImageUrl" class="movie-poster" alt="@movie.Movie.Title">
                     </div>
                 </div>
             </div>
@@ -69,17 +69,35 @@ ViewData["Title"] = "Home Page";
 
 @section Scripts {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/color-thief@2.3.2/dist/color-thief.umd.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.carousel-item .slide-bg');
+        slides.forEach(function(slide) {
+            const img = new Image();
+            img.src = slide.dataset.imageUrl;
+            img.crossOrigin = "Anonymous";
+            img.onload = function() {
+                const colorThief = new ColorThief();
+                const color = colorThief.getColor(img);
+                slide.style.backgroundColor = `rgb(${color.join(',')})`;
+            };
+        });
+    });
+</script>
 }
 
 <style>
     .carousel-item {
         height: 500px;
+        border-radius: 15px; /* Rounded corners */
+        overflow: hidden; /* Ensure content stays within rounded corners */
     }
 
-    .carousel-item img {
-        height: 100%;
-        object-fit: cover;
-        background-color: #333; /* Ensure background color if image is smaller */
+    .carousel-item img.movie-poster {
+        max-height: 450px;
+        max-width: 100%;
+        border-radius: 15px; /* Rounded corners for the image */
     }
 
     .carousel-caption {
