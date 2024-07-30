@@ -57,8 +57,12 @@ namespace cinema_web_app.Controllers
             }
 
             var movie = await _context.Movies
-                .Include(m => m.Genre)
+                .Include(m => m.Genre) // Include Genre
+                .Include(m => m.Screenings) // Include Screenings
+                .ThenInclude(s => s.ScreeningRoom) // Include ScreeningRoom
+                .ThenInclude(sr => sr.Cinema) // Include Cinema
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (movie == null)
             {
                 return NotFound();
@@ -66,6 +70,7 @@ namespace cinema_web_app.Controllers
 
             return View(movie);
         }
+
 
         // GET: Movies/Create
         public IActionResult Create()
