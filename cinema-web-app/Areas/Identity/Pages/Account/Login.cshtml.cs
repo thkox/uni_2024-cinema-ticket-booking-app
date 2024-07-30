@@ -81,15 +81,11 @@ public class LoginModel : PageModel
             {
                 // Retrieve the user based on their email
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-
-                if (user != null)
-                {
-                    // Store the user's ID in the session
-                    HttpContext.Session.SetString("UserId", user.Id.ToString());
-                }
                 
                 _logger.LogInformation("User logged in.");
+                
                 var roles = await _userManager.GetRolesAsync(user);
+                
                 if (roles.Contains("ApplicationAdmin"))
                 {
                     return RedirectToAction("Index", "ApplicationAdmins");
