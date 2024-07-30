@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using cinema_web_app.Data;
 using cinema_web_app.Models;
+using cinema_web_app.Utilities;
 using Microsoft.AspNetCore.Identity;
 
 namespace cinema_web_app.Controllers
@@ -96,10 +97,13 @@ namespace cinema_web_app.Controllers
             if (ModelState.IsValid)
             {
                 reservation.Id = Guid.NewGuid();
+                reservation.ShortReferenceId = ReferenceIdGenerator.GenerateReferenceId();
+
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CustomerId"] = new SelectList(_context.Users, "Id", "FirstName", reservation.CustomerId);
             ViewData["ScreeningId"] = new SelectList(_context.Screenings, "Id", "Id", reservation.ScreeningId);
             return View(reservation);

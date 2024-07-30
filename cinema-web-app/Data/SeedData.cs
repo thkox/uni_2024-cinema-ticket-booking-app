@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using cinema_web_app.Utilities;
 
 namespace cinema_web_app.Data
 {
@@ -114,8 +115,22 @@ namespace cinema_web_app.Data
                 // Add Reservations
                 var reservations = new List<Reservation>
                 {
-                    new Reservation { ScreeningId = screenings[0].Id, CustomerId = customerUser1.Id, NoOfBookedSeats = 2 },
-                    new Reservation { ScreeningId = screenings[1].Id, CustomerId = customerUser2.Id, NoOfBookedSeats = 1 }
+                    new Reservation
+                    {
+                        Id = Guid.NewGuid(),
+                        CustomerId = customerUser1.Id,
+                        NoOfBookedSeats = 2,
+                        ScreeningId = screenings.First().Id,
+                        ShortReferenceId = ReferenceIdGenerator.GenerateReferenceId()
+                    },
+                    new Reservation
+                    {
+                        Id = Guid.NewGuid(),
+                        CustomerId = customerUser2.Id,
+                        NoOfBookedSeats = 3,
+                        ScreeningId = screenings.Skip(1).First().Id,
+                        ShortReferenceId = ReferenceIdGenerator.GenerateReferenceId()
+                    }
                 };
                 context.Reservations.AddRange(reservations);
                 await context.SaveChangesAsync();
