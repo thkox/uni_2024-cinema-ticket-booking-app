@@ -43,16 +43,18 @@ ViewData["Title"] = "Movie Details";
         <h2>Screenings</h2>
         @if (Model.Screenings != null && Model.Screenings.Any())
         {
-        <div class="list-group">
-            @foreach (var cinemaGroup in Model.Screenings.GroupBy(s => s.ScreeningRoom.Cinema))
-            {
-            var cinema = cinemaGroup.Key;
-            <div class="list-group-item">
-                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-@cinema.Id" aria-expanded="false" aria-controls="collapse-@cinema.Id">
-                    @cinema.Name
+        @foreach (var cinemaGroup in Model.Screenings.GroupBy(s => s.ScreeningRoom.Cinema))
+        {
+        var cinema = cinemaGroup.Key;
+        <div class="card mb-3">
+            <div class="card-header">
+                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-@cinema.Id" aria-expanded="false" aria-controls="collapse-@cinema.Id">
+                    <h5 class="mb-0">@cinema.Name</h5>
                 </button>
-                <div id="collapse-@cinema.Id" class="collapse">
-                    <table class="table mt-3">
+            </div>
+            <div id="collapse-@cinema.Id" class="collapse">
+                <div class="card-body">
+                    <table class="table table-striped">
                         <thead>
                         <tr>
                             <th>Date</th>
@@ -75,8 +77,8 @@ ViewData["Title"] = "Movie Details";
                     </table>
                 </div>
             </div>
-            }
         </div>
+        }
         }
         else
         {
