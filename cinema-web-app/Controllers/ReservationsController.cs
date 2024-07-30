@@ -7,30 +7,48 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using cinema_web_app.Data;
 using cinema_web_app.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace cinema_web_app.Controllers
 {
     public class ReservationsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservationsController(ApplicationDbContext context)
+
+        public ReservationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+        }
+        
+        // GET: Reservations/MyReservations
+        public async Task<IActionResult> MyReservations()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var userId = user.Id;
+                
+                var reservations = _context.Reservations
+                    .Include(r => r.Customer)
+                    .Include(r => r.Screening)
+                    .Include(r => r.Screening.ScreeningRoom)
+                    .Include(r => r.Screening.Movie)
+                    .Where(r => r.CustomerId == userId)
+                    .OrderBy(r => r.Screening.StartTime);
+                
+                return View(await reservations.ToListAsync());
+            }
+            
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Reservations
         public async Task<IActionResult> Index()
         {
-            var userId = HttpContext.Session.GetString("UserId");
-            
-            var applicationDbContext = _context.Reservations
-                .Include(r => r.Customer)
-                .Where(r => userId == r.CustomerId.ToString())
-                .Include(r => r.Screening)
-                .Include(r => r.Screening.ScreeningRoom)
-                .Include(r => r.Screening.Movie)
-                .OrderBy(r => r.Screening.StartTime);
+            var applicationDbContext = _context.Reservations.Include(r => r.Customer).Include(r => r.Screening);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -54,39 +72,11 @@ namespace cinema_web_app.Controllers
             return View(reservation);
         }
 
-        // GET: Reservations/Create/{ScreeningId}
-        public IActionResult Create(int id)
+        // GET: Reservations/Create
+        public IActionResult Create()
         {
-            var userId = HttpContext.Session.GetString("UserId");
-            Guid guidId = new Guid(id.ToString());
-            
-            var existingReservation = _context.Reservations
-                .Include(r => r.Screening.ScreeningRoom)
-                .FirstOrDefault(r => r.CustomerId.ToString() == userId && r.ScreeningId == guidId);
-            
-            if (existingReservation != null)
-            {
-                // Reservation already exists, set ViewData to indicate that
-                ViewData["ReservationExists"] = true;
-                ViewData["ReservationId"] = existingReservation.Id; // Pass the existing reservation id if needed
-                ViewData["CinemaId"] = existingReservation.Screening.ScreeningRoom.CinemaId; // Pass the cinema id
-                return View();
-            }
-            
-            var screening = _context.Screenings
-                .Include(s => s.Movie)
-                .Include(s => s.ScreeningRoom)
-                .FirstOrDefault(s => s.Id == guidId);
-            
-            if (screening == null)
-            {
-                // Handle case where screening is not found
-                return NotFound();
-            }
-            
-            
-            ViewData["Screening"] = screening;
-            ViewData["CinemaId"] = screening.ScreeningRoom.CinemaId;
+            ViewData["CustomerId"] = new SelectList(_context.Users, "Id", "FirstName");
+            ViewData["ScreeningId"] = new SelectList(_context.Screenings, "Id", "Id");
             return View();
         }
 
@@ -97,45 +87,6 @@ namespace cinema_web_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ScreeningId,CustomerId,NoOfBookedSeats")] Reservation reservation)
         {
-            ModelState.Remove("Customer");
-            ModelState.Remove("Screening");
-            
-            var screening_db = await _context.Screenings.FindAsync(reservation.ScreeningId);
-
-            if (screening_db == null)
-            {
-                return NotFound();
-            }
-            
-            int remainingNoOfSeats = screening_db.RemainingNoOfSeats;
-            
-            if (reservation.NoOfBookedSeats <= 0)
-            {
-                ModelState.AddModelError("NoOfBookedSeats", "Please enter a positive number");
-            }
-            
-            if (reservation.NoOfBookedSeats > remainingNoOfSeats)
-            {
-                ModelState.AddModelError("NoOfBookedSeats", "Not enough remaining seats");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                var screening = _context.Screenings
-                    .Include(s => s.Movie)
-                    .Include(s => s.ScreeningRoom)
-                    .FirstOrDefault(s => s.Id == reservation.ScreeningId);
-                
-                if (screening == null)
-                {
-                    // Handle case where customer or screening is not found
-                    return NotFound();
-                }
-                
-                ViewData["Screening"] = screening;
-                return View(new List<Reservation> { reservation });
-            }
-            
             if (ModelState.IsValid)
             {
                 reservation.Id = Guid.NewGuid();
@@ -143,18 +94,9 @@ namespace cinema_web_app.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
-            // Update the remaining number of seats in the screening
-            screening_db.RemainingNoOfSeats -= reservation.NoOfBookedSeats;
-            _context.Update(screening_db);
-
-            // Add the reservation to the context
-            _context.Add(reservation);
-            
-            // Save changes to the database
-            await _context.SaveChangesAsync();
-            
-            return RedirectToAction(nameof(Index));
+            ViewData["CustomerId"] = new SelectList(_context.Users, "Id", "FirstName", reservation.CustomerId);
+            ViewData["ScreeningId"] = new SelectList(_context.Screenings, "Id", "Id", reservation.ScreeningId);
+            return View(reservation);
         }
 
         // GET: Reservations/Edit/5
