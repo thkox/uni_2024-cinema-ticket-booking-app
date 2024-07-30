@@ -86,8 +86,6 @@ namespace cinema_web_app.Controllers
             {
                 return NotFound();
             }
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id", announcement.CinemaId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "FirstName", announcement.UserId);
             return View(announcement);
         }
 
@@ -98,11 +96,20 @@ namespace cinema_web_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,CinemaId,UserId,Title,Message,PublicationDate")] Announcement announcement)
         {
+            ModelState.Remove(nameof(Announcement.Cinema));
+            ModelState.Remove(nameof(Announcement.User));
+            
             if (id != announcement.Id)
+                
             {
                 return NotFound();
             }
-
+            
+            var userId = HttpContext.Session.GetString("UserId");
+            announcement.UserId = Guid.Parse(userId);
+            
+            announcement.PublicationDate = DateTime.UtcNow;
+            
             if (ModelState.IsValid)
             {
                 try
@@ -124,7 +131,6 @@ namespace cinema_web_app.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id", announcement.CinemaId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "FirstName", announcement.UserId);
             return View(announcement);
         }
 
