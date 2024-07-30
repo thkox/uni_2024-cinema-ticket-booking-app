@@ -1,59 +1,92 @@
 @model cinema_web_app.Models.Movie
 
 @{
-    ViewData["Title"] = "Movie Details";
+ViewData["Title"] = "Movie Details";
 }
 
-<h1>Details for Movie:</h1>
-<h2 class="text-success">@Html.DisplayFor(model => model.Title)</h2>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Duration) minutes
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReleaseDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReleaseDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Director)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Director)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Genre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genre.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageUrl)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="container mt-5">
+    <h1 class="mb-4">@Html.DisplayFor(model => model.Title)</h1>
+
+    <!-- Movie Details Section -->
+    <div class="row mb-4">
+        <!-- Movie Picture -->
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Title">
+            </div>
+        </div>
+        <!-- Movie Details -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Duration</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Duration) minutes</dd>
+                        <dt class="col-sm-3">Content</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Content)</dd>
+                        <dt class="col-sm-3">Description</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+                        <dt class="col-sm-3">Release Date</dt>
+                        <dd class="col-sm-9">@Model.ReleaseDate.ToString("MMMM d, yyyy")</dd>
+                        <dt class="col-sm-3">Director</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Director)</dd>
+                        <dt class="col-sm-3">Genre</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Genre.Name)</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screenings Section -->
+    <div class="mb-4">
+        <h2>Screenings</h2>
+        @if (Model.Screenings != null && Model.Screenings.Any())
+        {
+        <div class="accordion" id="screeningsAccordion">
+            @foreach (var screening in Model.Screenings.GroupBy(s => s.ScreeningRoom.Cinema))
+            {
+            var cinema = screening.Key;
+            <div class="card mb-2">
+                <div class="card-header" id="heading-@cinema.Id">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-@cinema.Id" aria-expanded="true" aria-controls="collapse-@cinema.Id">
+                            @cinema.Name
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapse-@cinema.Id" class="collapse" aria-labelledby="heading-@cinema.Id" data-parent="#screeningsAccordion">
+                    <div class="card-body">
+                        @foreach (var roomGroup in screening.GroupBy(s => s.ScreeningRoom))
+                        {
+                        var screeningRoom = roomGroup.Key;
+                        <h5>@screeningRoom.Name</h5>
+                        <ul class="list-group">
+                            @foreach (var item in roomGroup)
+                            {
+                            <li class="list-group-item">
+                                <strong>@item.StartTime.ToString("MMMM d, yyyy h:mm tt")</strong>
+                                - Remaining Seats: @item.RemainingNoOfSeats
+                            </li>
+                            }
+                        </ul>
+                        }
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        }
+        else
+        {
+        <p>No screenings available for this movie.</p>
+        }
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+        <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+    </div>
 </div>
