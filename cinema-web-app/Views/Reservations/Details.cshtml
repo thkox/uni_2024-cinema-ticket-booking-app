@@ -1,36 +1,102 @@
 @model cinema_web_app.Models.Reservation
 
 @{
-    ViewData["Title"] = "Details";
+ViewData["Title"] = "Reservation Details";
 }
 
-<h1>Details</h1>
+<h1 class="mb-4">@ViewData["Title"]</h1>
 
-<div>
-    <h4>Reservation</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NoOfBookedSeats)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NoOfBookedSeats)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Screening)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Screening.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Customer)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Customer.FirstName)
-        </dd>
-    </dl>
+<div class="container">
+    <div class="row">
+        <!-- Movie Picture and Details -->
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <img src="@Model.Screening.Movie.ImageUrl" class="card-img-top" alt="@Model.Screening.Movie.Title">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Screening.Movie.Title</h5>
+                    <p class="card-text">@Model.Screening.Movie.Description</p>
+                </div>
+            </div>
+        </div>
+        <!-- Reservation Details -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    Reservation Details
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.NoOfBookedSeats)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.NoOfBookedSeats)
+                        </dd>
+                        <dt class="col-sm-4">
+                            Reservation Date and Time
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Model.Screening.StartTime.ToString("yyyy-MM-dd HH:mm")
+                        </dd>
+                        <dt class="col-sm-4">
+                            Cinema Name
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Model.Screening.ScreeningRoom.Cinema.Name
+                        </dd>
+                        <dt class="col-sm-4">
+                            Cinema Address
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Model.Screening.ScreeningRoom.Cinema.Address
+                        </dd>
+                        <dt class="col-sm-4">
+                            Screening Room
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Model.Screening.ScreeningRoom.Name
+                        </dd>
+                        <dt class="col-sm-4">
+                            Reservation ID
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Model.Id
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer text-muted">
+                    <a id="printButton" class="btn btn-primary">Print Reservation</a>
+                    <a id="pdfButton" class="btn btn-secondary">Save as PDF</a>
+                    <a asp-action="MyReservations" class="btn btn-secondary float-right">Back to My Reservations</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts {
+    <!-- Use the latest version of jsPDF from a reliable CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script>
+        document.getElementById('printButton').addEventListener('click', function () {
+            window.print();
+        });
+
+        document.getElementById('pdfButton').addEventListener('click', function () {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.text('Reservation Details', 10, 10);
+            doc.text('Movie Title: ' + '@Model.Screening.Movie.Title', 10, 20);
+            doc.text('Description: ' + '@Model.Screening.Movie.Description', 10, 30);
+            doc.text('Date and Time: ' + '@Model.Screening.StartTime.ToString("yyyy-MM-dd HH:mm")', 10, 40);
+            doc.text('Cinema Name: ' + '@Model.Screening.ScreeningRoom.Cinema.Name', 10, 50);
+            doc.text('Cinema Address: ' + '@Model.Screening.ScreeningRoom.Cinema.Address', 10, 60);
+            doc.text('Screening Room: ' + '@Model.Screening.ScreeningRoom.Name', 10, 70);
+            doc.text('Number of Booked Seats: ' + '@Model.NoOfBookedSeats', 10, 80);
+            doc.text('Reservation ID: ' + '@Model.Id', 10, 90);
+
+            doc.save('reservation-details.pdf');
+        });
+    </script>
+}

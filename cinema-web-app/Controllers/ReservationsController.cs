@@ -63,7 +63,12 @@ namespace cinema_web_app.Controllers
             var reservation = await _context.Reservations
                 .Include(r => r.Customer)
                 .Include(r => r.Screening)
+                .ThenInclude(s => s.Movie) // Include Movie details
+                .ThenInclude(m => m.Genre) // If Genre is needed
+                .Include(r => r.Screening.ScreeningRoom) // Include Screening Room details
+                .ThenInclude(sr => sr.Cinema) // Include Cinema details
                 .FirstOrDefaultAsync(m => m.Id == id);
+    
             if (reservation == null)
             {
                 return NotFound();
@@ -71,6 +76,7 @@ namespace cinema_web_app.Controllers
 
             return View(reservation);
         }
+
 
         // GET: Reservations/Create
         public IActionResult Create()
