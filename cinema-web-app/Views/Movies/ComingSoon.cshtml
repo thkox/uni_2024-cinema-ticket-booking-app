@@ -44,9 +44,9 @@ ViewData["Title"] = "Coming Soon Movies";
         <img src="@item.ImageUrl" class="card-img-top" alt="@item.Title">
         <div class="card-body">
             <h5 class="card-title">@item.Title</h5>
-            <p class="card-text">@item.Content</p>
-            <p class="card-text"><strong>Release Date:</strong> @item.ReleaseDate.ToString("yyyy-MM-dd")</p>
-            <p class="card-text"><strong>Genre:</strong> @item.Genre.Name</p>
+            <p class="card-text content">@item.Content</p>
+            <p class="card-text"><strong>Release Date:</strong> <span class="release-date">@item.ReleaseDate.ToString("yyyy-MM-dd")</span></p>
+            <p class="card-text"><strong>Genre:</strong> <span class="genre">@item.Genre.Name</span></p>
             <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">More Info</a>
         </div>
     </div>
@@ -62,31 +62,31 @@ ViewData["Title"] = "Coming Soon Movies";
 
         var cards = document.querySelectorAll('#moviesContainer .movie-card');
         var today = new Date();
-        var oneWeekAgo = new Date();
-        oneWeekAgo.setDate(today.getDate() - 7);
-        var oneMonthAgo = new Date();
-        oneMonthAgo.setMonth(today.getMonth() - 1);
+        var oneWeekFromNow = new Date();
+        oneWeekFromNow.setDate(today.getDate() + 7);
+        var oneMonthFromNow = new Date();
+        oneMonthFromNow.setMonth(today.getMonth() + 1);
         var nextWeek = new Date();
-        nextWeek.setDate(today.getDate() + 7);
+        nextWeek.setDate(today.getDate() + 14);
         var nextMonth = new Date();
-        nextMonth.setMonth(today.getMonth() + 1);
+        nextMonth.setMonth(today.getMonth() + 2);
 
         cards.forEach(card => {
             var title = card.querySelector('.card-title').innerText;
-            var genre = card.querySelector('.card-text').innerText.toLowerCase();
-            var releaseDateText = card.querySelector('.card-text').innerText;
-            var releaseDate = new Date(releaseDateText.replace("Release Date:", "").trim());
+            var genre = card.querySelector('.genre').innerText.toLowerCase();
+            var releaseDateText = card.querySelector('.release-date').innerText;
+            var releaseDate = new Date(releaseDateText);
             var display = true;
 
             if (genreFilter && genre.indexOf(genreFilter) === -1) {
                 display = false;
             }
 
-            if (releaseDateFilter === "ThisWeek" && !(releaseDate >= today && releaseDate <= nextWeek)) {
+            if (releaseDateFilter === "ThisWeek" && !(releaseDate >= today && releaseDate <= oneWeekFromNow)) {
                 display = false;
-            } else if (releaseDateFilter === "NextWeek" && !(releaseDate > nextWeek && releaseDate <= nextMonth)) {
+            } else if (releaseDateFilter === "NextWeek" && !(releaseDate > oneWeekFromNow && releaseDate <= nextWeek)) {
                 display = false;
-            } else if (releaseDateFilter === "NextMonth" && !(releaseDate > nextMonth)) {
+            } else if (releaseDateFilter === "NextMonth" && !(releaseDate > nextWeek && releaseDate <= oneMonthFromNow)) {
                 display = false;
             }
 
@@ -203,10 +203,6 @@ ViewData["Title"] = "Coming Soon Movies";
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-    }
-
-    .card-body {
-        flex: 1;
     }
 
     .btn-info {
