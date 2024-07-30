@@ -39,6 +39,7 @@ namespace cinema_web_app.Data
             {
                 ("appadmin1@example.com", "ApplicationAdmin", "Alice", "Admin", "Admin@123"),
                 ("cinemaadmin1@example.com", "ContentCinemaAdmin", "Bob", "Admin", "Admin@123"),
+                ("cinemaadmin2@example.com", "ContentCinemaAdmin", "Mario", "Admin", "Admin@123"),
                 ("contentappadmin1@example.com", "ContentAppAdmin", "Carol", "Admin", "Admin@123"),
                 ("customer1@example.com", "Customer", "David", "Customer", "Customer@123"),
                 ("customer2@example.com", "Customer", "Eve", "Customer", "Customer@123")
@@ -97,10 +98,13 @@ namespace cinema_web_app.Data
                 context.Screenings.AddRange(screenings);
                 await context.SaveChangesAsync();
 
-                var cinemaAdminUser = await userManager.FindByEmailAsync("cinemaadmin1@example.com");
+                var cinemaAdminUser1 = await userManager.FindByEmailAsync("cinemaadmin1@example.com");
+                var cinemaAdminUser2 = await userManager.FindByEmailAsync("cinemaadmin2@example.com");
 
                 // Add ContentCinemaAdmin with a link to Cinema One
-                context.ContentCinemaAdmins.Add(new ContentCinemaAdmin { UserId = cinemaAdminUser.Id, CinemaId = cinemas[0].Id });
+                context.ContentCinemaAdmins.Add(new ContentCinemaAdmin { UserId = cinemaAdminUser1.Id, CinemaId = cinemas[0].Id });
+                context.ContentCinemaAdmins.Add(new ContentCinemaAdmin { UserId = cinemaAdminUser2.Id, CinemaId = cinemas[1].Id });
+                
                 await context.SaveChangesAsync();
 
                 // Add Customers
@@ -119,8 +123,22 @@ namespace cinema_web_app.Data
                 // Add Announcements
                 var announcements = new List<Announcement>
                 {
-                    new Announcement { CinemaId = cinemas[0].Id, UserId = cinemaAdminUser.Id, Title = "New Movie Release", Message = "We are excited to announce the release of Movie One!" },
-                    new Announcement { CinemaId = cinemas[1].Id, UserId = cinemaAdminUser.Id, Title = "Special Screening", Message = "Join us for a special screening of Movie Two." }
+                    new Announcement
+                    {
+                        CinemaId = cinemas[0].Id,
+                        UserId = cinemaAdminUser1.Id,
+                        Title = "New Movie Release",
+                        Message = "We are excited to announce the release of Movie One!",
+                        PublicationDate = DateTime.UtcNow.AddDays(-10)
+                    },
+                    new Announcement
+                    {
+                        CinemaId = cinemas[1].Id,
+                        UserId = cinemaAdminUser2.Id,
+                        Title = "Special Screening",
+                        Message = "Join us for a special screening of Movie Two.",
+                        PublicationDate = DateTime.UtcNow.AddDays(-5) 
+                    }
                 };
                 context.Announcements.AddRange(announcements);
                 await context.SaveChangesAsync();
