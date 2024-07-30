@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using cinema_web_app.Data;
 using cinema_web_app.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace cinema_web_app.Controllers
 {
     public class AnnouncementsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AnnouncementsController(ApplicationDbContext context)
+        public AnnouncementsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Announcements
@@ -49,8 +52,6 @@ namespace cinema_web_app.Controllers
         // GET: Announcements/Create
         public IActionResult Create()
         {
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id");
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "FirstName");
             return View();
         }
 
@@ -61,15 +62,21 @@ namespace cinema_web_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CinemaId,UserId,Title,Message,PublicationDate")] Announcement announcement)
         {
+            ModelState.Remove(nameof(Announcement.Cinema));
+            ModelState.Remove(nameof(Announcement.User));
+            var userId = await _userManager.GetUserIdAsync(await _userManager.GetUserAsync(User));
+            announcement.UserId = Guid.Parse(userId);
+            var cinemaId = await _context.ContentCinemaAdmins.Where(c => c.UserId == announcement.UserId).Select(c => c.CinemaId).FirstOrDefaultAsync();
+            announcement.CinemaId = cinemaId;
             if (ModelState.IsValid)
             {
+                announcement.PublicationDate = DateTime.UtcNow;
+                
                 announcement.Id = Guid.NewGuid();
                 _context.Add(announcement);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id", announcement.CinemaId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "FirstName", announcement.UserId);
             return View(announcement);
         }
 
@@ -105,7 +112,7 @@ namespace cinema_web_app.Controllers
                 return NotFound();
             }
             
-            var userId = HttpContext.Session.GetString("UserId");
+            var userId = await _userManager.GetUserIdAsync(await _userManager.GetUserAsync(User));
             announcement.UserId = Guid.Parse(userId);
             
             announcement.PublicationDate = DateTime.UtcNow;
