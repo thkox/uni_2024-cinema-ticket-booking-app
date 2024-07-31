@@ -17,13 +17,12 @@ namespace cinema_web_app.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-
         public ReservationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
-        
+
         // GET: Reservations/MyReservations
         public async Task<IActionResult> MyReservations()
         {
@@ -31,7 +30,7 @@ namespace cinema_web_app.Controllers
             {
                 var user = await _userManager.GetUserAsync(User);
                 var userId = user.Id;
-                
+
                 var reservations = _context.Reservations
                     .Include(r => r.Customer)
                     .Include(r => r.Screening)
@@ -39,10 +38,10 @@ namespace cinema_web_app.Controllers
                     .Include(r => r.Screening.Movie)
                     .Where(r => r.CustomerId == userId)
                     .OrderBy(r => r.Screening.StartTime);
-                
+
                 return View(await reservations.ToListAsync());
             }
-            
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -69,7 +68,7 @@ namespace cinema_web_app.Controllers
                 .Include(r => r.Screening.ScreeningRoom) // Include Screening Room details
                 .ThenInclude(sr => sr.Cinema) // Include Cinema details
                 .FirstOrDefaultAsync(m => m.Id == id);
-    
+
             if (reservation == null)
             {
                 return NotFound();
@@ -77,7 +76,6 @@ namespace cinema_web_app.Controllers
 
             return View(reservation);
         }
-
 
         // GET: Reservations/Create
         public IActionResult Create()
@@ -183,21 +181,37 @@ namespace cinema_web_app.Controllers
 
             return View(reservation);
         }
-        
+
         // GET: Reservations/BookTickets
         [HttpGet]
-        public IActionResult BookTickets()
+        public IActionResult BookTickets(Guid? movieId)
         {
+            if (movieId.HasValue)
+            {
+                Console.WriteLine($"Received movieId: {movieId.Value}");
+            }
+            else
+            {
+                Console.WriteLine("No movieId provided.");
+            }
+
             var movies = _context.Movies
                 .Include(m => m.Screenings)
                 .ThenInclude(s => s.ScreeningRoom)
                 .ThenInclude(sr => sr.Cinema)
                 .ToList();
-        
+
             ViewData["Movies"] = new SelectList(movies, "Id", "Title");
-        
-            return View(new ReservationViewModel());
+
+            var model = new ReservationViewModel();
+            if (movieId.HasValue)
+            {
+                model.MovieId = movieId.Value;
+            }
+
+            return View(model);
         }
+
 
         // POST: Reservations/BookTickets
         [HttpPost]
@@ -249,7 +263,6 @@ namespace cinema_web_app.Controllers
             return View(model);
         }
 
-        
         // Get cinemas for a specific movie
         public JsonResult GetCinemasForMovie(Guid movieId)
         {
@@ -281,7 +294,6 @@ namespace cinema_web_app.Controllers
 
             return Json(screenings);
         }
-
 
         // Get remaining seats for a specific screening
         public JsonResult GetRemainingSeats(Guid screeningId)
