@@ -1,22 +1,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using cinema_web_app.Data;
 using cinema_web_app.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace cinema_web_app.Controllers
 {
     public class MoviesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public MoviesController(ApplicationDbContext context)
+        public MoviesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Movies/PlayingNow
@@ -48,7 +52,6 @@ namespace cinema_web_app.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Movies/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -57,15 +60,36 @@ namespace cinema_web_app.Controllers
             }
 
             var movie = await _context.Movies
-                .Include(m => m.Genre) // Include Genre
-                .Include(m => m.Screenings) // Include Screenings
-                .ThenInclude(s => s.ScreeningRoom) // Include ScreeningRoom
-                .ThenInclude(sr => sr.Cinema) // Include Cinema
+                .Include(m => m.Genre)
+                .Include(m => m.Screenings)
+                .ThenInclude(s => s.ScreeningRoom)
+                .ThenInclude(sr => sr.Cinema)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (movie == null)
             {
                 return NotFound();
+            }
+
+            // Get the logged-in user
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return View(movie);
+            }
+
+            var userId = user.Id;
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            // Check if the user is a Customer and has a reservation for this movie
+            if (userRoles.Contains("Customer"))
+            {
+                var customerReservations = await _context.Reservations
+                    .Include(r => r.Screening)
+                    .Where(r => r.Screening.MovieId == id && r.Customer.Id == userId)
+                    .ToListAsync();
+
+                ViewBag.CustomerReservations = customerReservations;
             }
 
             return View(movie);
