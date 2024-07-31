@@ -134,9 +134,8 @@
 @section Scripts {
 <script>
     $(document).ready(function () {
-        $('#movieSelect').change(function () {
-            var movieId = $(this).val();
-            $('#MovieId').val(movieId);
+        function initializeSteps() {
+            var movieId = $('#movieSelect').val();
             if (movieId) {
                 $('#stepCinema').show().find('select').prop('disabled', false);
                 $('#stepScreening, #stepSeats, #stepPayment').hide();
@@ -153,6 +152,15 @@
             } else {
                 $('#stepCinema, #stepScreening, #stepSeats, #stepPayment').hide();
             }
+        }
+
+        // Initialize steps if movie is preselected
+        if ($('#movieSelect').val()) {
+            initializeSteps();
+        }
+
+        $('#movieSelect').change(function () {
+            initializeSteps();
         });
 
         $('#cinemaSelect').change(function () {
