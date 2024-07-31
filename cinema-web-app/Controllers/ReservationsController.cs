@@ -208,11 +208,11 @@ namespace cinema_web_app.Controllers
             {
                 var user = await _userManager.GetUserAsync(User);
                 var userId = user.Id;
-        
+
                 var screening = await _context.Screenings
                     .Include(s => s.ScreeningRoom)
                     .FirstOrDefaultAsync(s => s.Id == model.ScreeningId);
-        
+
                 if (screening != null && screening.RemainingNoOfSeats >= model.NoOfSeats)
                 {
                     var reservation = new Reservation
@@ -223,19 +223,32 @@ namespace cinema_web_app.Controllers
                         NoOfBookedSeats = model.NoOfSeats,
                         ShortReferenceId = ReferenceIdGenerator.GenerateReferenceId()
                     };
-        
+
                     screening.RemainingNoOfSeats -= model.NoOfSeats;
-        
+
                     _context.Add(reservation);
                     _context.Update(screening);
                     await _context.SaveChangesAsync();
-        
+
                     return RedirectToAction(nameof(MyReservations));
                 }
+                else
+                {
+                    ModelState.AddModelError("", "Not enough seats available.");
+                }
             }
-        
-            return RedirectToAction("Index", "Home");
+
+            // If we got this far, something failed, redisplay form
+            var movies = _context.Movies
+                .Include(m => m.Screenings)
+                .ThenInclude(s => s.ScreeningRoom)
+                .ThenInclude(sr => sr.Cinema)
+                .ToList();
+
+            ViewData["Movies"] = new SelectList(movies, "Id", "Title");
+            return View(model);
         }
+
         
         // Get cinemas for a specific movie
         public JsonResult GetCinemasForMovie(Guid movieId)
@@ -257,7 +270,7 @@ namespace cinema_web_app.Controllers
         {
             var screenings = _context.Screenings
                 .Include(s => s.ScreeningRoom)
-                .Where(s => s.MovieId == movieId && s.ScreeningRoom.CinemaId == cinemaId)
+                .Where(s => s.MovieId == movieId && s.ScreeningRoom.CinemaId == cinemaId && s.RemainingNoOfSeats > 0)
                 .Select(s => new
                 {
                     s.Id,
@@ -268,6 +281,7 @@ namespace cinema_web_app.Controllers
 
             return Json(screenings);
         }
+
 
         // Get remaining seats for a specific screening
         public JsonResult GetRemainingSeats(Guid screeningId)
