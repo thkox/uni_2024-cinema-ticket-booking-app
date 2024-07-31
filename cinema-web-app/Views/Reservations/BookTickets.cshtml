@@ -1,11 +1,25 @@
 @model cinema_web_app.Models.ReservationViewModel
 
 @{
-ViewData["Title"] = "Book Tickets";
+    ViewData["Title"] = "Book Tickets";
 }
 
 <div class="container mt-5">
     <h1 class="mb-4">Book Tickets</h1>
+
+    <!-- Display status message -->
+    @if (ViewData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i> @ViewData["SuccessMessage"]
+        </div>
+    }
+    @if (ViewData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            <i class="fas fa-times-circle"></i> @ViewData["ErrorMessage"]
+        </div>
+    }
 
     <form asp-action="BookTickets" method="post">
         <input type="hidden" asp-for="MovieId" />
@@ -15,7 +29,7 @@ ViewData["Title"] = "Book Tickets";
 
         <div class="row">
             <!-- Step 1: Select Movie -->
-            <div class="col-md-4">
+            <div class="col-md-4" id="stepMovie">
                 <div class="card">
                     <div class="card-header">
                         <h5>Select Movie</h5>
@@ -29,7 +43,7 @@ ViewData["Title"] = "Book Tickets";
             </div>
 
             <!-- Step 2: Select Cinema -->
-            <div class="col-md-4">
+            <div class="col-md-4" id="stepCinema" style="display:none;">
                 <div class="card">
                     <div class="card-header">
                         <h5>Select Cinema</h5>
@@ -43,7 +57,7 @@ ViewData["Title"] = "Book Tickets";
             </div>
 
             <!-- Step 3: Select Screening Date and Time -->
-            <div class="col-md-4">
+            <div class="col-md-4" id="stepScreening" style="display:none;">
                 <div class="card">
                     <div class="card-header">
                         <h5>Select Screening</h5>
@@ -59,13 +73,36 @@ ViewData["Title"] = "Book Tickets";
 
         <div class="row mt-4">
             <!-- Step 4: Choose Number of Seats -->
-            <div class="col-md-4">
+            <div class="col-md-4" id="stepSeats" style="display:none;">
                 <div class="card">
                     <div class="card-header">
                         <h5>Choose Seats</h5>
                     </div>
                     <div class="card-body">
                         <input type="number" id="noOfSeats" name="NoOfSeats" class="form-control" min="1" max="8" value="1" disabled />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Option -->
+            <div class="col-md-4" id="stepPayment" style="display:none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Payment Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="cardNumber">Card Number</label>
+                            <input type="text" id="cardNumber" name="CardNumber" class="form-control" placeholder="Enter card number" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="cardExpiry">Expiry Date</label>
+                            <input type="text" id="cardExpiry" name="CardExpiry" class="form-control" placeholder="MM/YY" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="cardCVC">CVC</label>
+                            <input type="text" id="cardCVC" name="CardCVC" class="form-control" placeholder="CVC" required />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -98,18 +135,20 @@ ViewData["Title"] = "Book Tickets";
             var movieId = $(this).val();
             $('#MovieId').val(movieId);
             if (movieId) {
+                $('#stepCinema').show().find('select').prop('disabled', false);
+                $('#stepScreening, #stepSeats, #stepPayment').hide();
+                $('#cinemaSelect').empty().append('<option value="">Select a cinema</option>');
                 $.ajax({
                     url: '@Url.Action("GetCinemasForMovie", "Reservations")',
                     data: { movieId: movieId },
                     success: function (data) {
-                        var cinemaSelect = $('#cinemaSelect');
-                        cinemaSelect.empty().append('<option value="">Select a cinema</option>');
                         $.each(data, function (i, cinema) {
-                            cinemaSelect.append('<option value="' + cinema.id + '">' + cinema.name + '</option>');
+                            $('#cinemaSelect').append('<option value="' + cinema.id + '">' + cinema.name + '</option>');
                         });
-                        cinemaSelect.prop('disabled', false);
                     }
                 });
+            } else {
+                $('#stepCinema, #stepScreening, #stepSeats, #stepPayment').hide();
             }
         });
 
@@ -118,18 +157,21 @@ ViewData["Title"] = "Book Tickets";
             var movieId = $('#movieSelect').val();
             $('#CinemaId').val(cinemaId);
             if (cinemaId) {
+                $('#stepScreening').show();
+                $('#stepSeats, #stepPayment').hide();
+                $('#screeningSelect').empty().append('<option value="">Select a screening</option>');
                 $.ajax({
                     url: '@Url.Action("GetScreeningsForCinemaAndMovie", "Reservations")',
                     data: { cinemaId: cinemaId, movieId: movieId },
                     success: function (data) {
-                        var screeningSelect = $('#screeningSelect');
-                        screeningSelect.empty().append('<option value="">Select a screening</option>');
                         $.each(data, function (i, screening) {
-                            screeningSelect.append('<option value="' + screening.id + '" data-date="' + screening.dateTime + '" data-room="' + screening.screeningRoom + '">' + screening.dateTime + ' - ' + screening.screeningRoom + '</option>');
+                            $('#screeningSelect').append('<option value="' + screening.id + '" data-date="' + screening.dateTime + '" data-room="' + screening.screeningRoom + '">' + screening.dateTime + ' - ' + screening.screeningRoom + '</option>');
                         });
-                        screeningSelect.prop('disabled', false);
+                        $('#screeningSelect').prop('disabled', false);
                     }
                 });
+            } else {
+                $('#stepScreening, #stepSeats, #stepPayment').hide();
             }
         });
 
@@ -140,6 +182,8 @@ ViewData["Title"] = "Book Tickets";
             $('#ScreeningId').val(screeningId);
             $('#ScreeningDate').val(screeningDate);
             if (screeningId) {
+                $('#stepSeats').show();
+                $('#stepPayment').hide();
                 $.ajax({
                     url: '@Url.Action("GetRemainingSeats", "Reservations")',
                     data: { screeningId: screeningId },
@@ -148,6 +192,8 @@ ViewData["Title"] = "Book Tickets";
                         updateSummary();
                     }
                 });
+            } else {
+                $('#stepSeats, #stepPayment').hide();
             }
         });
 
@@ -160,6 +206,7 @@ ViewData["Title"] = "Book Tickets";
             $('#cinemaSummary').text('Cinema: ' + $('#cinemaSelect option:selected').text());
             $('#screeningSummary').text('Screening: ' + $('#screeningSelect option:selected').data('date') + ' - ' + $('#screeningSelect option:selected').data('room'));
             $('#seatsSummary').text('Seats: ' + $('#noOfSeats').val());
+            $('#stepPayment').show();
             $('#bookButton').prop('disabled', false);
         }
     });

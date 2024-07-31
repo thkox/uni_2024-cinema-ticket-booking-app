@@ -244,7 +244,8 @@ namespace cinema_web_app.Controllers
                     _context.Update(screening);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction(nameof(MyReservations));
+                    // Redirect to the reservation details page
+                    return RedirectToAction("Details", "Reservations", new { id = reservation.Id });
                 }
                 else
                 {
@@ -252,7 +253,8 @@ namespace cinema_web_app.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            // Set error message if reservation failed
+            ViewData["ErrorMessage"] = "An error occurred while booking your reservation.";
             var movies = _context.Movies
                 .Include(m => m.Screenings)
                 .ThenInclude(s => s.ScreeningRoom)
