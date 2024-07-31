@@ -38,12 +38,19 @@
             </div>
             @if (customerReservations != null && customerReservations.Any())
             {
-            <div class="card-body">
-                <div class="alert alert-info">
-                    You have already booked your tickets! <a href="@Url.Action("Details", "Reservations", new { id = customerReservations.First().Id })">Click here</a>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        You have already booked your tickets! <a href="@Url.Action("Details", "Reservations", new { id = customerReservations.First().Id })">Click here</a>
+                    </div>
                 </div>
-            </div>
             }
+            <!-- Book Now button -->
+            <div class="card-body">
+                <form asp-controller="Reservations" asp-action="BookTickets" method="get">
+                    <input type="hidden" name="movieId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-primary">Book Now</button>
+                </form>
+            </div>
         </div>
     </div>
 
