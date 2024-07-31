@@ -28,87 +28,90 @@
         <input type="hidden" asp-for="ScreeningDate" />
 
         <div class="row">
-            <!-- Step 1: Select Movie -->
-            <div class="col-md-4" id="stepMovie">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Select Movie</h5>
-                    </div>
-                    <div class="card-body">
-                        <select id="movieSelect" class="form-control" asp-for="MovieId" asp-items="ViewBag.Movies">
-                            <option value="">Select a movie</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 2: Select Cinema -->
-            <div class="col-md-4" id="stepCinema" style="display:none;">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Select Cinema</h5>
-                    </div>
-                    <div class="card-body">
-                        <select id="cinemaSelect" class="form-control" disabled>
-                            <option value="">Select a cinema</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 3: Select Screening Date and Time -->
-            <div class="col-md-4" id="stepScreening" style="display:none;">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Select Screening</h5>
-                    </div>
-                    <div class="card-body">
-                        <select id="screeningSelect" class="form-control" disabled>
-                            <option value="">Select a screening</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-4">
-            <!-- Step 4: Choose Number of Seats -->
-            <div class="col-md-4" id="stepSeats" style="display:none;">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Choose Seats</h5>
-                    </div>
-                    <div class="card-body">
-                        <input type="number" id="noOfSeats" name="NoOfSeats" class="form-control" min="1" max="8" value="1" disabled />
-                    </div>
-                </div>
-            </div>
-
-            <!-- Payment Option -->
-            <div class="col-md-4" id="stepPayment" style="display:none;">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Payment Information</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="cardNumber">Card Number</label>
-                            <input type="text" id="cardNumber" name="CardNumber" class="form-control" placeholder="Enter card number" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="cardExpiry">Expiry Date</label>
-                            <input type="text" id="cardExpiry" name="CardExpiry" class="form-control" placeholder="MM/YY" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="cardCVC">CVC</label>
-                            <input type="text" id="cardCVC" name="CardCVC" class="form-control" placeholder="CVC" required />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Summary and Submit -->
+            <!-- Steps Column -->
             <div class="col-md-8">
+                <div class="row">
+                    <!-- Step 1: Select Movie -->
+                    <div class="col-md-12" id="stepMovie">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Select Movie</h5>
+                            </div>
+                            <div class="card-body">
+                                <select id="movieSelect" class="form-control" asp-for="MovieId" asp-items="ViewBag.Movies">
+                                    <option value="">Select a movie</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Select Cinema -->
+                    <div class="col-md-12" id="stepCinema" style="display:none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Select Cinema</h5>
+                            </div>
+                            <div class="card-body">
+                                <select id="cinemaSelect" class="form-control" disabled>
+                                    <option value="">Select a cinema</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Select Screening Date and Time -->
+                    <div class="col-md-12" id="stepScreening" style="display:none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Select Screening</h5>
+                            </div>
+                            <div class="card-body">
+                                <select id="screeningSelect" class="form-control" disabled>
+                                    <option value="">Select a screening</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Choose Number of Seats -->
+                    <div class="col-md-12 mt-4" id="stepSeats" style="display:none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Choose Seats</h5>
+                            </div>
+                            <div class="card-body">
+                                <input type="number" id="noOfSeats" name="NoOfSeats" class="form-control" min="1" max="8" value="1" disabled />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Option -->
+                    <div class="col-md-12 mt-4" id="stepPayment" style="display:none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Payment Information</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="cardNumber">Card Number</label>
+                                    <input type="text" id="cardNumber" name="CardNumber" class="form-control" placeholder="Enter card number" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="cardExpiry">Expiry Date</label>
+                                    <input type="text" id="cardExpiry" name="CardExpiry" class="form-control" placeholder="MM/YY" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="cardCVC">CVC</label>
+                                    <input type="text" id="cardCVC" name="CardCVC" class="form-control" placeholder="CVC" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Column -->
+            <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
                         <h5>Summary</h5>
