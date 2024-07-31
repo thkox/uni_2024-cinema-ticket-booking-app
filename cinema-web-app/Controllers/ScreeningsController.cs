@@ -49,7 +49,7 @@ namespace cinema_web_app.Controllers
         // GET: Screenings/Create
         public IActionResult Create()
         {
-            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Name");
+            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Title");
             ViewData["ScreeningRoomId"] = new SelectList(_context.ScreeningRooms, "Id", "Name");
             return View();
         }
@@ -63,18 +63,24 @@ namespace cinema_web_app.Controllers
         {
             ModelState.Remove(nameof(screening.Movie));
             ModelState.Remove(nameof(screening.ScreeningRoom));
+            ModelState.Remove(nameof(screening.Reservations));
+            ModelState.Remove(nameof(screening.RemainingNoOfSeats));
             
             if (ModelState.IsValid)
             {
+                screening.StartTime = DateTime.SpecifyKind(screening.StartTime, DateTimeKind.Utc);
+                
                 var remainingNoOfSeats = _context.ScreeningRooms.Where(s => s.Id == screening.ScreeningRoomId)
                     .Select(s => s.TotalNoOfSeats).FirstOrDefault();
                 screening.RemainingNoOfSeats = remainingNoOfSeats;
+                
                 screening.Id = Guid.NewGuid();
                 _context.Add(screening);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Name", screening.MovieId);
+            
+            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Title", screening.MovieId);
             ViewData["ScreeningRoomId"] = new SelectList(_context.ScreeningRooms, "Id", "Name", screening.ScreeningRoomId);
             return View(screening);
         }
@@ -106,6 +112,7 @@ namespace cinema_web_app.Controllers
         {
             ModelState.Remove(nameof(screening.Movie));
             ModelState.Remove(nameof(screening.ScreeningRoom));
+            ModelState.Remove(nameof(screening.Reservations));
             
             if (id != screening.Id)
             {
@@ -116,6 +123,8 @@ namespace cinema_web_app.Controllers
             {
                 try
                 {
+                    screening.StartTime = DateTime.SpecifyKind(screening.StartTime, DateTimeKind.Utc);
+                    
                     _context.Update(screening);
                     await _context.SaveChangesAsync();
                 }
