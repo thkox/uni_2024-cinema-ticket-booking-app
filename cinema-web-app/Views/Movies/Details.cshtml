@@ -1,7 +1,8 @@
 @model cinema_web_app.Models.Movie
 
 @{
-ViewData["Title"] = "Movie Details";
+    ViewData["Title"] = "Movie Details";
+    var customerReservations = ViewBag.CustomerReservations as List<cinema_web_app.Models.Reservation>;
 }
 
 <div class="container mt-5">
@@ -35,6 +36,14 @@ ViewData["Title"] = "Movie Details";
                     </dl>
                 </div>
             </div>
+            @if (customerReservations != null && customerReservations.Any())
+            {
+            <div class="card-body">
+                <div class="alert alert-info">
+                    You have already booked your tickets! <a href="@Url.Action("Details", "Reservations", new { id = customerReservations.First().Id })">Click here</a>
+                </div>
+            </div>
+            }
         </div>
     </div>
 
@@ -43,46 +52,51 @@ ViewData["Title"] = "Movie Details";
         <h2>Screenings</h2>
         @if (Model.Screenings != null && Model.Screenings.Any())
         {
-        @foreach (var cinemaGroup in Model.Screenings.GroupBy(s => s.ScreeningRoom.Cinema))
-        {
-        var cinema = cinemaGroup.Key;
-        <div class="card mb-3">
-            <div class="card-header">
-                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-@cinema.Id" aria-expanded="false" aria-controls="collapse-@cinema.Id">
-                    <h5 class="mb-0">@cinema.Name</h5>
-                </button>
-            </div>
-            <div id="collapse-@cinema.Id" class="collapse">
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Screening Room</th>
-                            <th>3D Screening</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach (var item in cinemaGroup.OrderBy(s => s.StartTime))
-                        {
-                        <tr>
-                            <td>@item.StartTime.ToString("MMMM d, yyyy")</td>
-                            <td>@item.StartTime.ToString("h:mm tt")</td>
-                            <td>@item.ScreeningRoom.Name</td>
-                            <td>@(item.ScreeningRoom.Is3D ? "Yes" : "No")</td>
-                        </tr>
-                        }
-                        </tbody>
-                    </table>
+            @foreach (var cinemaGroup in Model.Screenings.GroupBy(s => s.ScreeningRoom.Cinema))
+            {
+                var cinema = cinemaGroup.Key;
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-@cinema.Id" aria-expanded="false" aria-controls="collapse-@cinema.Id">
+                            <h5 class="mb-0">@cinema.Name</h5>
+                        </button>
+                    </div>
+                    <div id="collapse-@cinema.Id" class="collapse">
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Screening Room</th>
+                                        <th>3D Screening</th>
+                                        <th>Available Seats</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in cinemaGroup.OrderBy(s => s.StartTime))
+                                    {
+                                        var availableSeats = item.ScreeningRoom.TotalNoOfSeats - (item.Reservations?.Sum(r => r.NoOfBookedSeats) ?? 0);
+                                        <tr>
+                                            <td>@item.StartTime.ToString("MMMM d, yyyy")</td>
+                                            <td>@item.StartTime.ToString("h:mm tt")</td>
+                                            <td>@item.ScreeningRoom.Name</td>
+                                            <td>@(item.ScreeningRoom.Is3D ? "Yes" : "No")</td>
+                                            <td style="color: @(availableSeats == 0 ? "red" : (availableSeats < item.ScreeningRoom.TotalNoOfSeats / 2 ? "orange" : "black"))">
+                                                @(availableSeats == 0 ? "Sold out" : availableSeats.ToString())
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        }
+            }
         }
         else
         {
-        <p>No screenings available for this movie.</p>
+            <p>No screenings available for this movie.</p>
         }
     </div>
 
