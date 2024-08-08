@@ -1,14 +1,14 @@
 @model IEnumerable<cinema_web_app.Models.ScreeningRoom>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Screening Rooms";
 }
 
-<h1>Index</h1>
+<h1>Screening Rooms</h1>
 
-<p>
+<h6>
     <a asp-action="Create">Create New</a>
-</p>
+</h6>
 <table class="table">
     <thead>
         <tr>
@@ -16,15 +16,17 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TotalNoOfSeats)
+                Total Number of Seats
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Is3D)
+                Is 3D
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Cinema)
             </th>
-            <th></th>
+            <th>
+                Actions
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -40,7 +42,7 @@
                 @Html.DisplayFor(modelItem => item.Is3D)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cinema.Id)
+                @Html.DisplayFor(modelItem => item.Cinema.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

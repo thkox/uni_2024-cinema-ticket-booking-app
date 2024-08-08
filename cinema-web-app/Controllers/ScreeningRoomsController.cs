@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using cinema_web_app.Data;
 using cinema_web_app.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace cinema_web_app.Controllers
 {
@@ -48,7 +49,7 @@ namespace cinema_web_app.Controllers
         // GET: ScreeningRooms/Create
         public IActionResult Create()
         {
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id");
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Name");
             return View();
         }
 
@@ -59,6 +60,9 @@ namespace cinema_web_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CinemaId,Name,TotalNoOfSeats,Is3D")] ScreeningRoom screeningRoom)
         {
+            ModelState.Remove(nameof(ScreeningRoom.Cinema));
+            ModelState.Remove(nameof(ScreeningRoom.Screenings));
+            
             if (ModelState.IsValid)
             {
                 screeningRoom.Id = Guid.NewGuid();
@@ -66,7 +70,7 @@ namespace cinema_web_app.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id", screeningRoom.CinemaId);
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Name", screeningRoom.CinemaId);
             return View(screeningRoom);
         }
 
@@ -83,7 +87,7 @@ namespace cinema_web_app.Controllers
             {
                 return NotFound();
             }
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id", screeningRoom.CinemaId);
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Name", screeningRoom.CinemaId);
             return View(screeningRoom);
         }
 
@@ -94,6 +98,9 @@ namespace cinema_web_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,CinemaId,Name,TotalNoOfSeats,Is3D")] ScreeningRoom screeningRoom)
         {
+            ModelState.Remove(nameof(ScreeningRoom.Cinema));
+            ModelState.Remove(nameof(ScreeningRoom.Screenings));
+            
             if (id != screeningRoom.Id)
             {
                 return NotFound();
@@ -119,7 +126,7 @@ namespace cinema_web_app.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Id", screeningRoom.CinemaId);
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Name", screeningRoom.CinemaId);
             return View(screeningRoom);
         }
 
