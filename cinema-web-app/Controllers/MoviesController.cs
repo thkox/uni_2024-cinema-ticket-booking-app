@@ -111,13 +111,14 @@ namespace cinema_web_app.Controllers
         public async Task<IActionResult> Create([Bind("Id,Title,GenreId,Duration,Content,Description,ReleaseDate,Director,ImageUrl")] Movie movie)
         {
             ModelState.Remove(nameof(movie.Genre));
+            ModelState.Remove(nameof(movie.Screenings));
             
             if (!ModelState.IsValid)
             {
                 ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
                 return View(movie);
             }
-            
+            movie.ReleaseDate = movie.ReleaseDate.ToUniversalTime();
             bool  movieExists = _context.Movies.Any(m => m.Title == movie.Title && m.ReleaseDate == movie.ReleaseDate);
 
             if (movieExists)
