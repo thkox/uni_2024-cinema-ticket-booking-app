@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "becrOt6AFc2weiJV0JY6/HeJNmLcKQQWx50YDTm/FoDKE+LajMNFzbo9m1ExNWgoy//z5L1RRKIMlbiDmTtYDw==",
+  "dgSpecHash": "DQvAuqmENo0vHjYAa7F8iJSgn3iOuxaaqH182fOcimb87rLfqPXzpR+nxYK9KG9RM+FUfaIQPt3J5KfXmqW2WQ==",
   "success": true,
   "projectFilePath": "/home/theo/RiderProjects/cinema-web-app/cinema-web-app/cinema-web-app.csproj",
   "expectedPackageFiles": [
@@ -138,6 +138,7 @@
     "/home/theo/.nuget/packages/nuget.projectmodel/6.9.1/nuget.projectmodel.6.9.1.nupkg.sha512",
     "/home/theo/.nuget/packages/nuget.protocol/6.9.1/nuget.protocol.6.9.1.nupkg.sha512",
     "/home/theo/.nuget/packages/nuget.versioning/6.9.1/nuget.versioning.6.9.1.nupkg.sha512",
+    "/home/theo/.nuget/packages/qrcoder/1.6.0/qrcoder.1.6.0.nupkg.sha512",
     "/home/theo/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.1.6/sqlitepclraw.bundle_e_sqlite3.2.1.6.nupkg.sha512",
     "/home/theo/.nuget/packages/sqlitepclraw.core/2.1.6/sqlitepclraw.core.2.1.6.nupkg.sha512",
     "/home/theo/.nuget/packages/sqlitepclraw.lib.e_sqlite3/2.1.6/sqlitepclraw.lib.e_sqlite3.2.1.6.nupkg.sha512",
