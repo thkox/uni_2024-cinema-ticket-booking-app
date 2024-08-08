@@ -24,23 +24,11 @@ public class IndexModel : PageModel
         _signInManager = signInManager;
     }
 
-    /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
-    /// </summary>
     public string Username { get; set; }
 
-    /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
-    /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
 
-    /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
-    /// </summary>
     [BindProperty]
     public InputModel Input { get; set; }
 
@@ -53,6 +41,8 @@ public class IndexModel : PageModel
 
         Input = new InputModel
         {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
             PhoneNumber = phoneNumber
         };
     }
@@ -77,6 +67,16 @@ public class IndexModel : PageModel
             return Page();
         }
 
+        if (Input.FirstName != user.FirstName)
+        {
+            user.FirstName = Input.FirstName;
+        }
+
+        if (Input.LastName != user.LastName)
+        {
+            user.LastName = Input.LastName;
+        }
+
         var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
         if (Input.PhoneNumber != phoneNumber)
         {
@@ -88,21 +88,22 @@ public class IndexModel : PageModel
             }
         }
 
+        await _userManager.UpdateAsync(user);
         await _signInManager.RefreshSignInAsync(user);
         StatusMessage = "Your profile has been updated";
         return RedirectToPage();
     }
 
-    /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
-    /// </summary>
     public class InputModel
     {
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
         [Phone]
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
