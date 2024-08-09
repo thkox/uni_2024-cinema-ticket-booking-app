@@ -7,7 +7,7 @@
 <h1>Added Movies</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -25,18 +25,20 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
+                Release Date
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Director)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
+                Image
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Genre)
             </th>
-            <th></th>
+            <th>
+                Actions
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -55,7 +57,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ReleaseDate)
+                @item.ReleaseDate.ToString("yyyy-MM-dd")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Director)
@@ -67,9 +69,9 @@
                 @Html.DisplayFor(modelItem => item.Genre.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>&nbsp;
+                <a class="btn btn-secondary btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>&nbsp;
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

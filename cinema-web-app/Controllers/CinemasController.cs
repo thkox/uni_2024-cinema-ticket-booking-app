@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using cinema_web_app.Data;
 using cinema_web_app.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace cinema_web_app.Controllers
 {
@@ -33,7 +34,7 @@ namespace cinema_web_app.Controllers
                 return NotFound();
             }
             
-            DateTime currentDate = DateTime.Now;
+            DateTime currentDate = DateTime.UtcNow.Date;
             DateTime next7Days = currentDate.AddDays(7);
 
             var cinemaScreenings = await _context.Screenings
@@ -70,6 +71,10 @@ namespace cinema_web_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Address,City,ZipCode,Email,NoOfScreeningRooms")] Cinema cinema)
         {
+            ModelState.Remove(nameof(Cinema.Announcements));
+            ModelState.Remove(nameof(Cinema.ScreeningRooms));
+            ModelState.Remove(nameof(Cinema.ContentCinemaAdmins));
+            
             if (ModelState.IsValid)
             {
                 cinema.Id = Guid.NewGuid();
@@ -103,6 +108,10 @@ namespace cinema_web_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Address,City,ZipCode,Email,NoOfScreeningRooms")] Cinema cinema)
         {
+            ModelState.Remove(nameof(Cinema.Announcements));
+            ModelState.Remove(nameof(Cinema.ScreeningRooms));
+            ModelState.Remove(nameof(Cinema.ContentCinemaAdmins));
+            
             if (id != cinema.Id)
             {
                 return NotFound();
