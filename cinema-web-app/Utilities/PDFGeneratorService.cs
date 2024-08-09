@@ -39,7 +39,7 @@ namespace cinema_web_app.Utilities
                     {
                         HtmlContent = htmlContent,
                         WebSettings = { DefaultEncoding = "utf-8" },
-                        LoadSettings = { BlockLocalFileAccess = false } // Allows accessing local files
+                        LoadSettings = { BlockLocalFileAccess = false }
                     }
                 }
             };
@@ -88,7 +88,7 @@ namespace cinema_web_app.Utilities
                     .details dt {{ font-weight: bold; color: #555; }}
                     .details dd {{ margin: 0 0 10px 0; }}
                     .qr-code {{ text-align: center; margin-top: 30px; }}
-                    .qr-code img {{ width: 150px; height: 150px; border: 2px solid #333; border-radius: 10px; }}
+                    .qr-code img {{ width: 150px; height: 150px; border: 2px solid #333; border-radius: 5px; }}
                     .footer {{ text-align: center; margin-top: 40px; color: #777; font-size: 14px; }}
                 </style>
             </head>
