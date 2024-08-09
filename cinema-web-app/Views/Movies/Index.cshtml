@@ -25,13 +25,13 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
+                Release Date
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Director)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
+                Image
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Genre)
@@ -55,7 +55,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ReleaseDate)
+                @item.ReleaseDate.ToString("yyyy-MM-dd")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Director)
