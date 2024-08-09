@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace cinema_web_app.Models
 {
     public class UserViewModel
@@ -9,5 +7,6 @@ namespace cinema_web_app.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public IList<string> Roles { get; set; }
+        public IList<string> CinemaNames { get; set; } // New property
     }
 }
