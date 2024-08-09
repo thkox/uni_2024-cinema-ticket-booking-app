@@ -16,12 +16,48 @@ namespace cinema_web_app.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly PDFGeneratorService _pdfService;
 
-        public ReservationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ReservationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, PDFGeneratorService pdfService)
         {
             _context = context;
             _userManager = userManager;
+            _pdfService = pdfService;
         }
+        
+        // GET: Reservations/DownloadPdf/5
+        public async Task<IActionResult> DownloadPdf(Guid id)
+        {
+            var reservation = await _context.Reservations
+                .Include(r => r.Screening)
+                .ThenInclude(s => s.Movie)
+                .Include(r => r.Screening.ScreeningRoom)
+                .ThenInclude(sr => sr.Cinema)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            // Generate PDF asynchronously
+            byte[] pdfBytes;
+            try
+            {
+                pdfBytes = await _pdfService.GenerateReservationPdfAsync(reservation);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return an appropriate error response
+                // You might want to use a logging framework like Serilog, NLog, etc.
+                Console.WriteLine($"An error occurred while generating the PDF: {ex.Message}");
+                return StatusCode(500, "An error occurred while generating the PDF.");
+            }
+
+            // Return the PDF file
+            return File(pdfBytes, "application/pdf", "ReservationDetails.pdf");
+        }
+
 
         // GET: Reservations/MyReservations
         public async Task<IActionResult> MyReservations()
