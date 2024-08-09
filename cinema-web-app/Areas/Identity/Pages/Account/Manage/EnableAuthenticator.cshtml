@@ -45,9 +45,6 @@ ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
                             <p>
                                 Scan the QR Code or enter this key <kbd>@Model.SharedKey</kbd> into your two-factor authenticator app. Spaces and casing do not matter.
                             </p>
-                            <div class="alert alert-info">
-                                Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation</a>.
-                            </div>
                             <div id="qrCode" class="mb-3"></div>
                             <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
                         </li>
@@ -74,4 +71,15 @@ ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 
 @section Scripts {
 <partial name="_ValidationScriptsPartial"/>
+
+<!-- Include the QR Code library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Generate the QR Code
+        var qrCodeUrl = $('#qrCodeData').data('url');
+        $('#qrCode').qrcode({ width: 200, height: 200, text: qrCodeUrl });
+    });
+</script>
 }
