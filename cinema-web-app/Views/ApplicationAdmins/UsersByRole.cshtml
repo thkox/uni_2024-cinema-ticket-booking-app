@@ -20,7 +20,19 @@ var showCinemaColumn = ViewData["ShowCinemaColumn"] as bool? ?? false;
                 <h1 class="h3">@ViewData["Role"] Users</h1>
             </div>
             <p>
-                <a asp-action="Create" asp-route-role="@ViewData["Role"]" class="btn btn-primary">Create New @ViewData["Role"]</a>
+                @{
+                var role = ViewData["Role"]?.ToString();
+                var pagePath = role switch
+                    {
+                    "Customer" => "/Account/RegisterCustomer",
+                    "ApplicationAdmin" => "/Account/RegisterApplicationAdmin",
+                    "ContentAppAdmin" => "/Account/RegisterContentAppAdmin",
+                    "ContentCinemaAdmin" => "/Account/RegisterContentCinemaAdmin",
+                    _ => "/Account/RegisterCustomer"
+                    };
+                }
+                
+                <a asp-area="Identity" asp-page="@pagePath" class="btn btn-primary">Create New @role</a>
             </p>
             <table class="table">
                 <thead>
