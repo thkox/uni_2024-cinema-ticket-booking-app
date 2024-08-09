@@ -34,7 +34,7 @@ namespace cinema_web_app.Controllers
                 return NotFound();
             }
             
-            DateTime currentDate = DateTime.Now;
+            DateTime currentDate = DateTime.UtcNow.Date;
             DateTime next7Days = currentDate.AddDays(7);
 
             var cinemaScreenings = await _context.Screenings
