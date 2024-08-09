@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<cinema_web_app.Models.UserViewModel>
 
 @{
-    ViewData["Title"] = "Manage Users";
+ViewData["Title"] = "Manage Users";
+var showCinemaColumn = ViewData["ShowCinemaColumn"] as bool? ?? false;
 }
 
 <div class="container-fluid">
@@ -27,6 +28,10 @@
                     <th>Email</th>
                     <th>First Name</th>
                     <th>Last Name</th>
+                    @if (showCinemaColumn)
+                    {
+                    <th>Cinemas</th> <!-- New column for Cinema Names -->
+                    }
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -37,6 +42,10 @@
                     <td>@user.Email</td>
                     <td>@user.FirstName</td>
                     <td>@user.LastName</td>
+                    @if (showCinemaColumn)
+                    {
+                    <td>@string.Join(", ", user.CinemaNames)</td> <!-- Display Cinema Names -->
+                    }
                     <td>
                         <a asp-action="Edit" asp-route-id="@user.UserId" class="btn btn-warning">Edit</a>
                         <a asp-action="Details" asp-route-id="@user.UserId" class="btn btn-info">Details</a>

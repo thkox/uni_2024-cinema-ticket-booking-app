@@ -26,27 +26,42 @@ namespace cinema_web_app.Controllers
         {
             var users = await _userManager.Users.ToListAsync();
             var userRolesViewModel = new List<UserViewModel>();
+            bool showCinemaColumn = role == "ContentCinemaAdmin"; // Check if the role is ContentCinemaAdmin
 
             foreach (var user in users)
             {
                 var roles = await _userManager.GetRolesAsync(user);
                 if (roles.Contains(role))
                 {
+                    var contentCinemaAdmins = showCinemaColumn
+                        ? await _context.ContentCinemaAdmins
+                            .Where(ca => ca.UserId == user.Id)
+                            .Include(ca => ca.Cinema)
+                            .ToListAsync()
+                        : new List<ContentCinemaAdmin>();
+
+                    var cinemaNames = showCinemaColumn
+                        ? contentCinemaAdmins.Select(ca => ca.Cinema.Name).ToList()
+                        : new List<string>();
+
                     var thisViewModel = new UserViewModel
                     {
                         UserId = user.Id,
                         Email = user.Email,
                         FirstName = user.FirstName,
                         LastName = user.LastName,
-                        Roles = roles
+                        Roles = roles,
+                        CinemaNames = cinemaNames
                     };
                     userRolesViewModel.Add(thisViewModel);
                 }
             }
 
             ViewData["Role"] = role;
+            ViewData["ShowCinemaColumn"] = showCinemaColumn; // Pass the flag to the view
             return View(userRolesViewModel);
         }
+
 
 
         // GET: ApplicationAdmin/Details/5
@@ -150,37 +165,37 @@ namespace cinema_web_app.Controllers
             return View(model);
         }
 
-// POST: ApplicationAdmin/Delete/5
-[HttpPost, ActionName("Delete")]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> DeleteConfirmed(Guid id, string role)
-{
-    // Get the currently signed-in user
-    var currentUser = await _userManager.GetUserAsync(User);
-
-    // Check if the user to be deleted is the currently signed-in user
-    if (currentUser != null && currentUser.Id == id)
+    // POST: ApplicationAdmin/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(Guid id, string role)
     {
-        ModelState.AddModelError(string.Empty, "You cannot delete your own account while signed in.");
-        return RedirectToAction(nameof(UsersByRole), new { role });
-    }
+        // Get the currently signed-in user
+        var currentUser = await _userManager.GetUserAsync(User);
 
-    var user = await _userManager.FindByIdAsync(id.ToString());
-    if (user != null)
-    {
-        var result = await _userManager.DeleteAsync(user);
-        if (result.Succeeded)
+        // Check if the user to be deleted is the currently signed-in user
+        if (currentUser != null && currentUser.Id == id)
         {
+            ModelState.AddModelError(string.Empty, "You cannot delete your own account while signed in.");
             return RedirectToAction(nameof(UsersByRole), new { role });
         }
 
-        foreach (var error in result.Errors)
+        var user = await _userManager.FindByIdAsync(id.ToString());
+        if (user != null)
         {
-            ModelState.AddModelError(string.Empty, error.Description);
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(UsersByRole), new { role });
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
         }
+        return RedirectToAction(nameof(UsersByRole), new { role });
     }
-    return RedirectToAction(nameof(UsersByRole), new { role });
-}
 
 
     }
