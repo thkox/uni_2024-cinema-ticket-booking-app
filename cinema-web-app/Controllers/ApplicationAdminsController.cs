@@ -21,7 +21,7 @@ namespace cinema_web_app.Controllers
             _context = context;
         }
 
-        // GET: Admin/UsersByRole
+        // GET: ApplicationAdmin/UsersByRole
         public async Task<IActionResult> UsersByRole(string role = "Customer")
         {
             var users = await _userManager.Users.ToListAsync();
@@ -49,7 +49,7 @@ namespace cinema_web_app.Controllers
         }
 
 
-        // GET: Admin/Details/5
+        // GET: ApplicationAdmin/Details/5
         public async Task<IActionResult> Details(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
@@ -60,13 +60,13 @@ namespace cinema_web_app.Controllers
             return View(user);
         }
 
-        // GET: Admin/Create
+        // GET: ApplicationAdmin/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/Create
+        // POST: ApplicationAdmin/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FirstName,LastName,Email,Password,ConfirmPassword,Role")] CreateUserViewModel model)
@@ -96,7 +96,7 @@ namespace cinema_web_app.Controllers
             return View(model);
         }
 
-        // GET: Admin/Edit/5
+        // GET: ApplicationAdmin/Edit/5
         public async Task<IActionResult> Edit(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
@@ -114,7 +114,7 @@ namespace cinema_web_app.Controllers
             return View(model);
         }
 
-        // POST: Admin/Edit/5
+        // POST: ApplicationAdmin/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,FirstName,LastName,Email")] EditUserViewModel model)
@@ -150,26 +150,38 @@ namespace cinema_web_app.Controllers
             return View(model);
         }
 
-        // POST: Admin/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var user = await _userManager.FindByIdAsync(id.ToString());
-            if (user != null)
-            {
-                var result = await _userManager.DeleteAsync(user);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
+// POST: ApplicationAdmin/Delete/5
+[HttpPost, ActionName("Delete")]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> DeleteConfirmed(Guid id, string role)
+{
+    // Get the currently signed-in user
+    var currentUser = await _userManager.GetUserAsync(User);
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-            }
-            return RedirectToAction(nameof(Index));
+    // Check if the user to be deleted is the currently signed-in user
+    if (currentUser != null && currentUser.Id == id)
+    {
+        ModelState.AddModelError(string.Empty, "You cannot delete your own account while signed in.");
+        return RedirectToAction(nameof(UsersByRole), new { role });
+    }
+
+    var user = await _userManager.FindByIdAsync(id.ToString());
+    if (user != null)
+    {
+        var result = await _userManager.DeleteAsync(user);
+        if (result.Succeeded)
+        {
+            return RedirectToAction(nameof(UsersByRole), new { role });
         }
+
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
+    }
+    return RedirectToAction(nameof(UsersByRole), new { role });
+}
+
+
     }
 }
