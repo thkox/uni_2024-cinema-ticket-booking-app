@@ -111,7 +111,7 @@ namespace cinema_web_app.Controllers
             return View(model);
         }
 
-        // GET: ApplicationAdmin/Edit/5
+        // GET: ApplicationAdmins/Edit/5
         public async Task<IActionResult> Edit(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
@@ -129,7 +129,7 @@ namespace cinema_web_app.Controllers
             return View(model);
         }
 
-        // POST: ApplicationAdmin/Edit/5
+        // POST: ApplicationAdmins/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,FirstName,LastName,Email")] EditUserViewModel model)
@@ -154,7 +154,11 @@ namespace cinema_web_app.Controllers
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction(nameof(Index));
+                    // Retrieve the role of the user to redirect correctly
+                    var roles = await _userManager.GetRolesAsync(user);
+                    var role = roles.FirstOrDefault(); // Assuming a single role per user, adjust if necessary
+
+                    return RedirectToAction(nameof(UsersByRole), new { role });
                 }
 
                 foreach (var error in result.Errors)
@@ -164,6 +168,7 @@ namespace cinema_web_app.Controllers
             }
             return View(model);
         }
+
 
     // POST: ApplicationAdmin/Delete/5
     [HttpPost, ActionName("Delete")]

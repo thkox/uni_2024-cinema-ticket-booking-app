@@ -4,38 +4,37 @@
 ViewData["Title"] = "Edit User";
 }
 
-<h1>Edit User</h1>
-<hr />
+<h1>@ViewData["Title"]</h1>
+
 <div class="row">
-    <div class="col-md-6">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <span class="text-danger">@ViewBag.Error</span><br />
+    <div class="col-md-4">
+        <form id="editForm" asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group mb-3">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
+            <div class="form-floating mb-3">
+                <input asp-for="FirstName" class="form-control" aria-required="true" placeholder="First Name" />
+                <label asp-for="FirstName">First Name</label>
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
+            <div class="form-floating mb-3">
+                <input asp-for="LastName" class="form-control" aria-required="true" placeholder="Last Name" />
+                <label asp-for="LastName">Last Name</label>
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+            <div class="form-floating mb-3">
+                <input asp-for="Email" class="form-control" aria-required="true" placeholder="Email" />
+                <label asp-for="Email">Email</label>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a class="btn btn-secondary" asp-action="UsersByRole">Back to List</a>
+    <a class="btn btn-secondary" asp-action="UsersByRole" asp-route-role="@ViewData["Role"]">Back to List</a>
 </div>
 
 @section Scripts {
