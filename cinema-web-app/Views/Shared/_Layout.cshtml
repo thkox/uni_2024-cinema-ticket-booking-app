@@ -51,7 +51,9 @@
                     }
                     @if (User.IsInRole("ContentCinemaAdmin"))
                     {
-
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Screenings" asp-action="">Screenings</a>
+                        </li>
                     }
                     @if (User.IsInRole("ApplicationAdmin"))
                     {
