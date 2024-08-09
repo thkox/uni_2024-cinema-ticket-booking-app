@@ -48,15 +48,14 @@
         <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(modelItem => group.First().ScreeningRoom)
+                Screening Room
             </th>
             <th>
-                @Html.DisplayNameFor(modelItem => group.First().StartTime)
+                Start Time
             </th>
             <th>
-                @Html.DisplayNameFor(modelItem => group.First().RemainingNoOfSeats)
+                Remaining No of Seats
             </th>
-            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -67,23 +66,11 @@
                     @Html.DisplayFor(modelItem => item.ScreeningRoom.Name)
                 </td>
                 <td class="col-4">
-                    @Html.DisplayFor(modelItem => item.StartTime)
+                    @item.StartTime.ToString("yyyy-MM-dd HH:mm")
                 </td>
                 <td class="col-3">
                     @Html.DisplayFor(modelItem => item.RemainingNoOfSeats)
                 </td>
-                @if (item.RemainingNoOfSeats > 0)
-                {
-                    <td class="col-1">
-                        <a asp-action="Create" asp-controller="Reservations" asp-route-id="@item.Id">Book Tickets</a>
-                    </td>
-                }
-                else
-                {
-                    <td class="col-1">
-                        <p class="text-danger">Sold Out</p>
-                    </td>
-                }
             </tr>
         }
         </tbody>
