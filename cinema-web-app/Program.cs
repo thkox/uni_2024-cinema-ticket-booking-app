@@ -1,5 +1,8 @@
 using cinema_web_app.Data;
 using cinema_web_app.Models;
+using cinema_web_app.Utilities;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +23,16 @@ builder.Services.AddTransient<IEmailSender, NoOpEmailSender>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages(); // Ensure Razor Pages services are registered
+
+// Add PDF page converter
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+builder.Services.AddScoped<PDFGeneratorService>();
+
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -48,6 +61,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 app.MapControllerRoute(
     "default",
     "{controller=Home}/{action=Index}/{id?}");
