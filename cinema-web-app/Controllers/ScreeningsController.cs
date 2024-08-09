@@ -123,6 +123,8 @@ namespace cinema_web_app.Controllers
             {
                 try
                 {
+                    screening.StartTime = screening.StartTime.AddSeconds(-screening.StartTime.Second)
+                        .AddMilliseconds(-screening.StartTime.Millisecond);
                     screening.StartTime = DateTime.SpecifyKind(screening.StartTime, DateTimeKind.Utc);
                     
                     _context.Update(screening);
