@@ -6,9 +6,12 @@
     <a class="nav-link d-flex align-items-center @ManageNavPages.IndexNavClass(ViewContext)" href="@Url.Page("./Index")">
         <i class="bi bi-person-circle me-2"></i> Profile
     </a>
-    <a class="nav-link d-flex align-items-center @ManageNavPages.EmailNavClass(ViewContext)" href="@Url.Page("./Email")">
-        <i class="bi bi-envelope-fill me-2"></i> Email
-    </a>
+    @if (User.IsInRole("Customer") || User.IsInRole("ApplicationAdmin"))
+    {
+        <a class="nav-link d-flex align-items-center @ManageNavPages.EmailNavClass(ViewContext)" href="@Url.Page("./Email")">
+            <i class="bi bi-envelope-fill me-2"></i> Email
+        </a>
+    }
     <a class="nav-link d-flex align-items-center @ManageNavPages.ChangePasswordNavClass(ViewContext)" href="@Url.Page("./ChangePassword")">
         <i class="bi bi-shield-lock-fill me-2"></i> Password
     </a>
@@ -21,7 +24,10 @@
     <a class="nav-link d-flex align-items-center @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" href="@Url.Page("./TwoFactorAuthentication")">
         <i class="bi bi-shield-lock me-2"></i> Two-factor authentication
     </a>
-    <a class="nav-link d-flex align-items-center @ManageNavPages.PersonalDataNavClass(ViewContext)" href="@Url.Page("./PersonalData")">
-        <i class="bi bi-person-badge-fill me-2"></i> Personal data
-    </a>
+    @if (User.IsInRole("Customer") || User.IsInRole("ApplicationAdmin"))
+    {
+        <a class="nav-link d-flex align-items-center @ManageNavPages.PersonalDataNavClass(ViewContext)" href="@Url.Page("./PersonalData")">
+            <i class="bi bi-person-badge-fill me-2"></i> Personal data
+        </a>
+    }
 </div>
