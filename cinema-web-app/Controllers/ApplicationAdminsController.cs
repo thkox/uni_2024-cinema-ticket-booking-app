@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using cinema_web_app.Models;
 using cinema_web_app.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace cinema_web_app.Controllers
 {
@@ -20,12 +21,33 @@ namespace cinema_web_app.Controllers
             _context = context;
         }
 
-        // GET: Admin/Index
-        public async Task<IActionResult> Index()
+        // GET: Admin/UsersByRole
+        public async Task<IActionResult> UsersByRole(string role = "Customer")
         {
-            var users = _userManager.Users.ToList();
-            return View(users);
+            var users = await _userManager.Users.ToListAsync();
+            var userRolesViewModel = new List<UserViewModel>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Contains(role))
+                {
+                    var thisViewModel = new UserViewModel
+                    {
+                        UserId = user.Id,
+                        Email = user.Email,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Roles = roles
+                    };
+                    userRolesViewModel.Add(thisViewModel);
+                }
+            }
+
+            ViewData["Role"] = role;
+            return View(userRolesViewModel);
         }
+
 
         // GET: Admin/Details/5
         public async Task<IActionResult> Details(Guid id)
