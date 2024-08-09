@@ -108,6 +108,10 @@ namespace cinema_web_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Address,City,ZipCode,Email,NoOfScreeningRooms")] Cinema cinema)
         {
+            ModelState.Remove(nameof(Cinema.Announcements));
+            ModelState.Remove(nameof(Cinema.ScreeningRooms));
+            ModelState.Remove(nameof(Cinema.ContentCinemaAdmins));
+            
             if (id != cinema.Id)
             {
                 return NotFound();
