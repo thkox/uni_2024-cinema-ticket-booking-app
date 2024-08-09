@@ -46,6 +46,13 @@ namespace cinema_web_app.Data
                 .HasForeignKey(a => a.CinemaId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Configure Announcement
+            modelBuilder.Entity<Announcement>()
+                .HasOne(a => a.User)
+                .WithMany()
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Configure ScreeningRoom
             modelBuilder.Entity<ScreeningRoom>()
                 .HasMany(sr => sr.Screenings)

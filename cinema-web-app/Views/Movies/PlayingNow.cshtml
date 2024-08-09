@@ -1,0 +1,231 @@
+@model IEnumerable<cinema_web_app.Models.Movie>
+
+@{
+ViewData["Title"] = "Playing Now Movies";
+}
+
+<h1>Playing Now Movies</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+
+<div class="filters">
+    <label for="titleFilter">Title:</label>
+    <select id="titleFilter" onchange="filterMovies()">
+        <option value="">None</option>
+        <option value="A-Z">A-Z</option>
+        <option value="Z-A">Z-A</option>
+    </select>
+
+    <label for="genreFilter">Genre:</label>
+    <select id="genreFilter" onchange="filterMovies()">
+        <option value="">None</option>
+        @foreach (var genre in Model.Select(m => m.Genre.Name).Distinct())
+        {
+        <option value="@genre">@genre</option>
+        }
+    </select>
+
+    <label for="releaseDateFilter">Release Date:</label>
+    <select id="releaseDateFilter" onchange="filterMovies()">
+        <option value="">None</option>
+        <option value="ThisWeek">This Week</option>
+        <option value="LastWeek">Last Week</option>
+        <option value="LastMonth">Last Month</option>
+    </select>
+
+    <button class="btn btn-secondary" id="clearFilters" onclick="clearFilters()">Clear</button>
+</div>
+
+<div class="movie-cards" id="moviesContainer">
+    @foreach (var item in Model) {
+    <div class="card movie-card">
+        <img src="@item.ImageUrl" class="card-img-top" alt="@item.Title">
+        <div class="card-body">
+            <h5 class="card-title">@item.Title</h5>
+            <p class="card-text content">@item.Content</p>
+            <p class="card-text"><strong>Release Date:</strong> <span class="release-date">@item.ReleaseDate.ToString("yyyy-MM-dd")</span></p>
+            <p class="card-text"><strong>Genre:</strong> <span class="genre">@item.Genre.Name</span></p>
+            <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">More Info</a>
+        </div>
+    </div>
+    }
+</div>
+
+@section Scripts {
+<script>
+    function filterMovies() {
+        var titleFilter = document.getElementById('titleFilter').value;
+        var genreFilter = document.getElementById('genreFilter').value.toLowerCase();
+        var releaseDateFilter = document.getElementById('releaseDateFilter').value;
+
+        var cards = document.querySelectorAll('#moviesContainer .movie-card');
+        var today = new Date();
+        var oneWeekAgo = new Date();
+        oneWeekAgo.setDate(today.getDate() - 7);
+        var oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(today.getMonth() - 1);
+        var nextWeek = new Date();
+        nextWeek.setDate(today.getDate() + 7);
+        var nextMonth = new Date();
+        nextMonth.setMonth(today.getMonth() + 1);
+
+        cards.forEach(card => {
+            var title = card.querySelector('.card-title').innerText;
+            var genre = card.querySelector('.genre').innerText.toLowerCase();
+            var releaseDateText = card.querySelector('.release-date').innerText;
+            var releaseDate = new Date(releaseDateText);
+            var display = true;
+
+            if (genreFilter && genre.indexOf(genreFilter) === -1) {
+                display = false;
+            }
+
+            if (releaseDateFilter === "ThisWeek" && !(releaseDate >= today && releaseDate <= nextWeek)) {
+                display = false;
+            } else if (releaseDateFilter === "LastWeek" && !(releaseDate >= oneWeekAgo && releaseDate < today)) {
+                display = false;
+            } else if (releaseDateFilter === "LastMonth" && !(releaseDate >= oneMonthAgo && releaseDate < today)) {
+                display = false;
+            }
+
+            if (display) {
+                card.style.display = "";
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        if (titleFilter === "A-Z") {
+            sortCards(true);
+        } else if (titleFilter === "Z-A") {
+            sortCards(false);
+        }
+    }
+
+    function sortCards(ascending) {
+        var container = document.querySelector('#moviesContainer');
+        var cards = Array.from(container.querySelectorAll('.movie-card'));
+
+        cards.sort((a, b) => {
+            var titleA = a.querySelector('.card-title').innerText.toLowerCase();
+            var titleB = b.querySelector('.card-title').innerText.toLowerCase();
+
+            if (ascending) {
+                return titleA.localeCompare(titleB);
+            } else {
+                return titleB.localeCompare(titleA);
+            }
+        });
+
+        cards.forEach(card => container.appendChild(card));
+    }
+
+    function clearFilters() {
+        document.getElementById('titleFilter').value = '';
+        document.getElementById('genreFilter').value = '';
+        document.getElementById('releaseDateFilter').value = '';
+        filterMovies();
+    }
+</script>
+}
+
+<style>
+    .filters {
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .filters label {
+        margin-right: 10px;
+    }
+
+    .filters select,
+    .filters button {
+        margin-right: 10px;
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    .filters button {
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .filters button:hover {
+        background-color: #0056b3;
+    }
+
+    .movie-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .movie-card {
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: box-shadow 0.3s;
+        height: 100%;
+    }
+
+    .movie-card img {
+        border-bottom: 1px solid #ddd;
+        border-radius: 8px 8px 0 0;
+        width: 100%;
+        height: auto;
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        margin-bottom: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .card-body {
+        flex: 1;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        border: none;
+        color: white;
+        border-radius: 5px;
+        padding: 10px;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+        margin-top: auto; /* Aligns button to bottom */
+    }
+
+    .btn-info:hover {
+        background-color: #138496;
+    }
+
+    .movie-card:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+</style>

@@ -1,28 +1,54 @@
 ﻿@page
 @model ShowRecoveryCodesModel
 @{
-    ViewData["Title"] = "Recovery codes";
+    ViewData["Title"] = "Recovery Codes";
     ViewData["ActivePage"] = "TwoFactorAuthentication";
 }
 
-<partial name="_StatusMessage" for="StatusMessage"/>
-<h3>@ViewData["Title"]</h3>
-<div class="alert alert-warning" role="alert">
-    <p>
-        <strong>Put these codes in a safe place.</strong>
-    </p>
-    <p>
-        If you lose your device and don't have the recovery codes you will lose access to your account.
-    </p>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        @for (var row = 0; row < Model.RecoveryCodes.Length; row += 2)
-        {
-            <code class="recovery-code">@Model.RecoveryCodes[row]</code>
-            <text>&nbsp;</text>
-            <code class="recovery-code">@Model.RecoveryCodes[row + 1]</code>
-            <br/>
-        }
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar">
+            <div class="position-sticky pt-3">
+                <partial name="_ManageNav" />
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h3">@ViewData["Title"]</h1>
+            </div>
+
+            <partial name="_StatusMessage" for="StatusMessage"/>
+
+            <div class="alert alert-warning" role="alert">
+                <p><strong>Put these codes in a safe place.</strong></p>
+                <p>If you lose your device and don't have the recovery codes you will lose access to your account.</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        @for (var row = 0; row < Model.RecoveryCodes.Length; row += 2)
+                        {
+                            <div class="col-6 mb-2">
+                                <code class="recovery-code bg-light border rounded p-2 d-block">@Model.RecoveryCodes[row]</code>
+                            </div>
+                            @if (row + 1 < Model.RecoveryCodes.Length)
+                            {
+                                <div class="col-6 mb-2">
+                                    <code class="recovery-code bg-light border rounded p-2 d-block">@Model.RecoveryCodes[row + 1]</code>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

@@ -1,0 +1,237 @@
+@model cinema_web_app.Models.ReservationViewModel
+
+@{
+    ViewData["Title"] = "Book Tickets";
+    var isLoggedIn = User.Identity.IsAuthenticated;
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">Book Tickets</h1>
+
+    @if (isLoggedIn)
+    {
+        <!-- Display status message -->
+        @if (ViewData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> @ViewData["SuccessMessage"]
+            </div>
+        }
+        @if (ViewData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                <i class="fas fa-times-circle"></i> @ViewData["ErrorMessage"]
+            </div>
+        }
+
+        <form asp-action="BookTickets" method="post">
+            <input type="hidden" asp-for="MovieId" />
+            <input type="hidden" asp-for="CinemaId" />
+            <input type="hidden" asp-for="ScreeningId" />
+            <input type="hidden" asp-for="ScreeningDate" />
+
+            <div class="row">
+                <!-- Steps Column -->
+                <div class="col-md-8">
+                    <div class="row">
+                        <!-- Step 1: Select Movie -->
+                        <div class="col-md-12" id="stepMovie">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Select Movie</h5>
+                                </div>
+                                <div class="card-body">
+                                    <select id="movieSelect" class="form-control" asp-for="MovieId" asp-items="ViewBag.Movies">
+                                        <option value="">Select a movie</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Select Cinema -->
+                        <div class="col-md-12" id="stepCinema" style="display:none;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Select Cinema</h5>
+                                </div>
+                                <div class="card-body">
+                                    <select id="cinemaSelect" class="form-control" disabled>
+                                        <option value="">Select a cinema</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Select Screening Date and Time -->
+                        <div class="col-md-12" id="stepScreening" style="display:none;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Select Screening</h5>
+                                </div>
+                                <div class="card-body">
+                                    <select id="screeningSelect" class="form-control" disabled>
+                                        <option value="">Select a screening</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Choose Number of Seats -->
+                        <div class="col-md-12 mt-4" id="stepSeats" style="display:none;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Choose Seats</h5>
+                                </div>
+                                <div class="card-body">
+                                    <input type="number" id="noOfSeats" name="NoOfSeats" class="form-control" min="1" max="8" value="1" disabled />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Option -->
+                        <div class="col-md-12 mt-4" id="stepPayment" style="display:none;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Payment Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="cardNumber">Card Number</label>
+                                        <input type="text" id="cardNumber" name="CardNumber" class="form-control" placeholder="Enter card number" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cardExpiry">Expiry Date</label>
+                                        <input type="text" id="cardExpiry" name="CardExpiry" class="form-control" placeholder="MM/YY" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cardCVC">CVC</label>
+                                        <input type="text" id="cardCVC" name="CardCVC" class="form-control" placeholder="CVC" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Column -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            <p id="movieSummary">Movie: N/A</p>
+                            <p id="cinemaSummary">Cinema: N/A</p>
+                            <p id="screeningSummary">Screening: N/A</p>
+                            <p id="seatsSummary">Seats: N/A</p>
+                        </div>
+                        <div class="card-footer text-right">
+                            <button type="submit" class="btn btn-primary" id="bookButton" disabled>Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+    else
+    {
+        <div class="text-center">
+            <p>Please you need to log in to your account to book your tickets first</p>
+            <a class="btn btn-primary mx-2" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="btn btn-secondary mx-2" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+<script>
+    $(document).ready(function () {
+        function initializeSteps() {
+            var movieId = $('#movieSelect').val();
+            if (movieId) {
+                $('#stepCinema').show().find('select').prop('disabled', false);
+                $('#stepScreening, #stepSeats, #stepPayment').hide();
+                $('#cinemaSelect').empty().append('<option value="">Select a cinema</option>');
+                $.ajax({
+                    url: '@Url.Action("GetCinemasForMovie", "Reservations")',
+                    data: { movieId: movieId },
+                    success: function (data) {
+                        $.each(data, function (i, cinema) {
+                            $('#cinemaSelect').append('<option value="' + cinema.id + '">' + cinema.name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#stepCinema, #stepScreening, #stepSeats, #stepPayment').hide();
+            }
+        }
+
+        // Initialize steps if movie is preselected
+        if ($('#movieSelect').val()) {
+            initializeSteps();
+        }
+
+        $('#movieSelect').change(function () {
+            initializeSteps();
+        });
+
+        $('#cinemaSelect').change(function () {
+            var cinemaId = $(this).val();
+            var movieId = $('#movieSelect').val();
+            $('#CinemaId').val(cinemaId);
+            if (cinemaId) {
+                $('#stepScreening').show();
+                $('#stepSeats, #stepPayment').hide();
+                $('#screeningSelect').empty().append('<option value="">Select a screening</option>');
+                $.ajax({
+                    url: '@Url.Action("GetScreeningsForCinemaAndMovie", "Reservations")',
+                    data: { cinemaId: cinemaId, movieId: movieId },
+                    success: function (data) {
+                        $.each(data, function (i, screening) {
+                            $('#screeningSelect').append('<option value="' + screening.id + '" data-date="' + screening.dateTime + '" data-room="' + screening.screeningRoom + '">' + screening.dateTime + ' - ' + screening.screeningRoom + '</option>');
+                        });
+                        $('#screeningSelect').prop('disabled', false);
+                    }
+                });
+            } else {
+                $('#stepScreening, #stepSeats, #stepPayment').hide();
+            }
+        });
+
+        $('#screeningSelect').change(function () {
+            var screeningId = $(this).val();
+            var screeningDate = $('#screeningSelect option:selected').data('date');
+            var screeningRoom = $('#screeningSelect option:selected').data('room');
+            $('#ScreeningId').val(screeningId);
+            $('#ScreeningDate').val(screeningDate);
+            if (screeningId) {
+                $('#stepSeats').show();
+                $('#stepPayment').hide();
+                $.ajax({
+                    url: '@Url.Action("GetRemainingSeats", "Reservations")',
+                    data: { screeningId: screeningId },
+                    success: function (data) {
+                        $('#noOfSeats').prop('max', data).prop('disabled', false);
+                        updateSummary();
+                    }
+                });
+            } else {
+                $('#stepSeats, #stepPayment').hide();
+            }
+        });
+
+        $('#noOfSeats').change(function () {
+            updateSummary();
+        });
+
+        function updateSummary() {
+            $('#movieSummary').text('Movie: ' + $('#movieSelect option:selected').text());
+            $('#cinemaSummary').text('Cinema: ' + $('#cinemaSelect option:selected').text());
+            $('#screeningSummary').text('Screening: ' + $('#screeningSelect option:selected').data('date') + ' - ' + $('#screeningSelect option:selected').data('room'));
+            $('#seatsSummary').text('Seats: ' + $('#noOfSeats').val());
+            $('#stepPayment').show();
+            $('#bookButton').prop('disabled', false);
+        }
+    });
+</script>
+}

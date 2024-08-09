@@ -198,12 +198,164 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Announcements/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQW5ub3VuY2VtZW50cy9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Announcements/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQW5ub3VuY2VtZW50cy9EZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Announcements/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQW5ub3VuY2VtZW50cy9EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Announcements/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQW5ub3VuY2VtZW50cy9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Announcements/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQW5ub3VuY2VtZW50cy9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/ApplicationAdmins/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXBwbGljYXRpb25BZG1pbnMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Cinemas/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2luZW1hcy9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Cinemas/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2luZW1hcy9EZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Cinemas/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2luZW1hcy9EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Cinemas/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2luZW1hcy9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Cinemas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2luZW1hcy9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/ContentAppAdmins/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29udGVudEFwcEFkbWlucy9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/ContentCinemaAdmins/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29udGVudENpbmVtYUFkbWlucy9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Customers/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ3VzdG9tZXJzL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Movies/ComingSoon.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTW92aWVzL0NvbWluZ1Nvb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Movies/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTW92aWVzL0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Movies/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTW92aWVzL0RlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Movies/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTW92aWVzL0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Movies/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTW92aWVzL0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Movies/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTW92aWVzL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Movies/PlayingNow.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTW92aWVzL1BsYXlpbmdOb3cuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Reservations/BookTickets.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVzZXJ2YXRpb25zL0Jvb2tUaWNrZXRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Reservations/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVzZXJ2YXRpb25zL0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Reservations/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVzZXJ2YXRpb25zL0RlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Reservations/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVzZXJ2YXRpb25zL0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Reservations/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVzZXJ2YXRpb25zL0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Reservations/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVzZXJ2YXRpb25zL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Reservations/MyReservations.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVzZXJ2YXRpb25zL015UmVzZXJ2YXRpb25zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/ScreeningRooms/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5nUm9vbXMvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/ScreeningRooms/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5nUm9vbXMvRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/ScreeningRooms/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5nUm9vbXMvRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/ScreeningRooms/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5nUm9vbXMvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/ScreeningRooms/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5nUm9vbXMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Screenings/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5ncy9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Screenings/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5ncy9EZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Screenings/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5ncy9EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Screenings/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5ncy9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Screenings/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5ncy9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/theo/RiderProjects/cinema-web-app/cinema-web-app/Views/Shared/Error.cshtml]

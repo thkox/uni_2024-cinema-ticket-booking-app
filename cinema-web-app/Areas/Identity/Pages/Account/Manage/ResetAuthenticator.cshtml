@@ -1,24 +1,47 @@
 ﻿@page
 @model ResetAuthenticatorModel
 @{
-    ViewData["Title"] = "Reset authenticator key";
+    ViewData["Title"] = "Reset Authenticator Key";
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
-<partial name="_StatusMessage" for="StatusMessage"/>
-<h3>@ViewData["Title"]</h3>
-<div class="alert alert-warning" role="alert">
-    <p>
-        <span class="glyphicon glyphicon-warning-sign"></span>
-        <strong>If you reset your authenticator key your authenticator app will not work until you reconfigure it.</strong>
-    </p>
-    <p>
-        This process disables 2FA until you verify your authenticator app.
-        If you do not complete your authenticator app configuration you may lose access to your account.
-    </p>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar">
+            <div class="position-sticky pt-3">
+                <partial name="_ManageNav" />
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h3">@ViewData["Title"]</h1>
+            </div>
+
+            <partial name="_StatusMessage" for="StatusMessage"/>
+
+            <div class="alert alert-warning" role="alert">
+                <p>
+                    <span class="glyphicon glyphicon-warning-sign"></span>
+                    <strong>If you reset your authenticator key, your authenticator app will not work until you reconfigure it.</strong>
+                </p>
+                <p>
+                    This process disables 2FA until you verify your authenticator app.
+                    If you do not complete your authenticator app configuration, you may lose access to your account.
+                </p>
+            </div>
+
+            <div>
+                <form id="reset-authenticator-form" method="post">
+                    <button id="reset-authenticator-button" class="btn btn-danger btn-lg" type="submit">Reset Authenticator Key</button>
+                </form>
+            </div>
+        </main>
+    </div>
 </div>
-<div>
-    <form id="reset-authenticator-form" method="post">
-        <button id="reset-authenticator-button" class="btn btn-danger" type="submit">Reset authenticator key</button>
-    </form>
-</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}
