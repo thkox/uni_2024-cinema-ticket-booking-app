@@ -14,12 +14,21 @@
         @if (Model.Roles.FirstOrDefault() == "ContentCinemaAdmin")
         {
         <dt class="col-sm-3">Cinemas</dt>
-        <dd class="col-sm-9">
-            @foreach (var cinema in Model.CinemaNames)
+            @if (Model.CinemaNames.Count == 0)
             {
-            @cinema<br />
+                <dd class="col-sm-9">
+                    No cinemas assigned
+                </dd>
+            } else
+            {
+                <dd class="col-sm-9">
+
+                @foreach (var cinema in Model.CinemaNames)
+                {
+                    @cinema<br/>
+                }
+                </dd>
             }
-        </dd>
         }
     </dl>
     <a asp-action="Edit" asp-route-id="@Model.UserId" class="btn btn-warning">Edit</a>
