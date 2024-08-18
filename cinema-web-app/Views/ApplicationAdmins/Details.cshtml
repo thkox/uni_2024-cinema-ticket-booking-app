@@ -1,4 +1,4 @@
-﻿@model cinema_web_app.Models.ApplicationUser
+﻿@model cinema_web_app.Models.UserViewModel
 
 <h1>User Details</h1>
 
@@ -11,7 +11,17 @@
         <dd class="col-sm-9">@Model.LastName</dd>
         <dt class="col-sm-3">Email</dt>
         <dd class="col-sm-9">@Model.Email</dd>
+        @if (Model.Roles.FirstOrDefault() == "ContentCinemaAdmin")
+        {
+        <dt class="col-sm-3">Cinemas</dt>
+        <dd class="col-sm-9">
+            @foreach (var cinema in Model.CinemaNames)
+            {
+            @cinema<br />
+            }
+        </dd>
+        }
     </dl>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.UserId" class="btn btn-warning">Edit</a>
+    <a asp-action="UsersByRole" asp-route-role="@Model.Roles.FirstOrDefault()" class="btn btn-secondary">Back to List</a>
 </div>
