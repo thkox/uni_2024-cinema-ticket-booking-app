@@ -109,11 +109,10 @@
 
     <!-- Action Buttons -->
     <div class="d-flex justify-content-between mt-4">
-        @if (!User.IsInRole("Customer") && User.Identity.IsAuthenticated)
+        @if (!(User.IsInRole("Customer") || User.IsInRole("ContentAppAdmin")) && User.Identity.IsAuthenticated)
         {
             <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
         }
-        <a class="btn btn-secondary" asp-action="Index">Back to List</a>
     </div>
 </div>
 
