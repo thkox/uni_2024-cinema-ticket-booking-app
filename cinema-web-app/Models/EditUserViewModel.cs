@@ -23,5 +23,7 @@ namespace cinema_web_app.Models
 
         [Display(Name = "Cinema")]
         public Guid? CinemaId { get; set; } // Add property for selected cinema ID
+        
+        public bool IsContentCinemaAdmin { get; set; } // Add property to check if user is ContentCinemaAdmin
     }
 }

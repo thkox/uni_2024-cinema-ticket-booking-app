@@ -136,29 +136,31 @@ namespace cinema_web_app.Controllers
         }
 
         // GET: ApplicationAdmins/Edit/5
-        public async Task<IActionResult> Edit(Guid id)
+            public async Task<IActionResult> Edit(Guid id)
+    {
+        var user = await _userManager.FindByIdAsync(id.ToString());
+        if (user == null)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var cinemas = await _context.Cinemas.ToListAsync();
-            var contentCinemaAdmin = await _context.ContentCinemaAdmins.FirstOrDefaultAsync(ca => ca.UserId == user.Id);
-
-            var model = new EditUserViewModel
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                CinemaId = contentCinemaAdmin?.CinemaId // Set the selected cinema ID if the user is a ContentCinemaAdmin
-            };
-
-            ViewBag.Cinemas = cinemas;
-            return View(model);
+            return NotFound();
         }
+
+        var cinemas = await _context.Cinemas.ToListAsync();
+        var contentCinemaAdmin = await _context.ContentCinemaAdmins.FirstOrDefaultAsync(ca => ca.UserId == user.Id);
+        bool isContentCinemaAdmin = contentCinemaAdmin != null;
+
+        var model = new EditUserViewModel
+        {
+            Id = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            CinemaId = contentCinemaAdmin?.CinemaId, // Set the selected cinema ID if the user is a ContentCinemaAdmin
+            IsContentCinemaAdmin = isContentCinemaAdmin // Set the flag
+        };
+
+        ViewBag.Cinemas = cinemas;
+        return View(model);
+    }
 
         // POST: ApplicationAdmins/Edit/5
         [HttpPost]
