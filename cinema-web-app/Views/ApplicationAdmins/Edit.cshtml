@@ -2,6 +2,7 @@
 
 @{
 ViewData["Title"] = "Edit User";
+var cinemas = ViewBag.Cinemas as List<cinema_web_app.Models.Cinema>;
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -25,6 +26,17 @@ ViewData["Title"] = "Edit User";
                 <input asp-for="Email" class="form-control" aria-required="true" placeholder="Email" />
                 <label asp-for="Email">Email</label>
                 <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <select asp-for="CinemaId" class="form-control">
+                    <option value="">Select a cinema</option>
+                    @foreach (var cinema in cinemas)
+                    {
+                        <option value="@cinema.Id" >@cinema.Name</option>
+                    }
+                </select>
+                <label asp-for="CinemaId">Cinema</label>
+                <span asp-validation-for="CinemaId" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
                 <button type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
