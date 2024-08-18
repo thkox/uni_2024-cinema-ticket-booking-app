@@ -20,5 +20,8 @@ namespace cinema_web_app.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Display(Name = "Cinema")]
+        public Guid? CinemaId { get; set; } // Add property for selected cinema ID
     }
 }
