@@ -82,7 +82,7 @@ namespace cinema_web_app.Areas.Identity.Pages.Account
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
                     }
 
-                    // Assign ApplicationAdmin role
+                    // Assign Customer role
                     await _userManager.AddToRoleAsync(user, "Customer");
 
                     await _signInManager.SignInAsync(user, false);

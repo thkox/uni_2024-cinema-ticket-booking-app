@@ -49,7 +49,8 @@ namespace cinema_web_app.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+
+            returnUrl ??= Url.Content("~/ApplicationAdmins/UsersByRole?role=ContentAppAdmin");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
@@ -82,11 +83,16 @@ namespace cinema_web_app.Areas.Identity.Pages.Account
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
                     }
 
-                    // Assign ApplicationAdmin role
+                    // Assign ContentAppAdmin role
                     await _userManager.AddToRoleAsync(user, "ContentAppAdmin");
 
-                    await _signInManager.SignInAsync(user, false);
-                    return LocalRedirect(returnUrl);
+                    // if user is not already logged in
+                    if (_signInManager.IsSignedIn(User))
+                    {
+                        return LocalRedirect(returnUrl);
+                    }
+                    // await _signInManager.SignInAsync(user, false);
+                    // return LocalRedirect(returnUrl);
                 }
 
                 foreach (var error in result.Errors)
