@@ -31,8 +31,10 @@ var showCinemaColumn = ViewData["ShowCinemaColumn"] as bool? ?? false;
                     _ => "/Account/RegisterCustomer"
                     };
                 }
-                
-                <a asp-area="Identity" asp-page="@pagePath" class="btn btn-primary">Create New @role</a>
+                @if (role != "Customer")
+                {
+                    <a asp-area="Identity" asp-page="@pagePath" class="btn btn-primary">Create New @role</a>
+                }
             </p>
             <table class="table">
                 <thead>
