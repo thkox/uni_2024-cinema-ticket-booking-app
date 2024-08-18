@@ -6,9 +6,12 @@ ViewData["Title"] = "Coming Soon Movies";
 
 <h1>Coming Soon Movies</h1>
 
-<p>
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
-</p>
+@if (User.Identity.IsAuthenticated && (User.IsInRole("ContentAppAdmin") || User.IsInRole("ApplicationAdmin")))
+{
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Create New</a>
+    </p>
+}
 
 <div class="filters">
     <label for="titleFilter">Title:</label>
