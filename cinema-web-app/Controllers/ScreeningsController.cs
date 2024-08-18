@@ -22,7 +22,10 @@ namespace cinema_web_app.Controllers
         // GET: Screenings
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Screenings.Include(s => s.Movie).Include(s => s.ScreeningRoom);
+            var applicationDbContext = _context.Screenings
+                .Include(s => s.Movie)
+                .Include(s => s.ScreeningRoom)
+                .ThenInclude(s => s.Cinema);
             return View(await applicationDbContext.ToListAsync());
         }
 
