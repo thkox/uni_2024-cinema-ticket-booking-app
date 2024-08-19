@@ -83,7 +83,7 @@
                                 <tbody>
                                     @foreach (var item in cinemaGroup.OrderBy(s => s.StartTime))
                                     {
-                                        var availableSeats = item.ScreeningRoom.TotalNoOfSeats - (item.Reservations?.Sum(r => r.NoOfBookedSeats) ?? 0);
+                                        var availableSeats = item.RemainingNoOfSeats;
                                         <tr>
                                             <td>@item.StartTime.ToString("MMMM d, yyyy")</td>
                                             <td>@item.StartTime.ToString("h:mm tt")</td>
