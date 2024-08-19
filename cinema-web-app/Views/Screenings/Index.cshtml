@@ -48,7 +48,7 @@
                                 <th>
                                     Remaining No Of Seats
                                 </th>
-                                @if (isUserCinema)
+                                @if (isUserCinema || User.IsInRole("ApplicationAdmin"))
                                 {
                                     <th>
                                         Actions
@@ -75,7 +75,7 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.RemainingNoOfSeats)
                                     </td>
-                                    @if (isUserCinema)
+                                    @if (isUserCinema || User.IsInRole("ApplicationAdmin"))
                                     {
                                         <td>
                                             <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
