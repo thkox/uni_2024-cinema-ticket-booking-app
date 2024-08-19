@@ -1,8 +1,8 @@
 @page
-@model cinema_web_app.Areas.Identity.Pages.Account.RegisterCustomer
+@model RegisterCustomer
 
 @{
-ViewData["Title"] = "Register Content App Admin";
+    ViewData["Title"] = "Register Customer";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -10,7 +10,7 @@ ViewData["Title"] = "Register Content App Admin";
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" method="post">
-            <h2>Create a new Content App Admin account.</h2>
+            <h2>Create a new account.</h2>
             <hr/>
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
@@ -44,5 +44,5 @@ ViewData["Title"] = "Register Content App Admin";
 </div>
 
 @section Scripts {
-<partial name="_ValidationScriptsPartial"/>
+    <partial name="_ValidationScriptsPartial"/>
 }

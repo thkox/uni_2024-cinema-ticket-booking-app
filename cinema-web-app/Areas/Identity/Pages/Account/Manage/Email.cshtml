@@ -1,8 +1,8 @@
 ﻿@page
 @model EmailModel
 @{
-ViewData["Title"] = "Manage Email";
-ViewData["ActivePage"] = ManageNavPages.Email;
+    ViewData["Title"] = "Manage Email";
+    ViewData["ActivePage"] = ManageNavPages.Email;
 }
 
 <div class="container-fluid">
@@ -10,7 +10,7 @@ ViewData["ActivePage"] = ManageNavPages.Email;
         <!-- Sidebar -->
         <nav class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar">
             <div class="position-sticky pt-3">
-                <partial name="_ManageNav" />
+                <partial name="_ManageNav"/>
             </div>
         </nav>
 
@@ -38,19 +38,19 @@ ViewData["ActivePage"] = ManageNavPages.Email;
 
                         @if (Model.IsEmailConfirmed)
                         {
-                        <div class="form-floating mb-3 input-group">
-                            <input asp-for="Email" class="form-control" placeholder="Your email address" disabled/>
-                            <span class="input-group-text text-success font-weight-bold">✓</span>
-                            <label asp-for="Email" class="form-label"></label>
-                        </div>
+                            <div class="form-floating mb-3 input-group">
+                                <input asp-for="Email" class="form-control" placeholder="Your email address" disabled/>
+                                <span class="input-group-text text-success font-weight-bold">✓</span>
+                                <label asp-for="Email" class="form-label"></label>
+                            </div>
                         }
                         else
                         {
-                        <div class="form-floating mb-3">
-                            <input asp-for="Email" class="form-control" placeholder="Your email address" disabled/>
-                            <label asp-for="Email" class="form-label"></label>
-                            <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
-                        </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Email" class="form-control" placeholder="Your email address" disabled/>
+                                <label asp-for="Email" class="form-label"></label>
+                                <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
+                            </div>
                         }
 
                         <div class="form-floating mb-3">
@@ -68,5 +68,5 @@ ViewData["ActivePage"] = ManageNavPages.Email;
 </div>
 
 @section Scripts {
-<partial name="_ValidationScriptsPartial"/>
+    <partial name="_ValidationScriptsPartial"/>
 }

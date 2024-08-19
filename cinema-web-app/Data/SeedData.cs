@@ -56,8 +56,8 @@ namespace cinema_web_app.Data
             {
                 var cinemas = new List<Cinema>
                 {
-                    new Cinema { Name = "Cinema One", Address = "123 Movie St", City = "Movietown", ZipCode = "12345", Email = "info@cinemaone.com", NoOfScreeningRooms = 5 },
-                    new Cinema { Name = "Cinema Two", Address = "456 Film Rd", City = "Filmtown", ZipCode = "67890", Email = "info@cinematwo.com", NoOfScreeningRooms = 3 }
+                    new Cinema { Name = "Cinema One", Address = "123 Movie St", City = "Movietown", ZipCode = "12345", Email = "info@cinemaone.com" },
+                    new Cinema { Name = "Cinema Two", Address = "456 Film Rd", City = "Filmtown", ZipCode = "67890", Email = "info@cinematwo.com" }
                 };
                 context.Cinemas.AddRange(cinemas);
                 await context.SaveChangesAsync();
@@ -143,7 +143,7 @@ namespace cinema_web_app.Data
                         CinemaId = cinemas[0].Id,
                         UserId = cinemaAdminUser1.Id,
                         Title = "New Movie Release",
-                        Message = "We are excited to announce the release of Movie One!",
+                        Message = "We are excited to announce the release of 'Doctor Strange in the Multiverse of Madness'!",
                         PublicationDate = DateTime.UtcNow.AddDays(-10)
                     },
                     new Announcement
@@ -151,7 +151,7 @@ namespace cinema_web_app.Data
                         CinemaId = cinemas[1].Id,
                         UserId = cinemaAdminUser2.Id,
                         Title = "Special Screening",
-                        Message = "Join us for a special screening of Movie Two.",
+                        Message = "Join us for a special screening of 'Indiana Jones and the Dial of Destiny'.",
                         PublicationDate = DateTime.UtcNow.AddDays(-5) 
                     }
                 };

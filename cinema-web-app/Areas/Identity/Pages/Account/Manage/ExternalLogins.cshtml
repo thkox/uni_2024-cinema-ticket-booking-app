@@ -10,7 +10,7 @@
         <!-- Sidebar -->
         <nav class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar">
             <div class="position-sticky pt-3">
-                <partial name="_ManageNav" />
+                <partial name="_ManageNav"/>
             </div>
         </nav>
 
@@ -28,10 +28,10 @@
                     <h3>Registered Logins</h3>
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th>Provider</th>
-                                <th>Actions</th>
-                            </tr>
+                        <tr>
+                            <th>Provider</th>
+                            <th>Actions</th>
+                        </tr>
                         </thead>
                         <tbody>
                         @foreach (var login in Model.CurrentLogins)

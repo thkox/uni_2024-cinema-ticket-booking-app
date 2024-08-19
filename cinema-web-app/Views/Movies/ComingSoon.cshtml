@@ -1,14 +1,17 @@
-@model IEnumerable<cinema_web_app.Models.Movie>
+@model IEnumerable<Movie>
 
 @{
-ViewData["Title"] = "Coming Soon Movies";
+    ViewData["Title"] = "Coming Soon Movies";
 }
 
 <h1>Coming Soon Movies</h1>
 
-<p>
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
-</p>
+@if (User.Identity.IsAuthenticated && (User.IsInRole("ContentAppAdmin") || User.IsInRole("ApplicationAdmin")))
+{
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Create New</a>
+    </p>
+}
 
 <div class="filters">
     <label for="titleFilter">Title:</label>
@@ -23,7 +26,7 @@ ViewData["Title"] = "Coming Soon Movies";
         <option value="">None</option>
         @foreach (var genre in Model.Select(m => m.Genre.Name).Distinct())
         {
-        <option value="@genre">@genre</option>
+            <option value="@genre">@genre</option>
         }
     </select>
 
@@ -39,22 +42,27 @@ ViewData["Title"] = "Coming Soon Movies";
 </div>
 
 <div class="movie-cards" id="moviesContainer">
-    @foreach (var item in Model) {
-    <div class="card movie-card">
-        <img src="@item.ImageUrl" class="card-img-top" alt="@item.Title">
-        <div class="card-body">
-            <h5 class="card-title">@item.Title</h5>
-            <p class="card-text content">@item.Content</p>
-            <p class="card-text"><strong>Release Date:</strong> <span class="release-date">@item.ReleaseDate.ToString("yyyy-MM-dd")</span></p>
-            <p class="card-text"><strong>Genre:</strong> <span class="genre">@item.Genre.Name</span></p>
-            <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">More Info</a>
+    @foreach (var item in Model)
+    {
+        <div class="card movie-card">
+            <img src="@item.ImageUrl" class="card-img-top" alt="@item.Title">
+            <div class="card-body">
+                <h5 class="card-title">@item.Title</h5>
+                <p class="card-text content">@item.Content</p>
+                <p class="card-text">
+                    <strong>Release Date:</strong> <span class="release-date">@item.ReleaseDate.ToString("yyyy-MM-dd")</span>
+                </p>
+                <p class="card-text">
+                    <strong>Genre:</strong> <span class="genre">@item.Genre.Name</span>
+                </p>
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">More Info</a>
+            </div>
         </div>
-    </div>
     }
 </div>
 
 @section Scripts {
-<script>
+    <script>
     function filterMovies() {
         var titleFilter = document.getElementById('titleFilter').value;
         var genreFilter = document.getElementById('genreFilter').value.toLowerCase();
@@ -163,7 +171,7 @@ ViewData["Title"] = "Coming Soon Movies";
 
     .movie-cards {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(4, minmax(250px, 1fr));
         gap: 20px;
     }
 

@@ -1,4 +1,4 @@
-@model cinema_web_app.Models.ReservationViewModel
+@model ReservationViewModel
 
 @{
     ViewData["Title"] = "Book Tickets";
@@ -17,6 +17,7 @@
                 <i class="fas fa-check-circle"></i> @ViewData["SuccessMessage"]
             </div>
         }
+
         @if (ViewData["ErrorMessage"] != null)
         {
             <div class="alert alert-danger">
@@ -25,10 +26,10 @@
         }
 
         <form asp-action="BookTickets" method="post">
-            <input type="hidden" asp-for="MovieId" />
-            <input type="hidden" asp-for="CinemaId" />
-            <input type="hidden" asp-for="ScreeningId" />
-            <input type="hidden" asp-for="ScreeningDate" />
+            <input type="hidden" asp-for="MovieId"/>
+            <input type="hidden" asp-for="CinemaId"/>
+            <input type="hidden" asp-for="ScreeningId"/>
+            <input type="hidden" asp-for="ScreeningDate"/>
 
             <div class="row">
                 <!-- Steps Column -->
@@ -83,7 +84,7 @@
                                     <h5>Choose Seats</h5>
                                 </div>
                                 <div class="card-body">
-                                    <input type="number" id="noOfSeats" name="NoOfSeats" class="form-control" min="1" max="8" value="1" disabled />
+                                    <input type="number" id="noOfSeats" name="NoOfSeats" class="form-control" min="1" max="8" value="1" disabled/>
                                 </div>
                             </div>
                         </div>
@@ -97,15 +98,15 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="cardNumber">Card Number</label>
-                                        <input type="text" id="cardNumber" name="CardNumber" class="form-control" placeholder="Enter card number" required />
+                                        <input type="text" id="cardNumber" name="CardNumber" class="form-control" placeholder="Enter card number" required/>
                                     </div>
                                     <div class="form-group">
                                         <label for="cardExpiry">Expiry Date</label>
-                                        <input type="text" id="cardExpiry" name="CardExpiry" class="form-control" placeholder="MM/YY" required />
+                                        <input type="text" id="cardExpiry" name="CardExpiry" class="form-control" placeholder="MM/YY" required/>
                                     </div>
                                     <div class="form-group">
                                         <label for="cardCVC">CVC</label>
-                                        <input type="text" id="cardCVC" name="CardCVC" class="form-control" placeholder="CVC" required />
+                                        <input type="text" id="cardCVC" name="CardCVC" class="form-control" placeholder="CVC" required/>
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +145,7 @@
 </div>
 
 @section Scripts {
-<script>
+    <script>
     $(document).ready(function () {
         function initializeSteps() {
             var movieId = $('#movieSelect').val();

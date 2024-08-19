@@ -1,60 +1,101 @@
-@model IEnumerable<cinema_web_app.Models.Screening>
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Screening>
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
 
 @{
     ViewData["Title"] = "Screenings";
+    var userCinemaId = (Guid?)ViewData["UserCinemaId"];
 }
 
 <h1>Screenings</h1>
 
-<h6>
-    <a asp-action="Create">Create New</a>
-</h6>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Movie)
-            </th>
-            <th>
-                Start Time
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Movie.Duration)
-            </th>
-            <th>
-                Screening Room
-            </th>
-            <th>
-                Remaining No Of Seats
-            </th>
-            <th>
-                Actions
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Movie.Title)
-            </td>
-            <td>
-                @item.StartTime.ToString("yyyy-MM-dd HH:mm")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Movie.Duration) minutes
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ScreeningRoom.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RemainingNoOfSeats)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+
+<div class="mb-4">
+    @if (Model != null && Model.Any())
+    {
+        @foreach (var cinemaGroup in Model.GroupBy(s => s.ScreeningRoom.Cinema))
+        {
+            var cinema = cinemaGroup.Key;
+            var isUserCinema = userCinemaId == cinema.Id;
+            <div class="card mb-3">
+                <div class="card-header">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-@cinema.Id" aria-expanded="@isUserCinema" aria-controls="collapse-@cinema.Id">
+                        <h5 class="mb-0">@cinema.Name</h5>
+                    </button>
+                </div>
+                <div id="collapse-@cinema.Id" class="collapse @(isUserCinema ? "show" : "")">
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Movie)
+                                </th>
+                                <th>
+                                    Start Time
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Movie.Duration)
+                                </th>
+                                <th>
+                                    Screening Room
+                                </th>
+                                <th>
+                                    Remaining No Of Seats
+                                </th>
+                                @if (isUserCinema || User.IsInRole("ApplicationAdmin"))
+                                {
+                                    <th>
+                                        Actions
+                                    </th>
+                                }
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var item in cinemaGroup.OrderBy(s => s.StartTime))
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Movie.Title)
+                                    </td>
+                                    <td>
+                                        @item.StartTime.ToString("yyyy-MM-dd HH:mm")
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Movie.Duration) minutes
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ScreeningRoom.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RemainingNoOfSeats)
+                                    </td>
+                                    @if (isUserCinema || User.IsInRole("ApplicationAdmin"))
+                                    {
+                                        <td>
+                                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No screenings available.</p>
+    }
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

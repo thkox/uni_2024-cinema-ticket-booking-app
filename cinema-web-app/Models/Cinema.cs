@@ -8,7 +8,6 @@ public class Cinema
     public string City { get; set; }
     public string ZipCode { get; set; }
     public string Email { get; set; }
-    public int NoOfScreeningRooms { get; set; }
 
     // Navigation properties
     public ICollection<ScreeningRoom> ScreeningRooms { get; set; }

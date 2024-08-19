@@ -1,0 +1,83 @@
+﻿@model IEnumerable<UserViewModel>
+
+@{
+    ViewData["Title"] = "Manage Users";
+    var showCinemaColumn = ViewData["ShowCinemaColumn"] as bool? ?? false;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+            <div class="position-sticky pt-3">
+                <partial name="_UserRolesNav"/>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h3">@ViewData["Role"] Users</h1>
+            </div>
+            <p>
+                @{
+                    var role = ViewData["Role"]?.ToString();
+                    var pagePath = role switch
+                    {
+                        "Customer" => "/Account/RegisterCustomer",
+                        "ApplicationAdmin" => "/Account/RegisterApplicationAdmin",
+                        "ContentAppAdmin" => "/Account/RegisterContentAppAdmin",
+                        "ContentCinemaAdmin" => "/Account/RegisterContentCinemaAdmin",
+                        _ => "/Account/RegisterCustomer"
+                    };
+                }
+                @if (role != "Customer")
+                {
+                    <a asp-area="Identity" asp-page="@pagePath" class="btn btn-primary">Create New @role</a>
+                }
+            </p>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    @if (showCinemaColumn)
+                    {
+                        <th>Cinemas</th>
+                        <!-- New column for Cinema Names -->
+                    }
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Email</td>
+                        <td>@user.FirstName</td>
+                        <td>@user.LastName</td>
+                        @if (showCinemaColumn)
+                        {
+                            <td>@string.Join(", ", user.CinemaNames)</td>
+                            <!-- Display Cinema Names -->
+                        }
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@user.UserId" class="btn btn-warning">Edit</a>
+                            <a asp-action="Details" asp-route-id="@user.UserId" class="btn btn-info">Details</a>
+
+                            @* Hide delete button if the user is the currently logged-in user *@
+                            @if (User.Identity.IsAuthenticated && User.Identity.Name != user.Email)
+                            {
+                                <form asp-action="Delete" asp-route-id="@user.UserId" asp-route-role="@ViewData["Role"]" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </main>
+    </div>
+</div>

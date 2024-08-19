@@ -1,20 +1,20 @@
-@model cinema_web_app.Models.Movie
+@model Movie
 
 @{
     ViewData["Title"] = "Edit Movie";
 }
 
 <h1>Edit Movie</h1>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <span class="text-danger">@ViewBag.Error</span><br />
-            <input type="hidden" asp-for="Id" />
+            <span class="text-danger">@ViewBag.Error</span><br/>
+            <input type="hidden" asp-for="Id"/>
             <div class="form-group mb-3">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" class="form-control"/>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
@@ -24,36 +24,36 @@
             </div>
             <div class="form-group mb-3">
                 <label asp-for="Duration" class="control-label"></label>
-                <input asp-for="Duration" class="form-control" />
+                <input asp-for="Duration" class="form-control"/>
                 <span asp-validation-for="Duration" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
                 <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
+                <input asp-for="Content" class="form-control"/>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <input asp-for="Description" class="form-control"/>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
-                <label asp-for="ReleaseDate" class="control-label"></label>
-                <input asp-for="ReleaseDate" class="form-control" />
+                <label class="control-label">Release Date</label>
+                <input asp-for="ReleaseDate" class="form-control" type="date"/>
                 <span asp-validation-for="ReleaseDate" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
                 <label asp-for="Director" class="control-label"></label>
-                <input asp-for="Director" class="form-control" />
+                <input asp-for="Director" class="form-control"/>
                 <span asp-validation-for="Director" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
+                <label class="control-label">Image Url</label>
+                <input asp-for="ImageUrl" class="form-control"/>
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -64,5 +64,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
