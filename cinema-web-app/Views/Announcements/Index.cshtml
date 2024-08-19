@@ -34,12 +34,12 @@
                             <small class="text-muted">By: @Html.DisplayFor(modelItem => item.User.FirstName) @Html.DisplayFor(modelItem => item.User.LastName)</small>
                         </p>
                         <div>
-                            @if (User.IsInRole("ApplicationAdmin") || userCinemaId == item.CinemaId)
+                            @if (userCinemaId == item.CinemaId)
                             {
                                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
                             }
                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
-                            @if (User.IsInRole("ApplicationAdmin") || userCinemaId == item.CinemaId)
+                            @if (userCinemaId == item.CinemaId)
                             {
                                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
                             }

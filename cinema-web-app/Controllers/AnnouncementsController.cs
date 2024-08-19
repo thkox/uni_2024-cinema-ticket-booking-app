@@ -20,7 +20,6 @@ public class AnnouncementsController : Controller
     }
 
     // GET: Announcements/Index
-    // GET: Announcements/Index
     public async Task<IActionResult> Index()
     {
         Guid? userCinemaId = null;
@@ -157,7 +156,7 @@ public class AnnouncementsController : Controller
     }
 
     // GET: Announcements/Delete/5
-    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin, ContentAppAdmin")]
+    [Authorize(Roles = "ContentCinemaAdmin")]
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null) return NotFound();
@@ -175,7 +174,7 @@ public class AnnouncementsController : Controller
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin, ContentAppAdmin")]
+    [Authorize(Roles = "ContentCinemaAdmin")]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var announcement = await _context.Announcements.FindAsync(id);
