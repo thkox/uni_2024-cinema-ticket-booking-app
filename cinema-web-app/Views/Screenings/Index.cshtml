@@ -1,7 +1,13 @@
 @model IEnumerable<cinema_web_app.Models.Screening>
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.EntityFrameworkCore
+@inject UserManager<cinema_web_app.Models.ApplicationUser> UserManager
+@inject SignInManager<cinema_web_app.Models.ApplicationUser> SignInManager
 
 @{
     ViewData["Title"] = "Screenings";
+    var userCinemaId = (Guid?)ViewData["UserCinemaId"];
 }
 
 <h1>Screenings</h1>
@@ -16,13 +22,14 @@
         @foreach (var cinemaGroup in Model.GroupBy(s => s.ScreeningRoom.Cinema))
         {
             var cinema = cinemaGroup.Key;
+            var isUserCinema = userCinemaId == cinema.Id;
             <div class="card mb-3">
                 <div class="card-header">
-                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-@cinema.Id" aria-expanded="false" aria-controls="collapse-@cinema.Id">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-@cinema.Id" aria-expanded="@isUserCinema" aria-controls="collapse-@cinema.Id">
                         <h5 class="mb-0">@cinema.Name</h5>
                     </button>
                 </div>
-                <div id="collapse-@cinema.Id" class="collapse">
+                <div id="collapse-@cinema.Id" class="collapse @(isUserCinema ? "show" : "")">
                     <div class="card-body">
                         <table class="table table-striped">
                             <thead>
@@ -42,9 +49,12 @@
                                 <th>
                                     Remaining No Of Seats
                                 </th>
-                                <th>
-                                    Actions
-                                </th>
+                                @if (isUserCinema)
+                                {
+                                    <th>
+                                        Actions
+                                    </th>
+                                }
                             </tr>
                             </thead>
                             <tbody>
@@ -66,10 +76,13 @@
                                         <td>
                                             @Html.DisplayFor(modelItem => item.RemainingNoOfSeats)
                                         </td>
-                                        <td>
-                                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>&nbsp;
-                                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                        </td>
+                                        @if (isUserCinema)
+                                        {
+                                            <td>
+                                                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                            </td>
+                                        }
                                     </tr>
                                 }
                             </tbody>
