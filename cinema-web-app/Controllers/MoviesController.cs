@@ -20,6 +20,7 @@ public class MoviesController : Controller
     }
 
     // GET: Movies/PlayingNow
+    [AllowAnonymous]
     public IActionResult PlayingNow()
     {
         var today = DateTime.UtcNow.Date;
@@ -31,6 +32,7 @@ public class MoviesController : Controller
     }
 
     // GET: Movies/ComingSoon
+    [AllowAnonymous]
     public IActionResult ComingSoon()
     {
         var today = DateTime.UtcNow.Date;
@@ -42,7 +44,7 @@ public class MoviesController : Controller
     }
 
     // GET: Movies
-    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin, ContentAppAdmin")]
+    [Authorize(Roles = "ApplicationAdmin, ContentAppAdmin")]
     public async Task<IActionResult> Index()
     {
         var applicationDbContext = _context.Movies.Include(m => m.Genre);
@@ -129,7 +131,7 @@ public class MoviesController : Controller
     }
 
     // GET: Movies/Edit/5
-    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin, ContentAppAdmin")]
+    [Authorize(Roles = "ApplicationAdmin, ContentAppAdmin")]
     public async Task<IActionResult> Edit(Guid? id)
     {
         if (id == null) return NotFound();
@@ -145,7 +147,7 @@ public class MoviesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin, ContentAppAdmin")]
+    [Authorize(Roles = "ApplicationAdmin, ContentAppAdmin")]
     public async Task<IActionResult> Edit(Guid id,
         [Bind("Id,Title,GenreId,Duration,Content,Description,ReleaseDate,Director,ImageUrl")] Movie movie)
     {
@@ -187,7 +189,7 @@ public class MoviesController : Controller
     }
 
     // GET: Movies/Delete/5
-    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin, ContentAppAdmin")]
+    [Authorize(Roles = "ApplicationAdmin, ContentAppAdmin")]
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null) return NotFound();
@@ -204,7 +206,7 @@ public class MoviesController : Controller
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin, ContentAppAdmin")]
+    [Authorize(Roles = "ApplicationAdmin, ContentAppAdmin")]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var movie = await _context.Movies.Where(m => m.Id == id).Include(m => m.Screenings)
