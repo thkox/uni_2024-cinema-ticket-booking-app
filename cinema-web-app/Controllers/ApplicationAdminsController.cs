@@ -108,6 +108,7 @@ public class ApplicationAdminsController : Controller
     // POST: ApplicationAdmin/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "ApplicationAdmin")]
     public async Task<IActionResult> Create(
         [Bind("FirstName,LastName,Email,Password,ConfirmPassword,Role")] CreateUserViewModel model)
     {
