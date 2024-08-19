@@ -182,7 +182,7 @@ public class ReservationsController : Controller
     // POST: Reservations/BookTickets
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [Authorize(Roles = "Customers")]
+    [Authorize(Roles = "Customer")]
     public async Task<IActionResult> BookTickets(ReservationViewModel model)
     {
         if (User.Identity.IsAuthenticated)
