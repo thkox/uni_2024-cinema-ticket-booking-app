@@ -286,9 +286,4 @@ public class ReservationsController : Controller
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
-
-    private bool ReservationExists(Guid id)
-    {
-        return _context.Reservations.Any(e => e.Id == id);
-    }
 }
