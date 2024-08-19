@@ -56,8 +56,8 @@ namespace cinema_web_app.Data
             {
                 var cinemas = new List<Cinema>
                 {
-                    new Cinema { Name = "Cinema One", Address = "123 Movie St", City = "Movietown", ZipCode = "12345", Email = "info@cinemaone.com", NoOfScreeningRooms = 5 },
-                    new Cinema { Name = "Cinema Two", Address = "456 Film Rd", City = "Filmtown", ZipCode = "67890", Email = "info@cinematwo.com", NoOfScreeningRooms = 3 }
+                    new Cinema { Name = "Cinema One", Address = "123 Movie St", City = "Movietown", ZipCode = "12345", Email = "info@cinemaone.com" },
+                    new Cinema { Name = "Cinema Two", Address = "456 Film Rd", City = "Filmtown", ZipCode = "67890", Email = "info@cinematwo.com" }
                 };
                 context.Cinemas.AddRange(cinemas);
                 await context.SaveChangesAsync();
