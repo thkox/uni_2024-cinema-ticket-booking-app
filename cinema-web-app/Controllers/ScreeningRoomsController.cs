@@ -17,6 +17,7 @@ public class ScreeningRoomsController : Controller
     }
 
     // GET: ScreeningRooms
+    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin")]
     public async Task<IActionResult> Index()
     {
         var applicationDbContext = _context.ScreeningRooms.Include(s => s.Cinema);
@@ -37,7 +38,7 @@ public class ScreeningRoomsController : Controller
     }
 
     // GET: ScreeningRooms/Create
-    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin, ContentAppAdmin")]
+    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin")]
     public IActionResult Create()
     {
         ViewData["CinemaId"] = new SelectList(_context.Cinemas, "Id", "Name");
@@ -49,7 +50,7 @@ public class ScreeningRoomsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin, ContentAppAdmin")]
+    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin")]
     public async Task<IActionResult> Create([Bind("Id,CinemaId,Name,TotalNoOfSeats,Is3D")] ScreeningRoom screeningRoom)
     {
         ModelState.Remove(nameof(ScreeningRoom.Cinema));
@@ -68,7 +69,7 @@ public class ScreeningRoomsController : Controller
     }
 
     // GET: ScreeningRooms/Edit/5
-    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin, ContentAppAdmin")]
+    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin")]
     public async Task<IActionResult> Edit(Guid? id)
     {
         if (id == null) return NotFound();
@@ -84,7 +85,7 @@ public class ScreeningRoomsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin, ContentAppAdmin")]
+    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin")]
     public async Task<IActionResult> Edit(Guid id,
         [Bind("Id,CinemaId,Name,TotalNoOfSeats,Is3D")] ScreeningRoom screeningRoom)
     {
@@ -115,7 +116,7 @@ public class ScreeningRoomsController : Controller
     }
 
     // GET: ScreeningRooms/Delete/5
-    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin, ContentAppAdmin")]
+    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin")]
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null) return NotFound();
@@ -132,7 +133,7 @@ public class ScreeningRoomsController : Controller
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin, ContentAppAdmin")]
+    [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin")]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var screeningRoom = await _context.ScreeningRooms.FindAsync(id);
