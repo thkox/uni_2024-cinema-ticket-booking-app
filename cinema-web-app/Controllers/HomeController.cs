@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using cinema_web_app.Data;
 using cinema_web_app.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,7 @@ public class HomeController : Controller
     }
 
     // GET: Home/Index
+    [AllowAnonymous]
     public async Task<IActionResult> Index()
     {
         var today = DateTime.UtcNow.Date;
@@ -34,6 +36,7 @@ public class HomeController : Controller
         return View(model);
     }
 
+    [AllowAnonymous]
     public IActionResult Privacy()
     {
         return View();
