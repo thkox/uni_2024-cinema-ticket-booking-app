@@ -143,7 +143,7 @@ namespace cinema_web_app.Data
                         CinemaId = cinemas[0].Id,
                         UserId = cinemaAdminUser1.Id,
                         Title = "New Movie Release",
-                        Message = "We are excited to announce the release of Movie One!",
+                        Message = "We are excited to announce the release of 'Doctor Strange in the Multiverse of Madness'!",
                         PublicationDate = DateTime.UtcNow.AddDays(-10)
                     },
                     new Announcement
@@ -151,7 +151,7 @@ namespace cinema_web_app.Data
                         CinemaId = cinemas[1].Id,
                         UserId = cinemaAdminUser2.Id,
                         Title = "Special Screening",
-                        Message = "Join us for a special screening of Movie Two.",
+                        Message = "Join us for a special screening of 'Indiana Jones and the Dial of Destiny'.",
                         PublicationDate = DateTime.UtcNow.AddDays(-5) 
                     }
                 };
