@@ -33,7 +33,7 @@ namespace cinema_web_app.Controllers
         }
 
         // GET: Cinemas/Create
-        [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin")]
+        [Authorize(Roles = "ApplicationAdmin, ContentAppAdmin")]
         public IActionResult Create()
         {
             return View();
@@ -44,7 +44,7 @@ namespace cinema_web_app.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin")]
+        [Authorize(Roles = "ApplicationAdmin, ContentAppAdmin")]
         public async Task<IActionResult> Create([Bind("Id,Name,Address,City,ZipCode,Email,NoOfScreeningRooms")] Cinema cinema)
         {
             ModelState.Remove(nameof(Cinema.Announcements));
@@ -62,7 +62,7 @@ namespace cinema_web_app.Controllers
         }
 
         // GET: Cinemas/Edit/5
-        [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin")]
+        [Authorize(Roles = "ApplicationAdmin, ContentAppAdmin")]
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -83,7 +83,7 @@ namespace cinema_web_app.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin")]
+        [Authorize(Roles = "ApplicationAdmin, ContentAppAdmin")]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Address,City,ZipCode,Email,NoOfScreeningRooms")] Cinema cinema)
         {
             ModelState.Remove(nameof(Cinema.Announcements));
@@ -119,7 +119,7 @@ namespace cinema_web_app.Controllers
         }
 
         // GET: Cinemas/Delete/5
-        [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin")]
+        [Authorize(Roles = "ApplicationAdmin, ContentAppAdmin")]
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -141,7 +141,7 @@ namespace cinema_web_app.Controllers
         // POST: Cinemas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin")]
+        [Authorize(Roles = "ApplicationAdmin, ContentAppAdmin")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var cinema = await _context.Cinemas.FindAsync(id);
