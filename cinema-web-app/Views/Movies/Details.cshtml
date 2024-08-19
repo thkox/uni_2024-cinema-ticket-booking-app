@@ -48,7 +48,10 @@
             <div class="card-body">
                 <form asp-controller="Reservations" asp-action="BookTickets" method="get">
                     <input type="hidden" name="movieId" value="@Model.Id" />
-                    <button type="submit" class="btn btn-primary">Book Now</button>
+                    @if (User.IsInRole("Customer"))
+                    {
+                        <button type="submit" class="btn btn-primary">Book Now</button>
+                    }
                 </form>
             </div>
         </div>
