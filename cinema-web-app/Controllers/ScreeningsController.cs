@@ -7,26 +7,41 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using cinema_web_app.Data;
 using cinema_web_app.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace cinema_web_app.Controllers
 {
     public class ScreeningsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ScreeningsController(ApplicationDbContext context)
+        public ScreeningsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Screenings
         public async Task<IActionResult> Index()
         {
+            var userId = Guid.Parse(_userManager.GetUserId(User));
+            var user = await _userManager.Users
+                .Include(u => u.ContentCinemaAdmins)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            var userCinemaId = user?.ContentCinemaAdmins?.FirstOrDefault()?.CinemaId;
+
             var applicationDbContext = _context.Screenings
                 .Include(s => s.Movie)
                 .Include(s => s.ScreeningRoom)
                 .ThenInclude(s => s.Cinema);
-            return View(await applicationDbContext.ToListAsync());
+
+            var screenings = await applicationDbContext.ToListAsync();
+
+            ViewData["UserCinemaId"] = userCinemaId;
+
+            return View(screenings);
         }
 
         // GET: Screenings/Details/5
