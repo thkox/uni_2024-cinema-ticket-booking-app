@@ -22,9 +22,18 @@ namespace cinema_web_app.Controllers
             _userManager = userManager;
         }
 
-        // GET: Announcements
+        // GET: Announcements/Index
         public async Task<IActionResult> Index()
         {
+            var userId = Guid.Parse(_userManager.GetUserId(User));
+            var user = await _userManager.Users
+                .Include(u => u.ContentCinemaAdmins)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            var userCinemaId = user?.ContentCinemaAdmins?.FirstOrDefault()?.CinemaId;
+            
+            ViewData["UserCinemaId"] = userCinemaId;
+            
             var applicationDbContext = _context.Announcements.Include(a => a.Cinema).Include(a => a.User);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -36,6 +45,15 @@ namespace cinema_web_app.Controllers
             {
                 return NotFound();
             }
+            
+            var userId = Guid.Parse(_userManager.GetUserId(User));
+            var user = await _userManager.Users
+                .Include(u => u.ContentCinemaAdmins)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            var userCinemaId = user?.ContentCinemaAdmins?.FirstOrDefault()?.CinemaId;
+            
+            ViewData["UserCinemaId"] = userCinemaId;
 
             var announcement = await _context.Announcements
                 .Include(a => a.Cinema)

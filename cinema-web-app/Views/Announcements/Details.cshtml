@@ -1,7 +1,8 @@
 @model cinema_web_app.Models.Announcement
 
 @{
-ViewData["Title"] = @Model.Title;
+    ViewData["Title"] = @Model.Title;
+    var userCinemaId = (Guid?)ViewData["UserCinemaId"];
 }
 
 <div class="container mt-5">
@@ -21,7 +22,7 @@ ViewData["Title"] = @Model.Title;
     </div>
 
     <div class="d-flex justify-content-between">
-        @if (User.Identity.IsAuthenticated && (User.IsInRole("ApplicationAdmin") || User.IsInRole("ContentCinemaAdmin")))
+        @if (User.IsInRole("ApplicationAdmin") || userCinemaId == Model.CinemaId)
         {
             <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
         }

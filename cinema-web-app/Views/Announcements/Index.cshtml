@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Announcements";
     var orderedAnnouncements = Model.OrderByDescending(a => a.PublicationDate);
+    var userCinemaId = (Guid?)ViewData["UserCinemaId"];
 }
 
 <h1>Announcements</h1>
@@ -16,17 +17,17 @@
             <div class="col-12">
                 <div class="card-body">
                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
-                    <p class="card-text"><strong>Cinema:</strong> @item.Cinema.Name</p> <!-- Cinema Name -->
+                    <p class="card-text"><strong>Cinema:</strong> @item.Cinema.Name</p>
                     <p class="card-text">@Html.DisplayFor(modelItem => item.Message)</p>
                     <p class="card-text"><small class="text-muted">Published on: @Html.DisplayFor(modelItem => item.PublicationDate)</small></p>
                     <p class="card-text"><small class="text-muted">By: @Html.DisplayFor(modelItem => item.User.FirstName) @Html.DisplayFor(modelItem => item.User.LastName)</small></p>
                     <div>
-                        @if (User.Identity.IsAuthenticated && (User.IsInRole("ApplicationAdmin") || User.IsInRole("ContentCinemaAdmin")))
+                        @if (User.IsInRole("ApplicationAdmin") || userCinemaId == item.CinemaId)
                         {
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
                         }
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
-                        @if (User.Identity.IsAuthenticated && (User.IsInRole("ApplicationAdmin") || User.IsInRole("ContentCinemaAdmin")))
+                        @if (User.IsInRole("ApplicationAdmin") || userCinemaId == item.CinemaId)
                         {
                             <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
                         }
