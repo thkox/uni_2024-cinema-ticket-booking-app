@@ -1,7 +1,7 @@
-@model cinema_web_app.Models.Reservation
+@model Reservation
 
 @{
-ViewData["Title"] = "Reservation Details";
+    ViewData["Title"] = "Reservation Details";
 }
 
 <h1 class="mb-4">@ViewData["Title"]</h1>
@@ -75,8 +75,8 @@ ViewData["Title"] = "Reservation Details";
 </div>
 
 @section Scripts {
-<!-- Use the latest version of jsPDF from a reliable CDN -->
-<script>
+    <!-- Use the latest version of jsPDF from a reliable CDN -->
+    <script>
     document.getElementById('printButton').addEventListener('click', function () {
         window.print();
     });

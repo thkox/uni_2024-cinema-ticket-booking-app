@@ -1,8 +1,8 @@
 ﻿@page
 @model EnableAuthenticatorModel
 @{
-ViewData["Title"] = "Configure Authenticator App";
-ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+    ViewData["Title"] = "Configure Authenticator App";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
 <div class="container-fluid">
@@ -10,7 +10,7 @@ ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
         <!-- Sidebar -->
         <nav class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar">
             <div class="position-sticky pt-3">
-                <partial name="_ManageNav" />
+                <partial name="_ManageNav"/>
             </div>
         </nav>
 
@@ -70,12 +70,12 @@ ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 </div>
 
 @section Scripts {
-<partial name="_ValidationScriptsPartial"/>
+    <partial name="_ValidationScriptsPartial"/>
 
-<!-- Include the QR Code library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+    <!-- Include the QR Code library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
     $(document).ready(function () {
         // Generate the QR Code
         var qrCodeUrl = $('#qrCodeData').data('url');

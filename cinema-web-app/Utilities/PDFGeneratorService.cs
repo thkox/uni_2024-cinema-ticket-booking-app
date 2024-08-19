@@ -1,78 +1,75 @@
+using cinema_web_app.Models;
 using DinkToPdf;
 using DinkToPdf.Contracts;
-using cinema_web_app.Models;
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
 
-namespace cinema_web_app.Utilities
+namespace cinema_web_app.Utilities;
+
+public class PDFGeneratorService
 {
-    public class PDFGeneratorService
+    private readonly IConverter _converter;
+
+    public PDFGeneratorService(IConverter converter)
     {
-        private readonly IConverter _converter;
+        _converter = converter;
+    }
 
-        public PDFGeneratorService(IConverter converter)
+    public async Task<byte[]> GenerateReservationPdfAsync(Reservation reservation)
+    {
+        // Download the images
+        var movieImagePath = await DownloadImageAsync(reservation.Screening.Movie.ImageUrl);
+        var qrCodeUrl = $"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={reservation.ShortReferenceId}";
+        var qrCodePath = await DownloadImageAsync(qrCodeUrl);
+
+        var htmlContent = GenerateHtmlContent(reservation, movieImagePath, qrCodePath);
+
+        var doc = new HtmlToPdfDocument
         {
-            _converter = converter;
-        }
-
-        public async Task<byte[]> GenerateReservationPdfAsync(Reservation reservation)
-        {
-            // Download the images
-            var movieImagePath = await DownloadImageAsync(reservation.Screening.Movie.ImageUrl);
-            var qrCodeUrl = $"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={reservation.ShortReferenceId}";
-            var qrCodePath = await DownloadImageAsync(qrCodeUrl);
-
-            var htmlContent = GenerateHtmlContent(reservation, movieImagePath, qrCodePath);
-
-            var doc = new HtmlToPdfDocument
+            GlobalSettings = new GlobalSettings
             {
-                GlobalSettings = new GlobalSettings
+                ColorMode = ColorMode.Color,
+                Orientation = Orientation.Portrait,
+                PaperSize = PaperKind.A4
+            },
+            Objects =
+            {
+                new ObjectSettings
                 {
-                    ColorMode = ColorMode.Color,
-                    Orientation = Orientation.Portrait,
-                    PaperSize = PaperKind.A4
-                },
-                Objects = {
-                    new ObjectSettings
-                    {
-                        HtmlContent = htmlContent,
-                        WebSettings = { DefaultEncoding = "utf-8" },
-                        LoadSettings = { BlockLocalFileAccess = false }
-                    }
+                    HtmlContent = htmlContent,
+                    WebSettings = { DefaultEncoding = "utf-8" },
+                    LoadSettings = { BlockLocalFileAccess = false }
                 }
-            };
-
-            var pdfBytes = _converter.Convert(doc);
-
-            // Clean up temporary files
-            File.Delete(movieImagePath);
-            File.Delete(qrCodePath);
-
-            return pdfBytes;
-        }
-
-        private async Task<string> DownloadImageAsync(string imageUrl)
-        {
-            var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync(imageUrl);
-            response.EnsureSuccessStatusCode();
-
-            var fileName = Path.GetTempFileName(); // Create a temp file
-            var filePath = Path.ChangeExtension(fileName, ".jpg"); // Change extension based on image format
-
-            await using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-            {
-                await response.Content.CopyToAsync(fileStream);
             }
+        };
 
-            return filePath;
+        var pdfBytes = _converter.Convert(doc);
+
+        // Clean up temporary files
+        File.Delete(movieImagePath);
+        File.Delete(qrCodePath);
+
+        return pdfBytes;
+    }
+
+    private async Task<string> DownloadImageAsync(string imageUrl)
+    {
+        var httpClient = new HttpClient();
+        var response = await httpClient.GetAsync(imageUrl);
+        response.EnsureSuccessStatusCode();
+
+        var fileName = Path.GetTempFileName(); // Create a temp file
+        var filePath = Path.ChangeExtension(fileName, ".jpg"); // Change extension based on image format
+
+        await using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+        {
+            await response.Content.CopyToAsync(fileStream);
         }
 
-        private string GenerateHtmlContent(Reservation reservation, string movieImagePath, string qrCodePath)
-        {
-            var html = $@"
+        return filePath;
+    }
+
+    private string GenerateHtmlContent(Reservation reservation, string movieImagePath, string qrCodePath)
+    {
+        var html = $@"
             <!DOCTYPE html>
             <html>
             <head>
@@ -137,8 +134,6 @@ namespace cinema_web_app.Utilities
             </body>
             </html>";
 
-            return html;
-        }
-
+        return html;
     }
 }

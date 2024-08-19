@@ -1,6 +1,6 @@
 ﻿<div class="nav flex-column nav-pills">
-    <a class="nav-link @((ViewData["Role"] as string) == "ApplicationAdmin" ? "active" : "")" asp-action="UsersByRole" asp-route-role="ApplicationAdmin">ApplicationAdmins</a>
-    <a class="nav-link @((ViewData["Role"] as string) == "ContentAppAdmin" ? "active" : "")" asp-action="UsersByRole" asp-route-role="ContentAppAdmin">Content App Admins</a>
-    <a class="nav-link @((ViewData["Role"] as string) == "ContentCinemaAdmin" ? "active" : "")" asp-action="UsersByRole" asp-route-role="ContentCinemaAdmin">Content Cinema Admins</a>
-    <a class="nav-link @((ViewData["Role"] as string) == "Customer" ? "active" : "")" asp-action="UsersByRole" asp-route-role="Customer">Customers</a>
+    <a class="nav-link @(ViewData["Role"] as string == "ApplicationAdmin" ? "active" : "")" asp-action="UsersByRole" asp-route-role="ApplicationAdmin">ApplicationAdmins</a>
+    <a class="nav-link @(ViewData["Role"] as string == "ContentAppAdmin" ? "active" : "")" asp-action="UsersByRole" asp-route-role="ContentAppAdmin">Content App Admins</a>
+    <a class="nav-link @(ViewData["Role"] as string == "ContentCinemaAdmin" ? "active" : "")" asp-action="UsersByRole" asp-route-role="ContentCinemaAdmin">Content Cinema Admins</a>
+    <a class="nav-link @(ViewData["Role"] as string == "Customer" ? "active" : "")" asp-action="UsersByRole" asp-route-role="Customer">Customers</a>
 </div>
