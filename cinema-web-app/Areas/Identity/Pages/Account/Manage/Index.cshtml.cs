@@ -26,11 +26,9 @@ public class IndexModel : PageModel
 
     public string Username { get; set; }
 
-    [TempData]
-    public string StatusMessage { get; set; }
+    [TempData] public string StatusMessage { get; set; }
 
-    [BindProperty]
-    public InputModel Input { get; set; }
+    [BindProperty] public InputModel Input { get; set; }
 
     private async Task LoadAsync(ApplicationUser user)
     {
@@ -67,15 +65,9 @@ public class IndexModel : PageModel
             return Page();
         }
 
-        if (Input.FirstName != user.FirstName)
-        {
-            user.FirstName = Input.FirstName;
-        }
+        if (Input.FirstName != user.FirstName) user.FirstName = Input.FirstName;
 
-        if (Input.LastName != user.LastName)
-        {
-            user.LastName = Input.LastName;
-        }
+        if (Input.LastName != user.LastName) user.LastName = Input.LastName;
 
         var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
         if (Input.PhoneNumber != phoneNumber)

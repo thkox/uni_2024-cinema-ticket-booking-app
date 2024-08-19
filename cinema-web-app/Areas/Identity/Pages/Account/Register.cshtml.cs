@@ -97,9 +97,7 @@ public class RegisterModel : PageModel
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                {
                     return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
-                }
 
                 await _signInManager.SignInAsync(user, false);
                 return LocalRedirect(returnUrl);
@@ -167,7 +165,7 @@ public class RegisterModel : PageModel
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-        
+
         [Required]
         [Display(Name = "First Name")]
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "The First Name field can only contain letters.")]

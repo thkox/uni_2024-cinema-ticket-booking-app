@@ -1,4 +1,4 @@
-@model IEnumerable<cinema_web_app.Models.Reservation>
+@model IEnumerable<Reservation>
 
 @{
     ViewData["Title"] = "Index";
@@ -11,24 +11,25 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NoOfBookedSeats)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ShortReferenceId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Screening)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Customer)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NoOfBookedSeats)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShortReferenceId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Screening)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Customer)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.NoOfBookedSeats)
@@ -47,6 +48,6 @@
                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

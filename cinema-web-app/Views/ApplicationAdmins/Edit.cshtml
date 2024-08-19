@@ -1,8 +1,8 @@
-﻿@model cinema_web_app.Models.EditUserViewModel
+﻿@model EditUserViewModel
 
 @{
-ViewData["Title"] = "Edit User";
-var cinemas = ViewBag.Cinemas as List<cinema_web_app.Models.Cinema>;
+    ViewData["Title"] = "Edit User";
+    var cinemas = ViewBag.Cinemas as List<Cinema>;
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -11,35 +11,35 @@ var cinemas = ViewBag.Cinemas as List<cinema_web_app.Models.Cinema>;
     <div class="col-md-4">
         <form id="editForm" asp-action="Edit" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id"/>
             <div class="form-floating mb-3">
-                <input asp-for="FirstName" class="form-control" aria-required="true" placeholder="First Name" />
+                <input asp-for="FirstName" class="form-control" aria-required="true" placeholder="First Name"/>
                 <label asp-for="FirstName">First Name</label>
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="LastName" class="form-control" aria-required="true" placeholder="Last Name" />
+                <input asp-for="LastName" class="form-control" aria-required="true" placeholder="Last Name"/>
                 <label asp-for="LastName">Last Name</label>
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Email" class="form-control" aria-required="true" placeholder="Email" />
+                <input asp-for="Email" class="form-control" aria-required="true" placeholder="Email"/>
                 <label asp-for="Email">Email</label>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             @if (Model.IsContentCinemaAdmin)
             {
-            <div class="form-floating mb-3">
-                <select asp-for="CinemaId" class="form-control">
-                    <option value="">Select a cinema</option>
-                    @foreach (var cinema in cinemas)
-                    {
-                    <option value="@cinema.Id">@cinema.Name</option>
-                    }
-                </select>
-                <label asp-for="CinemaId">Cinema</label>
-                <span asp-validation-for="CinemaId" class="text-danger"></span>
-            </div>
+                <div class="form-floating mb-3">
+                    <select asp-for="CinemaId" class="form-control">
+                        <option value="">Select a cinema</option>
+                        @foreach (var cinema in cinemas)
+                        {
+                            <option value="@cinema.Id">@cinema.Name</option>
+                        }
+                    </select>
+                    <label asp-for="CinemaId">Cinema</label>
+                    <span asp-validation-for="CinemaId" class="text-danger"></span>
+                </div>
             }
             <div class="form-group mb-3">
                 <button type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
@@ -53,5 +53,5 @@ var cinemas = ViewBag.Cinemas as List<cinema_web_app.Models.Cinema>;
 </div>
 
 @section Scripts {
-@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

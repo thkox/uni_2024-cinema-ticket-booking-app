@@ -1,4 +1,4 @@
-﻿@model cinema_web_app.Models.UserViewModel
+﻿@model UserViewModel
 
 <h1>User Details</h1>
 
@@ -13,20 +13,21 @@
         <dd class="col-sm-9">@Model.Email</dd>
         @if (Model.Roles.FirstOrDefault() == "ContentCinemaAdmin")
         {
-        <dt class="col-sm-3">Cinemas</dt>
+            <dt class="col-sm-3">Cinemas</dt>
             @if (Model.CinemaNames.Count == 0)
             {
                 <dd class="col-sm-9">
                     No cinemas assigned
                 </dd>
-            } else
+            }
+            else
             {
                 <dd class="col-sm-9">
 
-                @foreach (var cinema in Model.CinemaNames)
-                {
-                    @cinema<br/>
-                }
+                    @foreach (var cinema in Model.CinemaNames)
+                    {
+                        @cinema<br/>
+                    }
                 </dd>
             }
         }

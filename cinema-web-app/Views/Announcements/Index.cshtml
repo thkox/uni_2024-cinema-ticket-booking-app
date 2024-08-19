@@ -1,4 +1,4 @@
-@model IEnumerable<cinema_web_app.Models.Announcement>
+@model IEnumerable<Announcement>
 
 @{
     ViewData["Title"] = "Announcements";
@@ -9,33 +9,45 @@
 <h1>Announcements</h1>
 <br/>
 
+@if (User.IsInRole("ContentCinemaAdmin"))
+{
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Create New Announcements</a>
+    </p>
+}
 <div class="container">
     @foreach (var item in orderedAnnouncements)
     {
-    <div class="card mb-4">
-        <div class="row no-gutters">
-            <div class="col-12">
-                <div class="card-body">
-                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
-                    <p class="card-text"><strong>Cinema:</strong> @item.Cinema.Name</p>
-                    <p class="card-text">@Html.DisplayFor(modelItem => item.Message)</p>
-                    <p class="card-text"><small class="text-muted">Published on: @Html.DisplayFor(modelItem => item.PublicationDate)</small></p>
-                    <p class="card-text"><small class="text-muted">By: @Html.DisplayFor(modelItem => item.User.FirstName) @Html.DisplayFor(modelItem => item.User.LastName)</small></p>
-                    <div>
-                        @if (User.IsInRole("ApplicationAdmin") || userCinemaId == item.CinemaId)
-                        {
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
-                        }
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
-                        @if (User.IsInRole("ApplicationAdmin") || userCinemaId == item.CinemaId)
-                        {
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
-                        }
+        <div class="card mb-4">
+            <div class="row no-gutters">
+                <div class="col-12">
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+                        <p class="card-text">
+                            <strong>Cinema:</strong> @item.Cinema.Name
+                        </p>
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Message)</p>
+                        <p class="card-text">
+                            <small class="text-muted">Published on: @Html.DisplayFor(modelItem => item.PublicationDate)</small>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">By: @Html.DisplayFor(modelItem => item.User.FirstName) @Html.DisplayFor(modelItem => item.User.LastName)</small>
+                        </p>
+                        <div>
+                            @if (User.IsInRole("ApplicationAdmin") || userCinemaId == item.CinemaId)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                            }
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                            @if (User.IsInRole("ApplicationAdmin") || userCinemaId == item.CinemaId)
+                            {
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     }
 </div>
 

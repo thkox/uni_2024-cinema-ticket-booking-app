@@ -1,8 +1,8 @@
 ﻿@page
 @model Disable2faModel
 @{
-ViewData["Title"] = "Disable two-factor authentication (2FA)";
-ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+    ViewData["Title"] = "Disable two-factor authentication (2FA)";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
 <div class="container-fluid">
@@ -10,7 +10,7 @@ ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
         <!-- Sidebar -->
         <nav class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar">
             <div class="position-sticky pt-3">
-                <partial name="_ManageNav" />
+                <partial name="_ManageNav"/>
             </div>
         </nav>
 
@@ -44,5 +44,5 @@ ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 </div>
 
 @section Scripts {
-<partial name="_ValidationScriptsPartial"/>
+    <partial name="_ValidationScriptsPartial"/>
 }

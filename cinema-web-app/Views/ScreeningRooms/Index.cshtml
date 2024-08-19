@@ -1,4 +1,4 @@
-@model IEnumerable<cinema_web_app.Models.ScreeningRoom>
+@model IEnumerable<ScreeningRoom>
 
 @{
     ViewData["Title"] = "Screening Rooms";
@@ -11,26 +11,27 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                Total Number of Seats
-            </th>
-            <th>
-                Is 3D
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cinema)
-            </th>
-            <th>
-                Actions
-            </th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            Total Number of Seats
+        </th>
+        <th>
+            Is 3D
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cinema)
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -50,6 +51,6 @@
                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

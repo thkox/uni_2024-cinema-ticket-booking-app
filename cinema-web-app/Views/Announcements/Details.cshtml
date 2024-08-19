@@ -1,7 +1,7 @@
-@model cinema_web_app.Models.Announcement
+@model Announcement
 
 @{
-    ViewData["Title"] = @Model.Title;
+    ViewData["Title"] = Model.Title;
     var userCinemaId = (Guid?)ViewData["UserCinemaId"];
 }
 

@@ -1,16 +1,16 @@
-@model cinema_web_app.Models.ScreeningRoom
+@model ScreeningRoom
 
 @{
     ViewData["Title"] = "Edit Screening Room";
 }
 
 <h1>Edit a Screening Room</h1>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id"/>
             <div class="form-group mb-3">
                 <label asp-for="Cinema" class="control-label"></label>
                 <select asp-for="CinemaId" class="form-control" asp-items="ViewBag.CinemaId"></select>
@@ -18,21 +18,21 @@
             </div>
             <div class="form-group mb-3">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
                 <label class="control-label">Total No Of Seats</label>
-                <input asp-for="TotalNoOfSeats" class="form-control" />
+                <input asp-for="TotalNoOfSeats" class="form-control"/>
                 <span asp-validation-for="TotalNoOfSeats" class="text-danger"></span>
             </div>
             <div class="form-group form-check mb-3">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Is3D" /> @Html.DisplayNameFor(model => model.Is3D)
+                    <input class="form-check-input" asp-for="Is3D"/> @Html.DisplayNameFor(model => model.Is3D)
                 </label>
             </div>
             <div class="form-group mb-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -43,5 +43,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

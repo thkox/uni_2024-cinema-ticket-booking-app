@@ -12,9 +12,7 @@ public class Announcement
     public DateTime PublicationDate { get; set; } // New property for the publication date
 
     // Navigation properties
-    [ForeignKey("CinemaId")]
-    public Cinema Cinema { get; set; }
-    
-    [ForeignKey("UserId")]
-    public ApplicationUser User { get; set; } // Navigation property for the author
+    [ForeignKey("CinemaId")] public Cinema Cinema { get; set; }
+
+    [ForeignKey("UserId")] public ApplicationUser User { get; set; } // Navigation property for the author
 }

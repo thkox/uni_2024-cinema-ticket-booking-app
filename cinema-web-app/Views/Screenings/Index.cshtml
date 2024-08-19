@@ -1,9 +1,8 @@
-@model IEnumerable<cinema_web_app.Models.Screening>
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Microsoft.EntityFrameworkCore
-@inject UserManager<cinema_web_app.Models.ApplicationUser> UserManager
-@inject SignInManager<cinema_web_app.Models.ApplicationUser> SignInManager
+@model IEnumerable<Screening>
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
 
 @{
     ViewData["Title"] = "Screenings";
@@ -58,33 +57,33 @@
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in cinemaGroup.OrderBy(s => s.StartTime))
-                                {
-                                    <tr>
+                            @foreach (var item in cinemaGroup.OrderBy(s => s.StartTime))
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Movie.Title)
+                                    </td>
+                                    <td>
+                                        @item.StartTime.ToString("yyyy-MM-dd HH:mm")
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Movie.Duration) minutes
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ScreeningRoom.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RemainingNoOfSeats)
+                                    </td>
+                                    @if (isUserCinema)
+                                    {
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Movie.Title)
+                                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                                         </td>
-                                        <td>
-                                            @item.StartTime.ToString("yyyy-MM-dd HH:mm")
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Movie.Duration) minutes
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.ScreeningRoom.Name)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.RemainingNoOfSeats)
-                                        </td>
-                                        @if (isUserCinema)
-                                        {
-                                            <td>
-                                                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                            </td>
-                                        }
-                                    </tr>
-                                }
+                                    }
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
