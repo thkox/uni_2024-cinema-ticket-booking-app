@@ -22,10 +22,14 @@ namespace cinema_web_app.Controllers
         }
 
         // GET: Cinemas
-        [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin")]
+        [Authorize(Roles = "ApplicationAdmin, ContentCinemaAdmin, ContentAppAdmin")]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cinemas.ToListAsync());
+            var cinemas = await _context.Cinemas
+                .Include(c => c.ScreeningRooms)
+                .ToListAsync();
+            
+            return View(cinemas);
         }
 
         // GET: Cinemas/Create
