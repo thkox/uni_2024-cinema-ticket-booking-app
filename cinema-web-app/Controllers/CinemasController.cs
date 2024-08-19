@@ -23,7 +23,10 @@ namespace cinema_web_app.Controllers
         // GET: Cinemas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cinemas.ToListAsync());
+            var cinemas = await _context.Cinemas
+                .Include(c => c.ScreeningRooms)
+                .ToListAsync();
+            return View(cinemas);
         }
 
         // GET: Cinemas/Details/5
@@ -149,6 +152,7 @@ namespace cinema_web_app.Controllers
             }
 
             var cinema = await _context.Cinemas
+                .Include(c => c.ScreeningRooms)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (cinema == null)
             {
