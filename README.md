@@ -5,9 +5,8 @@
 This project is a team assignment for the "Web Information Systems" course, offered in the 8th semester of the 2023-2024 academic year at the University of Piraeus, Department of Informatics. The project focuses on developing a cinema ticket booking web application using ASP.NET and PostgreSQL. The objective is to create a fully functional system that allows users to browse movies, view available showtimes, and book tickets. The system incorporates different user roles with specific permissions and functionalities.
 
 ## Course Information
-
-- **Institution:** University of Piraeus
-- **Department:** Department of Informatics
+- **Institution:** [University of Piraeus](https://www.unipi.gr/en/)
+- **Department:** [Department of Informatics](https://cs.unipi.gr/en/)
 - **Course:** Web Information Systems (2023-2024)
 - **Semester:** 8th
 
