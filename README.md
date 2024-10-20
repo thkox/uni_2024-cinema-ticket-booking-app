@@ -1,4 +1,4 @@
-# Web Information Systems (2024) - Cinema Ticket Booking Application
+# Web Information Systems (2024) - Cinema Ticket Booking App
 
 ## Project Overview
 
